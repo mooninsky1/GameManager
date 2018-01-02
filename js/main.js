@@ -2,6 +2,7 @@ var fs = require('fs');
 var http = require('http');
 var server = http.createServer();
 var path = require('path');
+var client = require('./client.js');
 server.on('request',function(req,res)
 {
     console.log(req.url);
@@ -25,6 +26,7 @@ server.on('request',function(req,res)
            else
            {
                console.log("not prcess url "+req.url);
+               res.end();
            }
         }
     }
@@ -33,3 +35,4 @@ server.on('request',function(req,res)
 
 });
 server.listen(4000);
+console.log("Web server has started.\nPlease log on http://127.0.0.1:4000")

@@ -1,43 +1,17 @@
-<!DOCTYPE html>
-<html>
+ <html> 
      <head>
-        <script src="http://localhost:8081/socket.io/socket.io.js"> </script>
-        <script type="text/javascript">
+        <script>
              var socket = io.connect('http://localhost:8081');
              scoket.emit('my','hello world');
         </script>
      </head>
-    <body>
-    <meta charset="UTF-8">
-    <h1>我的第一段 JavaScript</h1>
-
-    <p id="demo">
-    JavaScript 能改变 HTML 元素的内容。
-    </p>
-
-    <script >
-    function myFunction()
-    {
-    x=document.getElementById("demo");  // 找到元素
-    x.innerHTML="Hello JavaScript!";    // 改变内容
-    }
-    </script>
-
-    <button type="button" onclick="myFunction()">点击这里</button>
-   
-    <div>
-         <input type = "text" id = "user" value="用户名">
-         <input type = "text" id = "password" value="密码">
+     <body>
+         Your Message:
+         <input type = "text" id = "input">
          <div id="messages"></div>
-         <tr>
-          <td>
-              <input id="login" type='button' value="join" />
-          </td>
-        </tr>
-    </div>
-    <script src="http://localhost:8081/socket.io/socket.io.js"> </script>
+         <script src="http://localhost:8082/socket.io/socket.io.js"> </script>
          <script type="text/javascript">
-            var  messagesElement = document.getElementById("message");
+            var  messagesElement = document.getElementById(messages);
             var lastmessageElement = null;
             function addMessage(message)
             {
@@ -47,7 +21,7 @@
                 messagesElement.insertBefore(newMessageElement,lastmessageElement);
                 lastmessageElement = newMessageElement;
             }
-            var socket = io.connect('http://localhost:8081');
+            var socket = io.connect('http://localhost:8082');
             socket.on('servermsg',function(content)
             {
                 addMessage(content);
@@ -55,9 +29,10 @@
             var inputElement = document.getElementById('input');
             inputElement.onkeydown = function(KeyboardEvent)
             {
+               // socket.emit('my',inputElement.vale);
                 if(KeyboardEvent.keyCode === 13)
                 {
-                    socket.emit('servermsg', { my: 'data' });
+                    socket.emit('my', { my: 'data' });
                     inputElement.value = 'abc';
                     return false;
                 }
@@ -66,5 +41,5 @@
                 }
             }
         </script>
-    </body>
+     </body>
 </html>
