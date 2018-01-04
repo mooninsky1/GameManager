@@ -3,6 +3,7 @@ var app = express();
 var  io = require('socket.io').listen(8081); 
 var  fs = require('fs');
 var login = require('./js/login.js');
+var oss = require('./js/oss.js');
 var db = require('./js/db.js');
 
 app.listen(8080);
@@ -21,7 +22,11 @@ io.sockets.on('connection', function (socket){
        socket.emit('servermsg',data);
     });
     socket.on('login',function(data){
-    login(socket,data.user,data.password);
+        login(socket,data.user,data.password);
+    });
+    socket.on('queryuser',function(data)
+    {
+        oss.queryuser(socket,data.user);
     });
     
 });

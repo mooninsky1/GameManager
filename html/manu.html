@@ -7,28 +7,38 @@
 <body>
 	<td>请输入要查找的角色名</td>
   <div>
-         <input type = "text" id = "user" value="玩家名称">
+         <input type = "text" id = "user" value="加里彼得">
          <tr>
           <td>
               <input id="search" type='button'  value="查找" />
           </td>
         </tr>
   </div>
+ 
+  <div id="messages"></div>
+
   <script src="http://localhost:8081/socket.io/socket.io.js"> </script>
          <script type="text/javascript">
+            var  messagesElement = document.getElementById('messages');
+            function AddMessage(message)
+            {
+                var newMessageElement = document.createElement('p');
+                var newMessageText = document.createTextNode(message);
+                newMessageElement.appendChild(newMessageText);
+                messagesElement.appendChild(newMessageElement);
+               // messagesElement.insertBefore(newMessageElement,lastmessageElement);
+                //lastmessageElement = newMessageElement;
+            }
             var socket = io.connect('http://localhost:8081');
             socket.on('queryuserrsp',function(content)
             {
-               if(content === 0)
-               {
-                    alert("登录成功!")
-                    self.location='manu.html';
-                   
-               }
-               else if(content === -1){
-                   alert("用户名或者密码出错")
-               }
-            })
+                if(content.recordset.length == 1)
+                {
+                    AddMessage('actorid:'+content.recordset[0].ActorID );
+                    AddMessage('Level:'+content.recordset[0].Level );
+                }
+
+            });
             var inputElement = document.getElementById('search');
             var userText = document.getElementById("user");
            
