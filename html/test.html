@@ -31,39 +31,24 @@
          <div id="messages"></div>
          <tr>
           <td>
-              <input id="login" type='button' value="join" />
+              <input id="login" type='button'  value="join" />
           </td>
         </tr>
     </div>
     <script src="http://localhost:8081/socket.io/socket.io.js"> </script>
          <script type="text/javascript">
-            var  messagesElement = document.getElementById("message");
-            var lastmessageElement = null;
-            function addMessage(message)
-            {
-                var newMessageElement = document.createElment('div');
-                var newMessageText = document.createTextNode(message);
-                newMessageElement.appendChild(newMessageText);
-                messagesElement.insertBefore(newMessageElement,lastmessageElement);
-                lastmessageElement = newMessageElement;
-            }
             var socket = io.connect('http://localhost:8081');
             socket.on('servermsg',function(content)
             {
                 addMessage(content);
             })
-            var inputElement = document.getElementById('input');
-            inputElement.onkeydown = function(KeyboardEvent)
+            var inputElement = document.getElementById('login');
+            var userText = document.getElementById("user");
+            var passwordText = document.getElementById("password");
+            inputElement.onclick = function(mousedown)
             {
-                if(KeyboardEvent.keyCode === 13)
-                {
-                    socket.emit('servermsg', { my: 'data' });
-                    inputElement.value = 'abc';
-                    return false;
-                }
-                else{
-                    return true;
-                }
+                socket.emit('login', { user: userText.value,password:userText.value });
+                return false;
             }
         </script>
     </body>

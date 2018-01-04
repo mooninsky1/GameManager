@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>运营管理工具</title>
+</head>
+
+<body>
+	<td>请输入要查找的角色名</td>
+  <div>
+         <input type = "text" id = "user" value="玩家名称">
+         <tr>
+          <td>
+              <input id="search" type='button'  value="查找" />
+          </td>
+        </tr>
+  </div>
+  <script src="http://localhost:8081/socket.io/socket.io.js"> </script>
+         <script type="text/javascript">
+            var socket = io.connect('http://localhost:8081');
+            socket.on('queryuserrsp',function(content)
+            {
+               if(content === 0)
+               {
+                    alert("登录成功!")
+                    self.location='manu.html';
+                   
+               }
+               else if(content === -1){
+                   alert("用户名或者密码出错")
+               }
+            })
+            var inputElement = document.getElementById('search');
+            var userText = document.getElementById("user");
+           
+            inputElement.onclick = function(mousedown)
+            {
+                socket.emit('queryuser', { user: userText.value });
+                return false;
+            }
+        </script>
+</body>

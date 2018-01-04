@@ -1,74 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>运营管理工具</title>
-    <form action= "test.html"method= "post">
-    <table border= "0">
-    <tr bgcolor= "#cccccc">
-  </head>
+     <head>
+         <title> 悠悠一鸣运维管理工具 </title>
+     </head>
+    <body>
+    <meta charset="UTF-8">
+    <h1>登录页面</h1>
 
-  <body>
-        <td>请输入要查找的用户名</td>
-        <td align= "center"><input type= "text"name= "usrname"size= "30"maxlength= "30"/></td>
-      </tr>
-      <tr>
-        <td colspan= "2"align= "center"><input type= "submit"value= "查看用户信息"/></td>
-      </tr>
-      
-      </table>
-      </form>
-      <form action= "test.html"method= "get">
-      <table border= "0">
-      <tr bgcolor= "#cccccc">
-      </tr>
-      <tr>
-        <td colspan= "2"align= "center"><input type= "submit"value= "测试"/></td>
-      </tr>
-      </table>
-      </form>
+    <p id="demo">
+    悠悠一鸣运维管理工具
+    </p>
 
-         Your Message:
-         <input type = "text" id = "input">
-         <div id="messages">
-           <p>This is <em>my</em> content.</p>
-         </div>
+    <div>
+         <input type = "text" id = "user" value="用户名">
+         <input type = "text" id = "password" value="密码">
+         <div id="messages"></div>
          <tr>
           <td>
-              <input id="login" type='button' value="join" />
+              <input id="login" type='button'  value="登录" />
           </td>
         </tr>
-         <script src="http://localhost:8081/socket.io/socket.io.js"> </script>
+    </div>
+    <script src="http://localhost:8081/socket.io/socket.io.js"> </script>
          <script type="text/javascript">
-            var  messagesElement = document.getElementById('messages');
-            var lastmessageElement = null;
-            function addMessage(message)
-            {
-              var newMessageElement = document.createElement('p');
-              var testDiv = document.getElementById("messages");
-              testDiv.appendChild(newMessageElement);
-              var newMessageText = document.createTextNode(message);
-              newMessageElement.appendChild(newMessageText);
-            }
             var socket = io.connect('http://localhost:8081');
-            var inputElement = document.getElementById('input');
-            socket.on('servermsg',function(content)
+            socket.on('loginRsp',function(content)
             {
-               addMessage(content);
-            });
-           
-            inputElement.onkeydown = function(KeyboardEvent)
+               if(content == -1)
+               {
+                   alert("用户名或者密码出错")
+               }
+               if (content == 0)
+               {
+                    alert("登录成功!")
+                    self.location='manu.html';
+               }
+            })
+            var inputElement = document.getElementById('login');
+            var userText = document.getElementById("user");
+            var passwordText = document.getElementById("password");
+            inputElement.onclick = function(mousedown)
             {
-                if(KeyboardEvent.keyCode === 13)
-                {
-                    socket.emit('clientmsg', inputElement.value);
-                    inputElement.value = '';
-                    return false;
-                }
-                else{
-                    return true;
-                }
+                socket.emit('login', { user: userText.value,password:passwordText.value });
+                return false;
             }
         </script>
-     </body>
+    </body>
 </html>
