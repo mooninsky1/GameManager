@@ -39,6 +39,10 @@
                 }
 
             });
+            socket.on('queryuserrsp1',function(content)
+            {
+                AddMessage(content );
+            });
             var inputElement = document.getElementById('search');
             var userText = document.getElementById("user");
            

@@ -6,7 +6,7 @@ var login = require('./js/login.js');
 var oss = require('./js/oss.js');
 var db = require('./js/db.js');
 
-app.listen(8080);
+app.listen(8082);
 //io.set('log level', 1);//将socket.io中的debug信息关闭
 
 //会打开目录html下的index.html 静态,
@@ -30,4 +30,4 @@ io.sockets.on('connection', function (socket){
     });
     
 });
-console.log("http://localhost:8080")
+console.log("http://localhost:8082")
