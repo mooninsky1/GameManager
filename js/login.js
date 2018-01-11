@@ -1,7 +1,7 @@
 var db = require('./db.js');
 function login(socket,user,password)
 {
-    debugger;
+    console.log(user+password);
     var sql = "SELECT * from users where [user]='"+user + "'";
     db.querySql(sql, "",function (err, result) {//查询所有users表的数据
         if(err)

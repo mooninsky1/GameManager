@@ -15,7 +15,18 @@ var options = {
     path: '/queryPlayer?',  
     method: 'POST'  
 };  
-
+var updatePlayerOption = {  
+    hostname: '127.0.0.1',  
+    port: 8080,  
+    path: '/updatePlayer?',  
+    method: 'POST'  
+};
+var updatePlayerData = {  
+    "uid": "21530671054870",
+    "param":   [  {"36_10":"10"}   ]    ,
+    "area": 5013
+};//这是需要提交的数据   
+var content = JSON.stringify(data);
 function queryuser(socket,user)
 {
     var sql = "SELECT * from actor where [NickName]='"+user + "'";
@@ -49,4 +60,27 @@ function queryPlayer(socket,user)
     req.end();
 
 }
-module.exports.queryuser = queryPlayer;
+function updatePlayer(socket,host,data)
+{
+    console.log(data);
+    console.log(host);
+    updatePlayerOption.hostname = host;
+    var req = http.request(updatePlayerOption, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log('BODY: ' + chunk);  
+           socket.emit("queryuserrsp1",chunk) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    req.write(JSON.stringify(data));
+    req.end();
+
+}
+module.exports.queryuser = queryuser;
+module.exports.queryPlayer = queryPlayer;
+module.exports.updatePlayer = updatePlayer;

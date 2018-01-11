@@ -6,11 +6,13 @@ var login = require('./js/login.js');
 var oss = require('./js/oss.js');
 var db = require('./js/db.js');
 
+//会打开目录html下的index.html 静态,
+app.use(express.static(__dirname + '/html'));
+
 app.listen(8082);
 //io.set('log level', 1);//将socket.io中的debug信息关闭
 
-//会打开目录html下的index.html 静态,
-app.use(express.static(__dirname + '/html'));
+
 //动态
 //app.get('/index2.html', function (req, res) {
 //  console.log("/index2.html");
@@ -22,12 +24,16 @@ io.sockets.on('connection', function (socket){
        socket.emit('servermsg',data);
     });
     socket.on('login',function(data){
+        console.log("recve login event");
         login(socket,data.user,data.password);
     });
     socket.on('queryuser',function(data)
     {
-        oss.queryuser(socket,data.user);
+        oss.queryPlayer(socket,data.user);
     });
-    
+    socket.on('updatePlayer',function(host,data)
+    {
+        oss.updatePlayer(socket,host,data);
+    });
 });
-console.log("http://localhost:8082")
+console.log("http://192.168.31.249:8082")
