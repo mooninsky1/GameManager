@@ -70,6 +70,8 @@
 			<table class="table" id="myTable">
 				<thead>
 					<tr>
+						<th>账号</th>
+						<th>密码</th>
 						<th>名字</th>
 						<th>UUID</th>
 						<th>等级</th>			
@@ -81,6 +83,8 @@
 				</thead>
 				<tbody>
 					<tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" onclick="javascript:window.location.href='http://www.baidu.com/'">
+						<td>account</td>
+						<td>password</td>
 						<td>又见一只奶酪君</td>
 						<td>5553546</td>
 						<td>30</td>
@@ -108,6 +112,8 @@
         {
 			var row=table.insertRow(1);
 			var col =0;
+			var cellaccount=row.insertCell(col++);
+			var cellpassword=row.insertCell(col++);
 			var cellname=row.insertCell(col++);
 			var celluuid=row.insertCell(col++);
 			var celllevel = row.insertCell(col++);
@@ -116,6 +122,8 @@
 			var cellstar = row.insertCell(col++);
 			var cellonline = row.insertCell(col++);
 
+			cellaccount.innerHTML=message.data[i]["996_1"];
+			cellpassword.innerHTML=message.data[i]["0_1"];
 			cellname.innerHTML=message.data[i]["3_1"];
 			celluuid.innerHTML=message.data[i]["2_1"];
 			celllevel.innerHTML=message.data[i]["6_1"];
@@ -126,8 +134,9 @@
         }
     }
     var socket = io.connect('http://192.168.31.249:8081');
-    socket.on('searchPlayerRsp',function(content)
+    socket.on('searchAccountRsp',function(content)
     {
+		alert("content")
         AddMessage(content );
     });
     var userText = document.getElementById("user");
@@ -135,7 +144,7 @@
     {
 		var x=document.getElementById("serverbox").selectedIndex;
 		var host = $my("serverbox").value;
-        socket.emit('searchPlayer', host,{ user: $my('PlayerName').value ,area:$my("serverbox")[x].getAttribute("area") });
+        socket.emit('searchAccount', host,{ user: $my('PlayerName').value ,area:$my("serverbox")[x].getAttribute("area") });
         return false;
     }
     </script>

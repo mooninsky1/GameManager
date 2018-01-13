@@ -32,7 +32,11 @@ io.sockets.on('connection', function (socket){
         console.log('searchPlayer'+host+data);
         oss.searchPlayer(socket,host,data);
     });
-    
+     socket.on('searchAccount',function(host,data)
+    {
+        console.log('searchAccount'+host+data);
+        oss.searchAccount(socket,host,data);
+    });
     socket.on('queryPlayer',function(host,data)
     {
         oss.queryPlayer(socket,host,data.user);

@@ -38,7 +38,6 @@ function queryuser(socket,user)
 function searchPlayer(socket,host,indata)
 {
     debugger;
-    console.log("aaa");
     Playeroptions.hostname = host;
     Playeroptions.path = "/searchPlayer?";
     var req = http.request(Playeroptions, function (res) {  
@@ -55,6 +54,31 @@ function searchPlayer(socket,host,indata)
         });  
     var data = {     };//这是需要提交的数据 
     data.uid =   indata.user;
+    data.area = indata.area
+    var content = JSON.stringify(data);
+    req.write(content);
+    req.end();
+
+}
+function searchAccount(socket,host,indata)
+{
+    debugger;
+    Playeroptions.hostname = host;
+    Playeroptions.path = "/searchAccount?";
+    var req = http.request(Playeroptions, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log("searchAccountRsp");  
+            socket.emit("searchAccountRsp",JSON.parse(chunk)) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    var data = {     };//这是需要提交的数据 
+    data.account =   indata.user;
     data.area = indata.area
     var content = JSON.stringify(data);
     req.write(content);
@@ -109,3 +133,4 @@ function updatePlayer(socket,host,data)
 module.exports.searchPlayer = searchPlayer;
 module.exports.queryPlayer = queryPlayer;
 module.exports.updatePlayer = updatePlayer;
+module.exports.searchAccount = searchAccount;
