@@ -27,10 +27,17 @@ io.sockets.on('connection', function (socket){
         console.log("recve login event");
         login(socket,data.user,data.password);
     });
-    socket.on('queryuser',function(data)
+    socket.on('searchPlayer',function(host,data)
     {
-        oss.queryPlayer(socket,data.user);
+        console.log('searchPlayer'+host+data);
+        oss.searchPlayer(socket,host,data);
     });
+    
+    socket.on('queryPlayer',function(host,data)
+    {
+        oss.queryPlayer(socket,host,data.user);
+    });
+    
     socket.on('updatePlayer',function(host,data)
     {
         oss.updatePlayer(socket,host,data);

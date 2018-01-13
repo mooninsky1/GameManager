@@ -9,24 +9,18 @@ var data = {
 };//这是需要提交的数据   
 var content = JSON.stringify(data);
   
-var options = {  
+var Playeroptions = {  
     hostname: '127.0.0.1',  
     port: 8080,  
     path: '/queryPlayer?',  
     method: 'POST'  
 };  
-var updatePlayerOption = {  
-    hostname: '127.0.0.1',  
-    port: 8080,  
-    path: '/updatePlayer?',  
-    method: 'POST'  
-};
+
 var updatePlayerData = {  
     "uid": "21530671054870",
     "param":   [  {"36_10":"10"}   ]    ,
     "area": 5013
 };//这是需要提交的数据   
-var content = JSON.stringify(data);
 function queryuser(socket,user)
 {
     var sql = "SELECT * from actor where [NickName]='"+user + "'";
@@ -41,10 +35,37 @@ function queryuser(socket,user)
         }
     });
 }
-function queryPlayer(socket,user)
+function searchPlayer(socket,host,indata)
 {
-    console.log("haha");
-    var req = http.request(options, function (res) {  
+    debugger;
+    console.log("aaa");
+    Playeroptions.hostname = host;
+    Playeroptions.path = "/searchPlayer?";
+    var req = http.request(Playeroptions, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log('BODY: ' + JSON.parse(chunk));  
+           socket.emit("searchPlayerRsp",JSON.parse(chunk)) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    var data = {     };//这是需要提交的数据 
+    data.uid =   indata.user;
+    data.area = indata.area
+    var content = JSON.stringify(data);
+    req.write(content);
+    req.end();
+
+}
+function queryPlayer(socket,host,user)
+{
+    Playeroptions.hostname = host;
+    Playeroptions.path = "/queryPlayer?"
+    var req = http.request(Playeroptions, function (res) {  
         console.log('STATUS: ' + res.statusCode);  
         console.log('HEADERS: ' + JSON.stringify(res.headers));  
         res.setEncoding('utf8');  
@@ -56,6 +77,9 @@ function queryPlayer(socket,user)
     req.on('error', function (e) {  
         console.log('problem with request: ' + e.message);  
         });  
+    var data = {     };//这是需要提交的数据 
+    data.uid =   user;
+    var content = JSON.stringify(data);
     req.write(content);
     req.end();
 
@@ -64,8 +88,9 @@ function updatePlayer(socket,host,data)
 {
     console.log(data);
     console.log(host);
-    updatePlayerOption.hostname = host;
-    var req = http.request(updatePlayerOption, function (res) {  
+    PlayerOption.hostname = host;
+    PlayerOption.path = "/updatePlayer?"
+    var req = http.request(PlayerOption, function (res) {  
         console.log('STATUS: ' + res.statusCode);  
         console.log('HEADERS: ' + JSON.stringify(res.headers));  
         res.setEncoding('utf8');  
@@ -81,6 +106,6 @@ function updatePlayer(socket,host,data)
     req.end();
 
 }
-module.exports.queryuser = queryuser;
+module.exports.searchPlayer = searchPlayer;
 module.exports.queryPlayer = queryPlayer;
 module.exports.updatePlayer = updatePlayer;

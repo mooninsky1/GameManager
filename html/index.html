@@ -38,15 +38,13 @@
             });
             socket.on('loginRsp',function(content)
             {
-                alert("loginRsp")
                if(content == -1)
                {
                    alert("用户名或者密码出错")
                }
                if (content == 0)
                {
-                    alert("登录成功!")
-                    self.location='manu.html';
+                    self.location='tools.html';
                }
             })
 
@@ -55,7 +53,6 @@
             var passwordText = document.getElementById("value_2");
             inputElement.onclick = function(mousedown)
             {
-                alert("login")
                 socket.emit('login', { user: userText.value,password:passwordText.value });
                 return false;
             }
