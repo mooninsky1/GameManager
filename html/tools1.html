@@ -136,7 +136,6 @@
     var socket = io.connect('http://192.168.31.249:8081');
     socket.on('searchAccountRsp',function(content)
     {
-		alert("content")
         AddMessage(content );
     });
     var userText = document.getElementById("user");

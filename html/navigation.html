@@ -1,26 +1,248 @@
 <!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="jquery,ui,easy,easyui,web">
+<meta name="description" content="easyui help you build your web page easily!">
+
 <title>运营管理工具导航页</title>
+<link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
+
 </head>
 
 <body>
-      <form action= "tools.html"method= "get">
-      <table border= "0">
-      <tr bgcolor= "#cccccc">
-      </tr>
-      <tr>
-        <td colspan= "2"align= "center"><input type= "submit"value= "游戏角色名称查询"/></td>
-      </tr>
-      </table>
-      </form>
-      <form action= "tools1.html"method= "get">
-      <table border= "0">
-      <tr bgcolor= "#cccccc">
-      </tr>
-      <tr>
-        <td colspan= "2"align= "center"><input type= "submit"value= "游戏账号查询"/></td>
-      </tr>
-      </table>
-      </form>
+  
+<div id="tt" class="easyui-tabs" style="width:auto;height:500px;">
+    <div title="游戏账号查询" style="padding:20px;">
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <div class="form-group" style="padding: 10px 10px 0px;">
+              <select id="serverbox" class="form-control">
+                <option value="192.168.31.118" area="2" >内网服</option>
+                <option value="120.76.235.228" area="5012">外网服</option>
+                <option value="192.168.31.249" area="5013" >李涵锋</option>
+              </select>										
+            </div>	
+          </ul>	 	
+            <form class="navbar-form navbar-left" role="search" >
+              <div class="form-group">
+                <input type="text" class="form-control" id="accountName" placeholder="请输入玩家名字"/>
+              </div> 
+              <button type="button" class="btn btn-default" id="FindByNameBtn" onclick="FindByName()" >查找</button>
+            </form> 
+				</div>
+				
+			<div class="row clearfix">
+		<div class="col-md-12 column">
+			<table class="table" id="myTable">
+				  <thead>
+            <tr>
+              <th>账号</th>
+              <th>密码</th>
+              <th>名字</th>
+              <th>UUID</th>
+              <th>等级</th>	
+              <th>金币</th>		
+              <th>钻石</th>
+              <th>星尘</th>
+              <th>状态</th>
+            </tr>
+				  </thead>
+				  <tbody>
+					<tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" >
+						<td>account</td>
+						<td>password</td>
+						<td>又见一只奶酪君</td>
+						<td>5553546</td>
+						<td>30</td>
+						<td>535461</td>
+						<td>462161561</td>
+						<td>100506</td>
+						<td>不在线</td>
+					</tr>
+					
+				  </tbody>
+			  </table>
+		  </div>
+	  </div>
+  </div>
+
+    <div title="游戏角色名称查询" data-options="closable:true" style="overflow:auto;padding:20px;">
+      	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <div class="form-group" style="padding: 10px 10px 0px;">
+              <select id="serverbox1" class="form-control">
+                <option value="192.168.31.118" area="2" >内网服</option>
+                <option value="120.76.235.228" area="5012">外网服</option>
+                <option value="192.168.31.249" area="5013" >李涵锋</option>
+              </select>										
+            </div>	
+          </ul>	 	
+            <form class="navbar-form navbar-left" role="search" >
+              <div class="form-group">
+                <input type="text" class="form-control" id="PlayerName" placeholder="请输入玩家名字"/>
+              </div> 
+              <button type="button" class="btn btn-default" id="FindByNameBtn" onclick="FindByPlayer()" >查找</button>
+            </form> 
+				</div>
+				
+			<div class="row clearfix">
+		<div class="col-md-12 column">
+			<table class="table" id="myTablePlayer">
+				<thead>
+					<tr>
+					  <th>名字</th>
+						<th>UUID</th>
+						<th>等级</th>		
+            <th>金币</th>	
+						<th>钻石</th>
+						<th>星尘</th>
+						<th>状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" >
+						<td>又见一只奶酪君</td>
+						<td>5553546</td>
+						<td>30</td>
+						<td>535461</td>
+						<td>462161561</td>
+						<td>100506</td>
+						<td>不在线</td>
+					</tr>
+					
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+    </div>
+
+    <div title="修改属性值" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+       <ul class="nav navbar-nav">
+            <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+              <!-- td -->
+                <select id="serverbox2" class="form-control" style="display:inlinek;">
+                <option value="192.168.31.118" area="2" >内网服</option>
+                <option value="120.76.235.228" area="5012">外网服</option>
+                <option value="192.168.31.249" area="5013" >李涵锋</option>
+                </select>	
+                <input type = "text" class="form-control" id = "Actorid" placeholder="角色ID"  style="display:inline;" />
+                <select id="PropBox" class="form-control"  style="display:inline;" >
+                <option value="21">设置金币</option>
+                <option value="36">设置经验</option>
+                <option value="22">设置钻石</option>
+                </select>
+                <input type = "text" class="form-control" id = "param1" placeholder="修改值"  style="display:inline;" />
+                <button type="button" class="btn btn-default" id="ModifyBtn" onclick="UpdatePlayer()" >修改</button>
+              <!-- /td -->							
+            </div>	
+          </ul>	 
+       
+    </div>
+</div>
+	<script src="http://192.168.31.249:8081/socket.io/socket.io.js"> </script>
+  <script type="text/javascript" >
+    var socket = io.connect('http://192.168.31.249:8081');
+    function $my(id){return document.getElementById(id); }
+  
+    function UpdatePlayer(mousedown)
+    {
+        var ActoridText = document.getElementById("Actorid");
+        var boxtext = document.getElementById("PropBox");
+        var param1text = document.getElementById("param1");
+        var updataparam = {};
+        updataparam.uid = ActoridText.value;
+        updataparam.param = [{}];
+        updataparam.param[0] [boxtext.value+"_"] =param1text.value;
+        var host = document.getElementById("serverbox2").value
+        socket.emit('updatePlayer', host,updataparam);
+        return false;
+    }
+    function AddMessage(message)
+    {
+		    $("#myTable tr:not(:first)").empty(""); 
+		    var table=document.getElementById("myTable");
+		    for(var i=0; i<message.data.length; i++)
+        {
+            var row=table.insertRow(1);
+            var col =0;
+            var cellaccount=row.insertCell(col++);
+            var cellpassword=row.insertCell(col++);
+            var cellname=row.insertCell(col++);
+            var celluuid=row.insertCell(col++);
+            var celllevel = row.insertCell(col++);
+            var cellgold = row.insertCell(col++);
+            var celldiamond = row.insertCell(col++);
+            var cellstar = row.insertCell(col++);
+            var cellonline = row.insertCell(col++);
+
+            cellaccount.innerHTML=message.data[i]["996_1"];
+            cellpassword.innerHTML=message.data[i]["0_1"];
+            cellname.innerHTML=message.data[i]["3_1"];
+            celluuid.innerHTML=message.data[i]["2_1"];
+            celllevel.innerHTML=message.data[i]["6_1"];
+            cellgold.innerHTML=message.data[i]["21_1"];
+            celldiamond.innerHTML=message.data[i]["22_1"];
+            cellstar.innerHTML=message.data[i]["26_1"];
+            cellonline.innerHTML=message.data[i]["999_1"];
+        }
+    }
+  
+    socket.on('searchAccountRsp',function(content)
+    {
+        AddMessage(content );
+    });
+     socket.on('searchPlayerRsp',function(content)
+    {
+        AddPlayerMessage(content );
+    });
+   
+    function FindByName (mousedown)
+    {
+	    	var x=document.getElementById("serverbox").selectedIndex;
+		    var host = $my("serverbox").value;
+        socket.emit('searchAccount', host,{ user: $my('accountName').value ,area:$my("serverbox")[x].getAttribute("area") });
+        return false;
+    }
+
+    function AddPlayerMessage(message)
+    {
+        $("#myTablePlayer tr:not(:first)").empty(""); 
+        var table=document.getElementById("myTablePlayer");
+        for(var i=0; i<message.data.length; i++)
+        {
+            var row=table.insertRow(1);
+            var col =0;
+            var cellname=row.insertCell(col++);
+            var celluuid=row.insertCell(col++);
+            var celllevel = row.insertCell(col++);
+            var cellgold = row.insertCell(col++);
+            var celldiamond = row.insertCell(col++);
+            var cellstar = row.insertCell(col++);
+            var cellonline = row.insertCell(col++);
+
+            cellname.innerHTML=message.data[i]["3_1"];
+            celluuid.innerHTML=message.data[i]["2_1"];
+            celllevel.innerHTML=message.data[i]["6_1"];
+            cellgold.innerHTML=message.data[i]["21_1"];
+            celldiamond.innerHTML=message.data[i]["22_1"];
+            cellstar.innerHTML=message.data[i]["26_1"];
+            cellonline.innerHTML=message.data[i]["999_1"];
+        }
+    }
+   
+    function FindByPlayer (mousedown)
+    {
+		  	var x=document.getElementById("serverbox1").selectedIndex;
+	    	var host = $my("serverbox1").value;
+        socket.emit('searchPlayer', host,{ user: $my('PlayerName').value ,area:$my("serverbox1")[x].getAttribute("area") });
+        return false;
+    }
+    </script>
 </body>

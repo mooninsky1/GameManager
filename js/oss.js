@@ -112,9 +112,9 @@ function updatePlayer(socket,host,data)
 {
     console.log(data);
     console.log(host);
-    PlayerOption.hostname = host;
-    PlayerOption.path = "/updatePlayer?"
-    var req = http.request(PlayerOption, function (res) {  
+    Playeroptions.hostname = host;
+    Playeroptions.path = "/updatePlayer?"
+    var req = http.request(Playeroptions, function (res) {  
         console.log('STATUS: ' + res.statusCode);  
         console.log('HEADERS: ' + JSON.stringify(res.headers));  
         res.setEncoding('utf8');  
