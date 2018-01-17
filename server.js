@@ -10,14 +10,7 @@ var db = require('./js/db.js');
 app.use(express.static(__dirname + '/html'));
 
 app.listen(8082);
-//io.set('log level', 1);//将socket.io中的debug信息关闭
 
-
-//动态
-//app.get('/index2.html', function (req, res) {
-//  console.log("/index2.html");
- // res.send('Hello world!');
-//});
 io.sockets.on('connection', function (socket){
     socket.on('clientmsg', function (data){
       console.log(data);
@@ -27,24 +20,36 @@ io.sockets.on('connection', function (socket){
         console.log("recve login event");
         login(socket,data.user,data.password);
     });
-    socket.on('searchPlayer',function(host,data)
+    socket.on('searchPlayer',function(host,port,data)
     {
         console.log('searchPlayer'+host+data);
-        oss.searchPlayer(socket,host,data);
+        oss.searchPlayer(socket,host,port,data);
     });
-     socket.on('searchAccount',function(host,data)
+     socket.on('searchAccount',function(host,port,data)
     {
         console.log('searchAccount'+host+data);
-        oss.searchAccount(socket,host,data);
+        oss.searchAccount(socket,host,port,data);
     });
-    socket.on('queryPlayer',function(host,data)
+    socket.on('queryPlayer',function(host,port,data)
     {
-        oss.queryPlayer(socket,host,data.user);
+        oss.queryPlayer(socket,host,port,data.user);
     });
     
-    socket.on('updatePlayer',function(host,data)
+    socket.on('updatePlayer',function(host,port,data)
     {
-        oss.updatePlayer(socket,host,data);
+        oss.updatePlayer(socket,host,port,data);
     });
+    socket.on('KickPlayer',function(host,port,data)
+    {
+        console.log('KickPlayer')
+        oss.KickPlayer(socket,host,port,data);
+    })
+    socket.on('BannedPlayer',function(host,port,data){
+        oss.BannedPlayer(socket,host,port,data);
+    })
+    socket.on('sendMail',function(host,port,data){
+        console.log('sendMail');
+        oss.sendMail(socket,host,port,data);
+    })
 });
 console.log("http://192.168.31.249:8082")

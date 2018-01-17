@@ -35,10 +35,11 @@ function queryuser(socket,user)
         }
     });
 }
-function searchPlayer(socket,host,indata)
+function searchPlayer(socket,host,port,indata)
 {
     debugger;
     Playeroptions.hostname = host;
+     Playeroptions.port = port;
     Playeroptions.path = "/searchPlayer?";
     var req = http.request(Playeroptions, function (res) {  
         console.log('STATUS: ' + res.statusCode);  
@@ -60,10 +61,11 @@ function searchPlayer(socket,host,indata)
     req.end();
 
 }
-function searchAccount(socket,host,indata)
+function searchAccount(socket,host,port,indata)
 {
     debugger;
     Playeroptions.hostname = host;
+    Playeroptions.port = port;
     Playeroptions.path = "/searchAccount?";
     var req = http.request(Playeroptions, function (res) {  
         console.log('STATUS: ' + res.statusCode);  
@@ -85,9 +87,10 @@ function searchAccount(socket,host,indata)
     req.end();
 
 }
-function queryPlayer(socket,host,user)
+function queryPlayer(socket,host,port,user)
 {
     Playeroptions.hostname = host;
+    Playeroptions.port = port;
     Playeroptions.path = "/queryPlayer?"
     var req = http.request(Playeroptions, function (res) {  
         console.log('STATUS: ' + res.statusCode);  
@@ -108,11 +111,12 @@ function queryPlayer(socket,host,user)
     req.end();
 
 }
-function updatePlayer(socket,host,data)
+function updatePlayer(socket,host,port,data)
 {
     console.log(data);
     console.log(host);
     Playeroptions.hostname = host;
+    Playeroptions.port = port;
     Playeroptions.path = "/updatePlayer?"
     var req = http.request(Playeroptions, function (res) {  
         console.log('STATUS: ' + res.statusCode);  
@@ -130,6 +134,69 @@ function updatePlayer(socket,host,data)
     req.end();
 
 }
+function KickPlayer(socket,host,port,data)
+{
+    console.log('KickPlayer')
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/quitPlayer?"
+    var req = http.request(Playeroptions, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log('BODY: ' + chunk);  
+           socket.emit("KickPlayerRsp",chunk) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    req.write(JSON.stringify(data));
+    req.end();
+}
+function BannedPlayer(socket,host,port,data){
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/banned?"
+    var req = http.request(Playeroptions, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log('BODY: ' + chunk);  
+           socket.emit("BannedPlayerRsp",chunk) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    req.write(JSON.stringify(data));
+    req.end();
+}
+function sendMail(socket,host,port,data)
+{
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/sendMail?"
+    var req = http.request(Playeroptions, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log('BODY: ' + chunk);  
+           socket.emit("sendMailRsp",chunk) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    req.write(JSON.stringify(data));
+    req.end();
+}
+module.exports.sendMail = sendMail;
+module.exports.BannedPlayer = BannedPlayer;
+module.exports.KickPlayer = KickPlayer;
 module.exports.searchPlayer = searchPlayer;
 module.exports.queryPlayer = queryPlayer;
 module.exports.updatePlayer = updatePlayer;
