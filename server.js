@@ -51,5 +51,14 @@ io.sockets.on('connection', function (socket){
         console.log('sendMail');
         oss.sendMail(socket,host,port,data);
     })
+    socket.on('online',function(host,port){
+        console.log('online');
+        oss.online(socket,host,port);
+    })
+    socket.on('GetBag',function(host,port,data){
+        console.log('get bag');
+        oss.GetBag(socket,host,port,data);
+    })
+
 });
 console.log("http://192.168.31.249:8082")

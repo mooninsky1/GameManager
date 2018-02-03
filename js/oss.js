@@ -194,6 +194,48 @@ function sendMail(socket,host,port,data)
     req.write(JSON.stringify(data));
     req.end();
 }
+function online(socket,host,port)
+{
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/online?"
+    var req = http.request(Playeroptions, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log('BODY: ' + chunk);  
+           socket.emit("onlineRsp",JSON.parse(chunk)) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    var data = {     };//这是需要提交的数据 
+     req.write(JSON.stringify(data));
+    req.end();
+}
+function GetBag(socket,host,port,data){
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/queryBag?"
+    var req = http.request(Playeroptions, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log('BODY: ' + chunk);  
+           socket.emit("GetBagRsp",JSON.parse(chunk)) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    req.write(JSON.stringify(data));
+    req.end();
+}
+module.exports.GetBag = GetBag;
+module.exports.online = online;
 module.exports.sendMail = sendMail;
 module.exports.BannedPlayer = BannedPlayer;
 module.exports.KickPlayer = KickPlayer;

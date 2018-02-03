@@ -152,14 +152,53 @@
           <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
               <select id="serverbox4" class="form-control" >
               </select>	
-              <input type = "text" class="form-control" id = "MailResID" placeholder="邮件资源ID"  />
+              <!-- input type = "text" class="form-control" id = "MailResID" placeholder="邮件资源ID"  / -->
               <input type = "text" class="form-control" id = "MailTitle" placeholder="邮件标题少于16个汉字"  />
               <input type = "text" class="form-control" id = "MailFrom" placeholder="邮件发送者"  />
               <input type = "text" class="form-control" id = "MailTo" placeholder="邮件接收者"  />
               <input type = "text" class="form-control" id = "MailContent" placeholder="邮件内容"  />
+              <textarea rows="5" cols="150">
+              邮件附件格式: [{"22_1":500},{"406_7":1}] ,其中 "22_1":500 表示人物属性钻石数量500,22代表钻石，1表示人物属性 ， "406_7":1表示金币包一个，406金币包道具，7表示物品
+              </textarea>
+              <input type = "text" class="form-control" id = "MailAttachments" placeholder="邮件附件"  />
+              <input type = "text" class="form-control" id = "MailEndTime" placeholder="邮件过期时间（单位小时）" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" />
              
   
-              <button type="button" class="btn btn-default" id="KickBtn" onclick="SendMail()" >发送邮件</button>							
+              <button type="button" class="btn btn-default"  onclick="SendMail()" >发送邮件</button>							
+          </div>	
+      </ul>	 
+    </div>
+
+    <div title="数据统计" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+       <ul class="nav navbar-nav">
+          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+              <select id="serverbox5" class="form-control" >
+              </select>	
+              <div>
+                <input type = "text" class="form-control" readonly id = "online" value="服务器当前在线人数："  />
+                <button type="button" class="btn btn-default"  onclick="GetOnline()" >查询</button>		
+              </div>					
+          </div>	
+      </ul>	 
+    </div>
+
+     <div title="背包查询" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+       <ul class="nav navbar-nav">
+          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+              <select id="serverbox6" class="form-control" >
+              </select>	
+              <div>
+                <input type = "text" class="form-control"  id = "GetBagActorID" placeholder="查询背包角色ID"  />
+                <button type="button" class="btn btn-default"  onclick="GetBag()" >查询</button>
+                <br></br>
+                <textarea  rows="5" cols="150">
+                    1_4:"资源ID"  2_4:"物品类型"  3_4:"物品名字" 5_4:"物品数量" 6_4:"物品品质" 10_4:"物品serverid"
+                </textarea>	
+                <br></br>	
+                <textarea  id = "GetBagRsp" rows="5" cols="150">
+                    背包内容: 
+                </textarea>		
+              </div>					
           </div>	
       </ul>	 
     </div>
@@ -169,12 +208,29 @@
   <script type="text/javascript" >
     var socket = io.connect('http://192.168.31.249:8081');
     function $my(id){return document.getElementById(id); }
+    function isJSON(str) {
+            if (typeof str == 'string') {
+                try {
+                    var obj=JSON.parse(str);
+                    if(typeof obj == 'object' && obj ){
+                        return true;
+                    }else{
+                        return false;
+                    }
+
+                } catch(e) {
+                    console.log('error：'+str+'!!!'+e);
+                    return false;
+                }
+            }
+            return false;
+    }
     $(document).ready(function(){
        //document.getElementById("serverbox3").options.add(new Option("abc","123"));
        var severlist=[ {"name":"内网服","value":"192.168.31.118","area":"2","port":"8080" },
                        {"name":"外网服","value":"120.76.235.228","area":"5012","port":"8080" },
                        {"name":"李涵锋","value":"192.168.31.249","area":"5013","port":"8080" }, ];
-       var UIlist = [ "serverbox0","serverbox1","serverbox2","serverbox3","serverbox4"];
+       var UIlist = [ "serverbox0","serverbox1","serverbox2","serverbox3","serverbox4","serverbox5","serverbox6"];
        for(var i=0; i<UIlist.length; i++)
        {
          ShowServerList(UIlist[i],severlist);
@@ -197,24 +253,66 @@
             
        }
     }
+    function GetBag()
+    {
+        var serverboxid = "serverbox6"
+        var x=document.getElementById(serverboxid).selectedIndex;
+	    var host = $my(serverboxid).value;
+        var port = $my(serverboxid)[x].getAttribute("port");
+        
+        var param = {};
+        param.uid = document.getElementById("GetBagActorID").value;
+
+        socket.emit('GetBag', host,port,param);
+    }
+    socket.on('GetBagRsp',function(content){
+        $my('GetBagRsp').value =JSON.stringify(content);
+    })
+    function GetOnline()
+    {
+        var serverboxid = "serverbox5"
+        var x=document.getElementById(serverboxid).selectedIndex;
+	    var host = $my(serverboxid).value;
+        var port = $my(serverboxid)[x].getAttribute("port");
+        
+        socket.emit('online', host,port);
+    }
+    socket.on('onlineRsp',function(content){
+        $my('online').value = content["count"];
+    })
     function SendMail()
     {
-        var x=document.getElementById("serverbox3").selectedIndex;
-	    	var host = $my("serverbox4").value;
+      
+        var x=document.getElementById("serverbox4").selectedIndex;
+	    var host = $my("serverbox4").value;
         var port = $my("serverbox4")[x].getAttribute("port");
         
         var param = {};
-        param.id = document.getElementById("MailResID").value;
+        param.id = "1";//document.getElementById("MailResID").value;
         param.title = document.getElementById("MailTitle").value;
         param.from = document.getElementById("MailFrom").value;
         param.to = document.getElementById("MailTo").value;
         param.account = "";
         param.channel = "";
+          
         param.content = document.getElementById("MailContent").value;
         param.showStart = new Date().getTime();
-        param.showEnd= new Date().getTime()+60*60;
-        param.attachments= "";
-        alert('sendMail');
+        param.showEnd= new Date().getTime()+$my('MailEndTime').value*60*60*1000;
+        var arg = document.getElementById("MailAttachments").value;
+        if(arg.length == 0)
+        {
+           param.attachments =  {};
+        }
+        else
+        {
+             if(!isJSON(arg))
+            {
+                alert("邮件参数错误");
+                 return;
+             }
+            param.attachments= JSON.parse(arg);
+        }
+        alert("sendMail")
         socket.emit('sendMail', host,port,param);
     }
     socket.on('sendMailRsp',function(content){
@@ -223,7 +321,7 @@
     function BannedPlayer()
     {
       	var x=document.getElementById("serverbox3").selectedIndex;
-	    	var host = $my("serverbox3").value;
+	    var host = $my("serverbox3").value;
         var port = $my("serverbox3")[x].getAttribute("port");
         var ActoridText = document.getElementById("KickActorid");
         var param = {};
