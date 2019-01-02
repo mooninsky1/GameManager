@@ -1,15 +1,22 @@
 var express = require('express');
+var conf = require('./js/config.js');
 var app = express();
-var  io = require('socket.io').listen(8081); 
+var  io = require('socket.io').listen(conf.GM_SERVER_PORT.socket_io_port); 
 var  fs = require('fs');
 var login = require('./js/login.js');
 var oss = require('./js/oss.js');
 var db = require('./js/db.js');
+var online = require('./js/online.js');
 
 //会打开目录html下的index.html 静态,
 app.use(express.static(__dirname + '/html'));
+app.use(express.static(__dirname+'/js'))
 
-app.listen(8082);
+app.listen(conf.GM_SERVER_PORT.app_port);
+app.get('/log', function(req, res) {
+    var num = req.params.num;
+    res.send("你获取到form/后的参数:" + num);
+    });
 
 io.sockets.on('connection', function (socket){
     socket.on('clientmsg', function (data){
@@ -59,6 +66,10 @@ io.sockets.on('connection', function (socket){
         console.log('get bag');
         oss.GetBag(socket,host,port,data);
     })
+    socket.on('FindOnline',function(zoneid){
+        console.log('FindOnline');
+        online.online(socket,zoneid);
+    })
 
 });
-console.log("http://192.168.31.249:8082")
+console.log("localhost:"+conf.GM_SERVER_PORT.app_port)

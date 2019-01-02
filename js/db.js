@@ -2,13 +2,13 @@ var mssql = require("mssql");
 var conf = require("./config.js");
 
 var restoreDefaults = function () {
-    conf;
+    conf.GM_Account_DB;
 };
 var getConnection = function(callback){//连接数据库
     if(!callback){
         callback = function(){};
     }
-    var con = new mssql.ConnectionPool(conf, function(err) {
+    var con = new mssql.ConnectionPool(conf.GM_Account_DB, function(err) {
         if (err) {
             throw err;
         }
@@ -206,7 +206,7 @@ var del = function (whereSql, params, tableName, callBack) {//删除数据
     restoreDefaults();
 };
 
-exports.config = conf;
+//exports.config = conf;
 exports.del = del;
 exports.select = select;
 exports.update = update;

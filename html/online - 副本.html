@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>实时在线统计</title>
+		<meta charset = "utf-8"/>
+	</head>
+<style type="text/css">
+
+ 
+</style>
+ <script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<body>
+	
+	<div id="chartmain" style="width:600px; height: 400px;"></div>
+	<script type="text/javascript">
+       require.config({
+        paths:{
+            echarts:'http://echarts.baidu.com/build/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/chart/bar'
+        ],
+        function (ec){
+            var mychart=ec.init(document.getElementById("chartmain"));
+            var option = {
+                tooltip: {
+                    show: true
+                },
+                legend: {
+                    data:['销量']
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        "name":"销量",
+                        "type":"bar",
+                        "data":[5, 20, 40, 10, 10, 20]
+                    }
+                ]
+            };
+            mychart.setOption(option);
+        
+        
+        }
+    )
+    </script>
+</body>
+</html>

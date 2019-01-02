@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="keywords" content="jquery,ui,easy,easyui,web">
+		<meta name="description" content="easyui help you build your web page easily!">
+		<title>实时在线统计</title>
+	</head>
+<style type="text/css">
+
+ 
+</style>
+<link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
+<script src="socket.io.js"> </script>
+<script type="text/javascript" src="client.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+
+<body>
+		<div id="tt" class="easyui-tabs" style="width:auto;height:500px;">
+	<div title="背包查询" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+		<ul class="nav navbar-nav">
+		   <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+			   <select id="serverbox0" class="form-control" >
+			   </select>	
+			   <div>
+				 <button type="button" class="btn btn-default"  onclick="find()" >查询</button>
+				 <br></br>			
+			   </div>					
+		   </div>	
+	   </ul>	 
+	 </div>
+	 </div>
+	<div id="chartmain" style="width:600px; height: 400px;"></div>
+	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"> </script-->
+	<script type="text/javascript" >
+	
+    var socket = io.connect(GM_SERVER_IP_PORT);
+	function $my(id){return document.getElementById(id); }
+	$(document).ready(function(){
+       var UIlist = [ "serverbox0"];
+       for(var i=0; i<UIlist.length; i++)
+       {
+            ShowServerList(UIlist[i],severlist);
+       }
+	})
+	function ShowServerList(UI,severlist)
+    {
+        for(var i=0; i<severlist.length; i++)
+       {
+            var op=document.createElement("option");      						// 新建OPTION (op) 
+            op.setAttribute("value",severlist[i]["value"]);                   	// 设置OPTION的 VALUE 
+            op.setAttribute("area",severlist[i]["area"]); 
+            op.setAttribute("port",severlist[i]["port"]); 
+            op.appendChild(document.createTextNode(severlist[i]["name"])); 		// 设置OPTION的 TEXT
+            for(var j=0; j<4; j++)
+            {
+                document.getElementById(UI).appendChild(op);          			 // 为SELECT 新建一 OPTION(op)
+            }
+            
+       }
+	}
+	function find(){
+        var serverboxid = "serverbox0"
+		var x=document.getElementById(serverboxid).selectedIndex;
+		
+		var host = $my(serverboxid).value;
+		
+		var port = $my(serverboxid)[x].getAttribute("port");
+		
+		var zoneid = $my(serverboxid)[x].getAttribute("area");
+		socket.emit('FindOnline', zoneid);
+	}
+	socket.on('FindOnlineRsp',function(content){
+        require(
+        [
+            'echarts',
+            'echarts/chart/line'
+        ],
+        function (ec){
+            var mychart=ec.init(document.getElementById("chartmain"));
+            mychart.clear();
+        }
+    )
+	   let myoption = {
+                tooltip: {
+                    show: true
+                },
+                legend: {
+                    data:['实时在线']
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ["a","b","c"]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        "name":"实时在线",
+                        "type":"line",
+                        "data":[5, 20, 40]
+                    }
+                ]
+			};
+		//myoption.xAxis.data.splice(0);
+		//myoption.series.data.splice(0);
+        var myx=[],myy=[];
+       
+		for(var i=0; i<content.length; i++){
+            let data = content[i];
+            let data_json= JSON.parse(data);
+            myy.push(data_json["count"]);
+            var t1 = data_json["time"];
+            var newDate = new Date();
+            newDate.setTime(t1);
+            console.log("time:"+t1);
+            var dt =newDate.toLocaleTimeString();
+            console.log("dt:"+dt);
+            //myx.push(data_json["time"]);
+            myx.push(dt);
+        }
+    
+        myoption.xAxis[0].data= myx;
+        myoption.series[0].data = myy;
+		
+		require(
+        [
+            'echarts',
+            'echarts/chart/line'
+        ],
+        function (ec){
+            var mychart=ec.init(document.getElementById("chartmain"));
+            mychart.setOption(myoption);
+        }
+    )
+    })
+    require.config({
+        paths:{
+            echarts:'http://echarts.baidu.com/build/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/chart/line'
+        ],
+        function (ec){
+            var mychart=ec.init(document.getElementById("chartmain"));
+            var option = {
+                tooltip: {
+                    show: true
+                },
+                legend: {
+                    data:['实时在线']
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        "name":"实时在线",
+                        "type":"line",
+                        "data":[5, 20, 40, 10, 10, 20]
+                    }
+                ]
+            };
+           // mychart.setOption(option);
+        
+        
+        }
+    )
+    </script>
+</body>
+</html>
