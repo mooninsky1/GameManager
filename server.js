@@ -66,9 +66,9 @@ io.sockets.on('connection', function (socket){
         console.log('get bag');
         oss.GetBag(socket,host,port,data);
     })
-    socket.on('FindOnline',function(zoneid){
+    socket.on('FindOnline',function(zoneid,t1,t2){
         console.log('FindOnline');
-        online.online(socket,zoneid);
+        online.online(socket,zoneid,t1,t2);
     })
 
 });

@@ -18,8 +18,9 @@
 <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
 <script src="socket.io.js"> </script>
 <script type="text/javascript" src="client.js"></script>
-<script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts.js"></script>
-<!--script type="text/javascript" src="echarts.js"></script-->
+<script src="laydate.js"></script>
+<!--script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts.js"></script-->
+<script type="text/javascript" src="echarts.js"></script>
 <body>
 		<div id="tt" class="easyui-tabs" style="width:auto;height:500px;">
 	<div title="背包查询" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
@@ -28,6 +29,7 @@
 			   <select id="serverbox0" class="form-control" >
 			   </select>	
 			   <div>
+                 <input type="text" class="demo-input" placeholder="请选择日期" id="date">
 				 <button type="button" class="btn btn-default"  onclick="find()" >查询</button>
 				 <br></br>			
 			   </div>					
@@ -35,7 +37,13 @@
 	   </ul>	 
 	 </div>
 	 </div>
-	<div id="chartmain" style="width:600px; height: 400px;"></div>
+    <div id="chartmain" style="width:600px; height: 400px;"></div>
+    <script>
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#date' //指定元素
+        });
+    </script>
 	<script type="text/javascript" >
 	
     var socket = io.connect(GM_SERVER_IP_PORT);
@@ -71,20 +79,27 @@
 		
 		var port = $my(serverboxid)[x].getAttribute("port");
 		
-		var zoneid = $my(serverboxid)[x].getAttribute("area");
-		socket.emit('FindOnline', zoneid);
+        var zoneid = $my(serverboxid)[x].getAttribute("area");
+        
+        var date_value = document.getElementById("date").value;
+        if(date_value != ""){
+            var date_start = new Date(date_value);
+            var date_end = new  Date(date_value+' 23:59:59:123');
+            var time1 = date_start.getTime();
+            var time2 = date_end.getTime();
+            socket.emit('FindOnline', zoneid,time1,time2);
+        }
+        else{
+            socket.emit('FindOnline', zoneid,0,0);
+        }   
+       
+		
 	}
 	socket.on('FindOnlineRsp',function(content){
-        require(
-        [
-            'echarts',
-            'echarts/chart/line'
-        ],
-        function (ec){
-            var mychart=ec.init(document.getElementById("chartmain"));
-            mychart.clear();
-        }
-    )
+        console.log("online rsp");
+        var mychart=echarts.init(document.getElementById("chartmain"));
+        mychart.clear();
+     
 	   let myoption = {
                 tooltip: {
                     show: true
@@ -109,7 +124,7 @@
                 left: '9%', //滚动条靠左侧的百分比
                 bottom: -5,
                 start: 0,//滚动条的起始位置
-                end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+                end: 100 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
             }],
 
 
@@ -134,11 +149,11 @@
        
 		for(var i=0; i<content.length; i++){
             let data = content[i];
-            let data_json= JSON.parse(data);
+            let data_json= data;//JSON.parse(data); 后台已经解析过了
             myy.push(data_json["count"]);
             var t1 = data_json["time"];
             var newDate = new Date();
-            newDate.setTime(t1);
+            newDate.setTime(t1-8*60*60*1000);
             console.log("time:"+t1);
             var dt =newDate.toLocaleTimeString();
             console.log("dt:"+dt);
@@ -148,73 +163,10 @@
     
         myoption.xAxis[0].data= myx;
         myoption.series[0].data = myy;
-		
-		require(
-        [
-            'echarts',
-            'echarts/chart/line'
-        ],
-        function (ec){
-            var mychart=ec.init(document.getElementById("chartmain"));
-            mychart.setOption(myoption);
-        }
-    )
+        mychart.setOption(myoption);
+        
+    
     })
-    require.config({
-        paths:{
-            echarts:'http://echarts.baidu.com/build/dist'
-            //echarts:'../js/'
-        }
-    });
-    require(
-        [
-            'echarts',
-            'echarts/chart/line'
-        ],
-        function (ec){
-            var mychart=ec.init(document.getElementById("chartmain"));
-            var option = {
-                tooltip: {
-                    show: true
-                },
-                legend: {
-                    data:['实时在线']
-                },
-                xAxis : [
-                    {
-                        type : 'category',
-                        data : ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-                    }
-                ],
-                dataZoom: [{
-      type: 'slider',
-      show: true,
-      xAxisIndex: [0],
-      left: '9%',
-      bottom: -5,
-      start: 10,
-      end: 90 //初始化滚动条
-  }],
-                yAxis : [
-                    {
-                        type : 'value'
-                    }
-                ],
-                series : [
-                    {
-                        "name":"实时在线",
-                        "type":"line",
-                        "data":[5, 20, 40, 10, 10, 20]
-                    }
-                ],
-  
-
-            };
-           // mychart.setOption(option);
-        
-        
-        }
-    )
     </script>
 </body>
 </html>

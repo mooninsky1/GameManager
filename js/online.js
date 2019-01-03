@@ -8,23 +8,35 @@ db.on("error", function (error) {
     console.log(error);
 });
 
-db.on('connect', function(){
+db.on('connect', function () {
     console.log('Redis连接成功.');
 });
 
 
-function online(socket,zoneid){
-    var tem = db.lrange("online"+zoneid,0,-1,function (err, res) {
+function online(socket, zoneid, timestart, timeend) {
+    var tem = db.lrange("online" + zoneid, 0, -1, function (err, res) {
         if (err) {
             console.log("err:" + err);
         }
         else {
-            socket.emit("FindOnlineRsp",(res)) 
-           // if (res != "") {
-            //    socket.emit("FindOnlineRsp",(res)) 
-            //}
+
+            if (res != "") {
+                var dataArry = [];
+                for (var i = 0; i < res.length; i++) {
+                    let data_json = JSON.parse(res[i]);
+                    var t1 = data_json["time"];
+                    if ( (t1 >= timestart && t1 <= timeend) || timestart==0) {
+                        dataArry.push(data_json)
+                    }
+                }
+                socket.emit("FindOnlineRsp", dataArry)
+
+            }
+            else {
+                socket.emit("FindOnlineRsp", "");
+            }
         }
-        });
+    });
 }
 
 module.exports.online = online;
