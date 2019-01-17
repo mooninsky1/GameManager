@@ -4,6 +4,7 @@ var conf = require('./config.js')
 //创建redis客户端
 var db = redis.createClient(conf.GM_LOGSERVER_DB.port, conf.GM_LOGSERVER_DB.server);
 //连接错误处理
+db.auth(conf.GM_LOGSERVER_DB.password);
 db.on("error", function (error) {
     console.log(error);
 });
