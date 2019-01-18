@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="jquery,ui,easy,easyui,web">
+<meta name="description" content="easyui help you build your web page easily!">
+
+<title>实时公告</title>
+<link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="echarts.js"></script>
+<script type="text/javascript" src="client.js"></script>
+<script src="socket.io.js"> </script>
+</head>
+
+<body>
+  
+<div id="tt" class="easyui-tabs" style="width:auto;height:500px;">
+    <div title="发送公告" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+       <ul class="nav navbar-nav">
+          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+              <select id="serverbox4" class="form-control" >
+              </select>	
+        
+              <input type = "text" class="form-control" id = "NoticeContent" placeholder="公告内容少于40个汉字"  />
+              <button type="button" class="btn btn-default"  onclick="SendNotice()" >发送公告</button>							
+          </div>	
+      </ul>	 
+    </div>
+
+</div>
+    <script type="text/javascript" >
+    var socket = io.connect(GM_SERVER_IP_PORT);
+    function $my(id){return document.getElementById(id); }
+    function isJSON(str) {
+            if (typeof str == 'string') {
+                try {
+                    var obj=JSON.parse(str);
+                    if(typeof obj == 'object' && obj ){
+                        return true;
+                    }else{
+                        return false;
+                    }
+
+                } catch(e) {
+                    console.log('error：'+str+'!!!'+e);
+                    return false;
+                }
+            }
+            return false;
+    }
+    $(document).ready(function(){
+       //document.getElementById("serverbox3").options.add(new Option("abc","123"));
+       var UIlist = [ "serverbox4"];
+       for(var i=0; i<UIlist.length; i++)
+       {
+         ShowServerList(UIlist[i],severlist);
+       }
+       
+    })
+    function ShowServerList(UI,severlist)
+    {
+        for(var i=0; i<severlist.length; i++)
+       {
+            var op=document.createElement("option");                          // 新建OPTION (op) 
+            op.setAttribute("value",severlist[i]["value"]);                   // 设置OPTION的 VALUE 
+            op.setAttribute("area",severlist[i]["area"]); 
+            op.setAttribute("port",severlist[i]["port"]); 
+            op.appendChild(document.createTextNode(severlist[i]["name"]));   // 设置OPTION的 TEXT
+            for(var j=0; j<4; j++)
+            {
+                document.getElementById(UI).appendChild(op);                 // 为SELECT 新建一 OPTION(op)
+            }
+       }
+    }
+   
+    
+    function SendNotice()
+    {
+        var x=document.getElementById("serverbox4").selectedIndex;
+	    var host = $my("serverbox4").value;
+        var port = $my("serverbox4")[x].getAttribute("port");
+        var param = {}; 
+        param.content = document.getElementById("NoticeContent").value;
+        alert("sendNotice")
+        socket.emit('sendNotice', host,port,param);
+    }
+    socket.on('sendNoticeRsp',function(content){
+      alert(content);
+    })
+   
+
+    </script>
+</body>

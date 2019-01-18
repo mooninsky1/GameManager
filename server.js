@@ -139,6 +139,13 @@ io.sockets.on('connection', function (socket){
         console.log('FindOnline');
         online.online(socket,zoneid,t1,t2);
     })
-
+    socket.on('sendNotice',function(host,port,data){
+        console.log('sendNotice');
+        oss.sendNotice(socket,host,port,data);
+    })
+       socket.on('sendMailonTime',function(host,port,data,time){
+        console.log('sendMailonTime');
+        oss.sendMailonTime(socket,host,port,data,time);
+    })
 });
 console.log("localhost:"+conf.GM_SERVER_PORT.app_port)

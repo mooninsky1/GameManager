@@ -234,6 +234,34 @@ function GetBag(socket,host,port,data){
     req.write(JSON.stringify(data));
     req.end();
 }
+function sendNotice(socket,host,port,data)
+{
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/sendNotice?"
+    var req = http.request(Playeroptions, function (res) {  
+        console.log('STATUS: ' + res.statusCode);  
+        console.log('HEADERS: ' + JSON.stringify(res.headers));  
+        res.setEncoding('utf8');  
+        res.on('data', function (chunk) {  
+            console.log('BODY: ' + chunk);  
+           socket.emit("sendNoticeRsp",chunk) 
+        });  
+    });  
+    req.on('error', function (e) {  
+        console.log('problem with request: ' + e.message);  
+        });  
+    req.write(JSON.stringify(data));
+    req.end();
+}
+function sendMailonTime(socket,host,port,data,time)
+{
+
+    setTimeout(() => {
+        sendMail(socket,host,port,data)
+    }, time);
+    socket.emit("sendMailonTimeRsp","定时邮件发送成功")
+}
 module.exports.GetBag = GetBag;
 module.exports.online = online;
 module.exports.sendMail = sendMail;
@@ -243,3 +271,5 @@ module.exports.searchPlayer = searchPlayer;
 module.exports.queryPlayer = queryPlayer;
 module.exports.updatePlayer = updatePlayer;
 module.exports.searchAccount = searchAccount;
+module.exports.sendNotice = sendNotice;
+module.exports.sendMailonTime = sendMailonTime;
