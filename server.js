@@ -24,6 +24,15 @@ app.get('/Images/echarts.js', function (req, res) {
     var num = req.params.num;
     res.download(__dirname+"/Images/echarts.js");
 });
+app.post('/mail?' ,function(req ,res){
+    req.on('data',function(data){
+        console.log('mail http post '+decodeURIComponent(data) );
+    })
+    req.on('end',function(){
+        console.log('mail http post end')
+    })
+    res.end();
+})
 
  //   然后，创建说明应该在哪里以及如何保存文件/图像的storage。
  /*
