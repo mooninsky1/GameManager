@@ -8,7 +8,7 @@ var  fs = require('fs');
 var login = require('./js/login.js');
 var oss = require('./js/oss.js');
 var db = require('./js/db.js');
-var online = require('./js/online.js');
+//var online = require('./js/online.js');
 
 //会打开目录html下的index.html 静态,
 app.use(express.static(__dirname + '/html'));
@@ -144,10 +144,10 @@ io.sockets.on('connection', function (socket){
         console.log('get bag');
         oss.GetBag(socket,host,port,data);
     })
-    socket.on('FindOnline',function(zoneid,t1,t2){
-        console.log('FindOnline');
-        online.online(socket,zoneid,t1,t2);
-    })
+    //socket.on('FindOnline',function(zoneid,t1,t2){
+     //   console.log('FindOnline');
+    //    online.online(socket,zoneid,t1,t2);
+    //})
     socket.on('sendNotice',function(host,port,data){
         console.log('sendNotice');
         oss.sendNotice(socket,host,port,data);

@@ -2,9 +2,9 @@
 var GM_Account_DB = {
     user: 'sa',
     password: '123456',
-    server: '192.168.31.118',
+    server: '192.168.1.128',
     database: 'nodetest',
-    port: 1029,
+    port: 1433,
     options: {
     encrypt: true // Use this if you're on Windows Azure
     },
