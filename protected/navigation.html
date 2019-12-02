@@ -46,9 +46,9 @@
               <th>名字</th>
               <th>UUID</th>
               <th>等级</th>	
-              <th>金币</th>		
-              <th>钻石</th>
-              <th>星尘</th>
+              <th>灵石</th>	
+						  <th>仙玉</th>
+						  <th>炼体</th>
               <th>状态</th>
             </tr>
 				  </thead>
@@ -95,9 +95,9 @@
 					  <th>名字</th>
 						<th>UUID</th>
 						<th>等级</th>		
-            <th>金币</th>	
-						<th>钻石</th>
-						<th>星尘</th>
+            <th>灵石</th>	
+						<th>仙玉</th>
+						<th>炼体</th>
 						<th>状态</th>
 					</tr>
 				</thead>
@@ -126,9 +126,9 @@
                 </select>	
                 <input type = "text" class="form-control" id = "Actorid" placeholder="角色ID"  style="display:inline;" />
                 <select id="PropBox" class="form-control"  style="display:inline;" >
-                <option value="21">设置金币</option>
-                <option value="36">设置经验</option>
-                <option value="22">设置钻石</option>
+                <option value="10">设置灵石</option>
+                <option value="9">设置经验</option>
+                <option value="11">设置仙玉</option>
                 </select>
                 <input type = "text" class="form-control" id = "param1" placeholder="修改值"  style="display:inline;" />
                 <button type="button" class="btn btn-default" id="ModifyBtn" onclick="UpdatePlayer()" >修改</button>							
@@ -210,7 +210,7 @@
            <div class="form-group" style="padding: 10px 10px 0px; display:inline;">	
                <div>
                  <button type="button" class="btn btn-default"  onclick="window.open('online.1.html')" >实时在线</button>
-                 <button type="button" class="btn btn-default"  onclick="window.open('http://120.76.235.228:8082/')" >公告上传</button>
+                 <button type="button" class="btn btn-default"  onclick="window.open('http://192.168.1.128:7656/')" >公告上传</button>
                  <button type="button" class="btn btn-default"  onclick="window.open('mail.html')" >定时发放邮件</button>
                  <button type="button" class="btn btn-default"  onclick="window.open('notice.html')" >实时公告</button>
                  <button type="button" class="btn btn-default"  onclick="window.open('mail_post.html')" >使用http post 定时发放邮件</button>
@@ -393,9 +393,9 @@
             cellname.innerHTML=message.data[i]["3_1"];
             celluuid.innerHTML=message.data[i]["2_1"];
             celllevel.innerHTML=message.data[i]["6_1"];
-            cellgold.innerHTML=message.data[i]["21_1"];
-            celldiamond.innerHTML=message.data[i]["22_1"];
-            cellstar.innerHTML=message.data[i]["26_1"];
+            cellgold.innerHTML=message.data[i]["10_1"];
+            celldiamond.innerHTML=message.data[i]["11_1"];
+            cellstar.innerHTML=message.data[i]["12_1"];
             cellonline.innerHTML=message.data[i]["999_1"];
         }
     }
@@ -439,9 +439,9 @@
             cellname.innerHTML=message.data[i]["3_1"];
             celluuid.innerHTML=message.data[i]["2_1"];
             celllevel.innerHTML=message.data[i]["6_1"];
-            cellgold.innerHTML=message.data[i]["21_1"];
-            celldiamond.innerHTML=message.data[i]["22_1"];
-            cellstar.innerHTML=message.data[i]["26_1"];
+            cellgold.innerHTML=message.data[i]["10_1"];
+            celldiamond.innerHTML=message.data[i]["11_1"];
+            cellstar.innerHTML=message.data[i]["12_1"];
             cellonline.innerHTML=message.data[i]["999_1"];
         }
     }

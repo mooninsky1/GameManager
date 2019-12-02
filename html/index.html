@@ -39,15 +39,17 @@
             });
             socket.on('loginRsp',function(content)
             {
-               if(content == -1)
+               if(content.code == -1)
                {
                    alert("用户名或者密码出错")
                }
-               if (content == 0)
+               if (content.code == 0)
                {
                    
-                   // self.location='navigation.html';
-                   self.location='test.html';
+                   self.location='navigation.html?token='+content.token;
+                     //self.location='navigation.html';
+                  // self.location='test.html';
+                
                }
             })
 

@@ -1,4 +1,6 @@
 var express = require('express');
+const expressJwt = require('express-jwt')
+const jwt = require('jsonwebtoken')
 const myfs=require("fs");//文件的输入输出
 var multer = require('multer');//Multer是一个用于处理multipart / form-data的node.js中间件，主要用于上传文件。它构建在busboy基础上以提高效率。点击 这里 阅读更多关于multer包。
 var conf = require('./js/config.js');
@@ -8,14 +10,63 @@ var  fs = require('fs');
 var login = require('./js/login.js');
 var oss = require('./js/oss.js');
 var db = require('./js/db.js');
+var url = require('url');
+var querystring = require("querystring");
 //var online = require('./js/online.js');
-
+//权限校验
+function pathcheck(req,res,next)
+{
+    if(req.path == '/navigation.html')
+    {
+        var parseObj = url.parse(req.url);
+        var params = querystring.parse(parseObj.query);
+        console.log(params.token);
+        console.log("path check");
+        
+        jwt.verify(params.token,'my_token',function(err,decode)
+        {
+            if(err)
+            {
+                console.log('decode error')
+            }
+            else
+            {
+                console.log("decode ok");
+                res.writeHead(200,{'Content-Type':'text/html'})
+                fs.readFile('./protected/navigation.html','utf-8',function(err,data){
+                if(err)
+                {
+                     throw err ;
+                }
+                res.end(data);
+                });
+            }
+        })
+        return;
+    
+    }
+    res.end();
+}
 //会打开目录html下的index.html 静态,
 app.use(express.static(__dirname + '/html'));
+// '/protected' 路径不能静态访问，需要检验
+//app.use(express.static(__dirname + '/protected'));
+//app.use(express.static(__dirname + '/protected'));
+//app.use( '/protected',pathcheck);
+//app.use( '/protected');
 app.use(express.static(__dirname+'/js'))
 app.use(express.static(__dirname+'/Images'))
-
+//app.use ： 用来给path注册中间函数的。这个path默认是“/”，也就是处理任何请求，同时注意的是他会处理path下的子路径
+app.use(pathcheck)
+app.use(expressJwt({
+    secret: 'secret12345'  // 签名的密钥 或 PublicKey
+  }).unless({
+    path: ['/']  // 指定路径不经过 Token 解析
+  }))
 app.listen(conf.GM_SERVER_PORT.app_port);
+//这个路径需要权限校验
+//app.get("/protected", pathcheck)
+
 app.get('/log', function(req, res) {
     var num = req.params.num;
     res.send("你获取到form/后的参数:" + num);

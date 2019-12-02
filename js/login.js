@@ -1,4 +1,5 @@
 var db = require('./db.js');
+const jwt = require('jsonwebtoken')
 function login(socket,user,password)
 {
     console.log(user+password);
@@ -7,7 +8,7 @@ function login(socket,user,password)
         if(err)
         {
             console.log("db err");
-            socket.emit("loginRsp",-1);
+            socket.emit("loginRsp",{code:-1,token:""});
         }
         else{
             if(result.recordset.length == 1)
@@ -15,12 +16,16 @@ function login(socket,user,password)
                 if(result.recordset[0].passwd == password)
                 {
                     console.log("login ok");
-                    socket.emit("loginRsp",0)
+                    const mytoken = jwt.sign({
+                        name: user,
+                        _id: password
+                    }, 'my_token', { expiresIn: '2h' });
+                    socket.emit("loginRsp",{code:0,token:mytoken})
                     return 0;
                 }
             }
             console.log("login failed");
-            socket.emit("loginRsp",-1);
+            socket.emit("loginRsp",{code:-1,token:"aaa"});
         }
     });
 }
