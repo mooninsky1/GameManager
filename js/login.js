@@ -20,7 +20,7 @@ function login(socket,user,password)
                         name: user,
                         _id: password
                     }, 'my_token', { expiresIn: '2h' });
-                    socket.emit("loginRsp",{code:0,token:mytoken})
+                    socket.emit("loginRsp",{code:0,token:mytoken,loginuser:user})
                     return 0;
                 }
             }

@@ -12,6 +12,9 @@ var oss = require('./js/oss.js');
 var db = require('./js/db.js');
 var url = require('url');
 var querystring = require("querystring");
+
+//登录账号
+var hashLoginUser = new Array();
 //var online = require('./js/online.js');
 //权限校验
 function pathcheck(req,res,next)
@@ -146,7 +149,22 @@ app.post("/uploadfile.do",function(req,res){
             throw err;//抛出错误
         }
     })});　
-    
+function write_log(loginuser,opt,data)
+{
+    var newDate = new Date();
+    var sql = "insert INTO gm ([user], [opt],[log], [logtime]) VALUES('"+loginuser + "','"+opt + "','"+data + "','"+newDate.toLocaleString()+"' )";
+    console.log(sql);
+    db.querySql(sql, "",function (err, result) {//查询所有users表的数据
+        if(err)
+        {
+            console.log("log db err");
+        }
+        else
+        {
+            console.log("log db OK");
+        }
+    });
+}
 io.sockets.on('connection', function (socket){
     socket.on('clientmsg', function (data){
       console.log(data);
@@ -155,6 +173,8 @@ io.sockets.on('connection', function (socket){
     socket.on('login',function(data){
         console.log("recve login event");
         login(socket,data.user,data.password);
+        hashLoginUser[socket.id] = data.user;
+        console.log("socket id:"+socket.id+hashLoginUser[socket.id]);
     });
     socket.on('searchPlayer',function(host,port,data)
     {
@@ -174,6 +194,7 @@ io.sockets.on('connection', function (socket){
     socket.on('updatePlayer',function(host,port,data)
     {
         oss.updatePlayer(socket,host,port,data);
+        write_log(data.loginuser,'updatePlayer',JSON.stringify(data));
     });
     socket.on('KickPlayer',function(host,port,data)
     {
@@ -184,8 +205,9 @@ io.sockets.on('connection', function (socket){
         oss.BannedPlayer(socket,host,port,data);
     })
     socket.on('sendMail',function(host,port,data){
-        console.log('sendMail');
+        console.log('sendMail:');
         oss.sendMail(socket,host,port,data);
+        write_log(data.loginuser,'sendMail',JSON.stringify(data));
     })
     socket.on('online',function(host,port){
         console.log('online');

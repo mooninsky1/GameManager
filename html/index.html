@@ -34,6 +34,9 @@
 <script src="client.js"> </script>
          <script type="text/javascript">
             var socket = io.connect(GM_SERVER_IP_PORT);
+            function setCookie(key, value, dateTime) {
+                 document.cookie = key + "=" + escape(value);//不设置过期时间，退出浏览器的时候清除cookie
+            }
             socket.on('error',function(){
                 alert("socket err")
             });
@@ -49,6 +52,8 @@
                    self.location='navigation.html?token='+content.token;
                      //self.location='navigation.html';
                   // self.location='test.html';
+                  setCookie('mytoken',content.token);
+                  setCookie('loginuser',content.loginuser);
                 
                }
             })

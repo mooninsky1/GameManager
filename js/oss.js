@@ -1,4 +1,5 @@
 var db = require('./gamedb.js');
+var logdb = require('./db.js');
 var request = require('request');
 var http = require('http');  
 
