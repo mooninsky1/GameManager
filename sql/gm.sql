@@ -21,12 +21,13 @@ Date: 2019-12-03 10:44:25
 DROP TABLE [dbo].[gm]
 GO
 CREATE TABLE [dbo].[gm] (
+[id] int NOT NULL IDENTITY(1,1) ,
 [user] varchar(32) NULL ,
 [log] varchar(8000) NULL ,
 [logtime] varchar(100) NULL ,
 [opt] varchar(100) NULL 
 )
-
+ALTER TABLE [dbo].[gm] ADD PRIMARY KEY ([id])
 
 GO
 

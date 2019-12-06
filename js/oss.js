@@ -213,7 +213,7 @@ function online(socket,host,port)
         console.log('problem with request: ' + e.message);  
         });  
     var data = {     };//这是需要提交的数据 
-     req.write(JSON.stringify(data));
+    req.write(JSON.stringify(data));
     req.end();
 }
 function GetBag(socket,host,port,data){
@@ -246,7 +246,7 @@ function sendNotice(socket,host,port,data)
         res.setEncoding('utf8');  
         res.on('data', function (chunk) {  
             console.log('BODY: ' + chunk);  
-           socket.emit("sendNoticeRsp",chunk) 
+            socket.emit("sendNoticeRsp",chunk) 
         });  
     });  
     req.on('error', function (e) {  

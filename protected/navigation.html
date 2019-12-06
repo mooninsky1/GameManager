@@ -45,11 +45,15 @@
               <th>密码</th>
               <th>名字</th>
               <th>UUID</th>
-              <th>等级</th>	
+              <th>境界等级</th>	
+              <th>肉身等级</th>	
+              <th>仙玉</th>
               <th>灵石</th>	
-						  <th>仙玉</th>
-						  <th>炼体</th>
-              <th>状态</th>
+              <th>灵药</th>	
+              <th>灵木</th>	
+              <th>精铁</th>
+              <th>帮贡</th>
+						  <th>状态</th>
             </tr>
 				  </thead>
 				  <tbody>
@@ -58,7 +62,11 @@
 						<td>password</td>
 						<td>又见一只奶酪君</td>
 						<td>5553546</td>
-						<td>30</td>
+            <td>30</td>
+            <td>30</td>
+            <td>30</td>
+            <td>30</td>
+            <td>30</td>
 						<td>535461</td>
 						<td>462161561</td>
 						<td>100506</td>
@@ -94,21 +102,29 @@
 					<tr>
 					  <th>名字</th>
 						<th>UUID</th>
-						<th>等级</th>		
+            <th>境界等级</th>	
+            <th>肉身等级</th>	
+            <th>仙玉</th>
             <th>灵石</th>	
-						<th>仙玉</th>
-						<th>炼体</th>
+            <th>灵药</th>	
+            <th>灵木</th>	
+            <th>精铁</th>
+            <th>帮贡</th>
 						<th>状态</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" >
 						<td>又见一只奶酪君</td>
-						<td>5553546</td>
-						<td>30</td>
-						<td>535461</td>
-						<td>462161561</td>
-						<td>100506</td>
+						<td>0</td>
+            <td>0</td>
+            <td>0</td>
+						<td>0</td>
+						<td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
 						<td>不在线</td>
 					</tr>
 					
@@ -194,7 +210,7 @@
                 <button type="button" class="btn btn-default"  onclick="GetBag()" >查询</button>
                 <br></br>
                 <textarea  rows="5" cols="150">
-                    1_4:"资源ID"  2_4:"物品类型"  3_4:"物品名字" 5_4:"物品数量" 6_4:"物品品质" 10_4:"物品serverid"
+                   2_4:"资源ID"  3_4:"物品类型" 4_4:"物品名称" 6_4:"物品数量" 7_4:"物品品质" 11_4:"物品serverid"
                 </textarea>	
                 <br></br>	
                 <textarea  id = "GetBagRsp" rows="5" cols="150">
@@ -205,15 +221,54 @@
       </ul>	 
     </div>
 
+    <div title="日志" data-options="closable:true" style="overflow:auto;padding:20px;">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <form class="navbar-form navbar-left" role="search" >
+            <div class="form-group">
+              <input type="text" class="demo-input" placeholder="开始日期" id="date_begin">
+              <input type="text" class="demo-input" placeholder="结束日期" id="date_end">
+            </div> 
+            <button type="button" class="btn btn-default" id="QueryLogBtn" onclick="QueryLog()" >查找</button>
+          </form> 
+      </div>
+      
+    <div class="row clearfix">
+    <div class="col-md-12 column">
+    <table class="table" id="myTableLog">
+      <thead>
+        <tr>
+          <th>编号</th>
+          <th>日志类型</th>
+          <th>操作账号</th>	
+          <th>操作内容</th>	
+          <th>时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" >
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  </div>
+
     <div title="其他" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
         <ul class="nav navbar-nav">
            <div class="form-group" style="padding: 10px 10px 0px; display:inline;">	
                <div>
-                 <button type="button" class="btn btn-default"  onclick="window.open('online.1.html')" >实时在线</button>
+                 <!--button type="button" class="btn btn-default"  onclick="window.open('online.1.html')" >实时在线</button-->
                  <button type="button" class="btn btn-default"  onclick="window.open('http://192.168.1.128:7656/')" >公告上传</button>
                  <button type="button" class="btn btn-default"  onclick="window.open('mail.html')" >定时发放邮件</button>
                  <button type="button" class="btn btn-default"  onclick="window.open('notice.html')" >实时公告</button>
-                 <button type="button" class="btn btn-default"  onclick="window.open('mail_post.html')" >使用http post 定时发放邮件</button>
+                 <!--button type="button" class="btn btn-default"  onclick="window.open('mail_post.html')" >使用http post 定时发放邮件</button-->
                </div>					
            </div>	
        </ul>	 
@@ -281,11 +336,25 @@
             
        }
     }
+    function QueryLog(){
+        var date_value = document.getElementById("date_begin").value;
+        var date_value2 = document.getElementById("date_end").value;
+        if(date_value != ""){
+            var date_start = new Date(date_value);
+            var date_end = new  Date(date_value2);
+            var time1 = date_start.getTime();
+            var time2 = date_end.getTime();
+            socket.emit('QueryLog', zoneid,time1,time2);
+        } 
+    }
+    socket.on('QueryLogRsp',function(content){
+        alert('QueryLogRsp');
+    })
     function GetBag()
     {
         var serverboxid = "serverbox6"
         var x=document.getElementById(serverboxid).selectedIndex;
-	    var host = $my(serverboxid).value;
+	      var host = $my(serverboxid).value;
         var port = $my(serverboxid)[x].getAttribute("port");
         
         var param = {};
@@ -294,13 +363,24 @@
         socket.emit('GetBag', host,port,param);
     }
     socket.on('GetBagRsp',function(content){
-        $my('GetBagRsp').value =JSON.stringify(content);
+        alert(content["900002_3"].length);
+        var txt="";
+        for(var i=0; i<content["900002_3"].length; i++)
+        {
+          txt += JSON.stringify(content["900002_3"][i]["4_4"]["4_4"]);
+          txt +="*";
+          txt +=JSON.stringify(content["900002_3"][i]["4_4"]["6_4"]);
+          txt += "\r\n"
+        }
+        alert(txt);
+        //$my('GetBagRsp').value =JSON.stringify(content);
+        $my('GetBagRsp').value =txt;
     })
     function GetOnline()
     {
         var serverboxid = "serverbox5"
         var x=document.getElementById(serverboxid).selectedIndex;
-	    var host = $my(serverboxid).value;
+	      var host = $my(serverboxid).value;
         var port = $my(serverboxid)[x].getAttribute("port");
         
         socket.emit('online', host,port);
@@ -312,7 +392,7 @@
     {
       
         var x=document.getElementById("serverbox4").selectedIndex;
-	    var host = $my("serverbox4").value;
+	      var host = $my("serverbox4").value;
         var port = $my("serverbox4")[x].getAttribute("port");
         
         var param = {};
@@ -351,24 +431,26 @@
     function BannedPlayer()
     {
       	var x=document.getElementById("serverbox3").selectedIndex;
-	    var host = $my("serverbox3").value;
+	      var host = $my("serverbox3").value;
         var port = $my("serverbox3")[x].getAttribute("port");
         var ActoridText = document.getElementById("KickActorid");
         var param = {};
         param.uid = ActoridText.value;
         param.time = document.getElementById("Kickparam1").value;
         param.mode = "";
+        param.loginuser = getCookieArray('loginuser');
         socket.emit('BannedPlayer', host,port,param);
     }
     function KickPlayer()
     {
        	var x=document.getElementById("serverbox3").selectedIndex;
         alert(document.getElementById("serverbox3"));
-	    var host = $my("serverbox3").value;
+	      var host = $my("serverbox3").value;
         var port = $my("serverbox3")[x].getAttribute("port");
         var ActoridText = document.getElementById("KickActorid");
         var updataparam = {};
         updataparam.uid = ActoridText.value;
+        updataparam.loginuser = getCookieArray('loginuser');
         socket.emit('KickPlayer', host,port,updataparam);
     }
     function UpdatePlayer(mousedown)
@@ -401,19 +483,27 @@
             var cellname=row.insertCell(col++);
             var celluuid=row.insertCell(col++);
             var celllevel = row.insertCell(col++);
-            var cellgold = row.insertCell(col++);
+            var celllevel1 = row.insertCell(col++);
             var celldiamond = row.insertCell(col++);
-            var cellstar = row.insertCell(col++);
+            var cellgold = row.insertCell(col++);
+            var celllingyao = row.insertCell(col++);
+            var celllingmu = row.insertCell(col++);
+            var celljingtie = row.insertCell(col++);
+            var cellmenggong = row.insertCell(col++);
             var cellonline = row.insertCell(col++);
 
             cellaccount.innerHTML=message.data[i]["996_1"];
             cellpassword.innerHTML=message.data[i]["0_1"];
             cellname.innerHTML=message.data[i]["3_1"];
             celluuid.innerHTML=message.data[i]["2_1"];
-            celllevel.innerHTML=message.data[i]["6_1"];
+            celllevel.innerHTML=message.data[i]["8_1"];
+            celllevel1.innerHTML=message.data[i]["12_1"];
             cellgold.innerHTML=message.data[i]["10_1"];
             celldiamond.innerHTML=message.data[i]["11_1"];
-            cellstar.innerHTML=message.data[i]["12_1"];
+            celllingyao.innerHTML=message.data[i]["20_1"];
+            celllingmu.innerHTML=message.data[i]["18_1"];
+            celljingtie.innerHTML=message.data[i]["19_1"];
+            cellmenggong.innerHTML=message.data[i]["44_1"];
             cellonline.innerHTML=message.data[i]["999_1"];
         }
     }
@@ -449,17 +539,26 @@
             var cellname=row.insertCell(col++);
             var celluuid=row.insertCell(col++);
             var celllevel = row.insertCell(col++);
-            var cellgold = row.insertCell(col++);
+            var celllevel1 = row.insertCell(col++);
             var celldiamond = row.insertCell(col++);
-            var cellstar = row.insertCell(col++);
+            var cellgold = row.insertCell(col++);
+            var celllingyao = row.insertCell(col++);
+            var celllingmu = row.insertCell(col++);
+            var celljingtie = row.insertCell(col++);
+            var cellmenggong = row.insertCell(col++);
             var cellonline = row.insertCell(col++);
+
 
             cellname.innerHTML=message.data[i]["3_1"];
             celluuid.innerHTML=message.data[i]["2_1"];
-            celllevel.innerHTML=message.data[i]["6_1"];
+            celllevel.innerHTML=message.data[i]["8_1"];
+            celllevel1.innerHTML=message.data[i]["12_1"];
             cellgold.innerHTML=message.data[i]["10_1"];
             celldiamond.innerHTML=message.data[i]["11_1"];
-            cellstar.innerHTML=message.data[i]["12_1"];
+            celllingyao.innerHTML=message.data[i]["20_1"];
+            celllingmu.innerHTML=message.data[i]["18_1"];
+            celljingtie.innerHTML=message.data[i]["19_1"];
+            cellmenggong.innerHTML=message.data[i]["44_1"];
             cellonline.innerHTML=message.data[i]["999_1"];
         }
     }

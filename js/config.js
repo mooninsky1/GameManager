@@ -34,7 +34,7 @@ var GM_SERVER_DB = {
 //log日志数据库
 var GM_LOGSERVER_DB = {
     port : 6379,
-    server: '120.76.235.228',
+    server: '127.0.0.1',
     password:'lhf123456'
 };
 //GM服务器监听端口

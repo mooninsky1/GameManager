@@ -15,7 +15,7 @@ var querystring = require("querystring");
 
 //登录账号
 var hashLoginUser = new Array();
-//var online = require('./js/online.js');
+var online = require('./js/online.js');
 //权限校验
 function pathcheck(req,res,next)
 {
@@ -151,6 +151,8 @@ app.post("/uploadfile.do",function(req,res){
     })});　
 function write_log(loginuser,opt,data)
 {
+    //var keyToDelete = "loginuser";
+    //delete data.keyToDelete;
     var newDate = new Date();
     var sql = "insert INTO gm ([user], [opt],[log], [logtime]) VALUES('"+loginuser + "','"+opt + "','"+data + "','"+newDate.toLocaleString()+"' )";
     console.log(sql);
@@ -194,20 +196,30 @@ io.sockets.on('connection', function (socket){
     socket.on('updatePlayer',function(host,port,data)
     {
         oss.updatePlayer(socket,host,port,data);
-        write_log(data.loginuser,'updatePlayer',JSON.stringify(data));
+        loginuser = data.loginuser;
+        delete data.loginuser;
+        write_log(loginuser,'修改属性',JSON.stringify(data));
     });
     socket.on('KickPlayer',function(host,port,data)
     {
         console.log('KickPlayer')
         oss.KickPlayer(socket,host,port,data);
+        loginuser = data.loginuser;
+        delete data.loginuser;
+        write_log(loginuser,'踢人',JSON.stringify(data));
     })
     socket.on('BannedPlayer',function(host,port,data){
         oss.BannedPlayer(socket,host,port,data);
+        loginuser = data.loginuser;
+        delete data.loginuser;
+        write_log(loginuser,'封号',JSON.stringify(data));
     })
     socket.on('sendMail',function(host,port,data){
         console.log('sendMail:');
         oss.sendMail(socket,host,port,data);
-        write_log(data.loginuser,'sendMail',JSON.stringify(data));
+        loginuser = data.loginuser;
+        delete data.loginuser;
+        write_log(loginuser,'发送邮件',JSON.stringify(data));
     })
     socket.on('online',function(host,port){
         console.log('online');
@@ -217,10 +229,10 @@ io.sockets.on('connection', function (socket){
         console.log('get bag');
         oss.GetBag(socket,host,port,data);
     })
-    //socket.on('FindOnline',function(zoneid,t1,t2){
-     //   console.log('FindOnline');
-    //    online.online(socket,zoneid,t1,t2);
-    //})
+    socket.on('FindOnline',function(zoneid,t1,t2){
+        console.log('FindOnline');
+        online.online(socket,zoneid,t1,t2);
+    })
     socket.on('sendNotice',function(host,port,data){
         console.log('sendNotice');
         oss.sendNotice(socket,host,port,data);
