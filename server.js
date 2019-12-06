@@ -154,7 +154,7 @@ function write_log(loginuser,opt,data)
     //var keyToDelete = "loginuser";
     //delete data.keyToDelete;
     var newDate = new Date();
-    var sql = "insert INTO gm ([user], [opt],[log], [logtime]) VALUES('"+loginuser + "','"+opt + "','"+data + "','"+newDate.toLocaleString()+"' )";
+    var sql = "insert INTO gm ([user], [opt],[log], [logtime]) VALUES('"+loginuser + "','"+opt + "','"+data + "' , CONVERT(datetime,'"+newDate.toLocaleString()+"',101))";
     console.log(sql);
     db.querySql(sql, "",function (err, result) {//查询所有users表的数据
         if(err)
@@ -232,6 +232,10 @@ io.sockets.on('connection', function (socket){
     socket.on('FindOnline',function(zoneid,t1,t2){
         console.log('FindOnline');
         online.online(socket,zoneid,t1,t2);
+    })
+    socket.on('QueryLog',function(t1,t2){
+        console.log('QueryLog');
+        oss.QueryLog(socket,t1,t2);
     })
     socket.on('sendNotice',function(host,port,data){
         console.log('sendNotice');

@@ -11,7 +11,7 @@ Target Server Type    : SQL Server
 Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2019-12-03 10:44:25
+Date: 2019-12-06 16:16:14
 */
 
 
@@ -24,11 +24,13 @@ CREATE TABLE [dbo].[gm] (
 [id] int NOT NULL IDENTITY(1,1) ,
 [user] varchar(32) NULL ,
 [log] varchar(8000) NULL ,
-[logtime] varchar(100) NULL ,
+[logtime] datetime NULL ,
 [opt] varchar(100) NULL 
 )
-ALTER TABLE [dbo].[gm] ADD PRIMARY KEY ([id])
 
+
+GO
+DBCC CHECKIDENT(N'[dbo].[gm]', RESEED, 11)
 GO
 
 -- ----------------------------
@@ -42,6 +44,16 @@ CREATE TABLE [dbo].[users] (
 )
 
 
+GO
+
+-- ----------------------------
+-- Indexes structure for table gm
+-- ----------------------------
+
+-- ----------------------------
+-- Primary Key structure for table gm
+-- ----------------------------
+ALTER TABLE [dbo].[gm] ADD PRIMARY KEY ([id])
 GO
 
 -- ----------------------------

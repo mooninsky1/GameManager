@@ -13,6 +13,7 @@
 <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="echarts.js"></script>
 <script type="text/javascript" src="client.js"></script>
+<script src="laydate.js"></script>
 <script src="socket.io.js"> </script>
 </head>
 
@@ -221,12 +222,12 @@
       </ul>	 
     </div>
 
-    <div title="日志" data-options="closable:true" style="overflow:auto;padding:20px;">
+    <div title="GM日志" data-options="closable:true" style="overflow:auto;padding:20px;">
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <form class="navbar-form navbar-left" role="search" >
             <div class="form-group">
-              <input type="text" class="demo-input" placeholder="开始日期" id="date_begin">
-              <input type="text" class="demo-input" placeholder="结束日期" id="date_end">
+              <input type="text" class="layui-input" placeholder="开始日期" id="date_begin">
+              <input type="text" class="layui-input" placeholder="结束日期" id="date_end">
             </div> 
             <button type="button" class="btn btn-default" id="QueryLogBtn" onclick="QueryLog()" >查找</button>
           </form> 
@@ -275,6 +276,19 @@
      </div>
 
 </div>
+<script>
+  //执行一个laydate实例
+  //laydate.render({
+  //    elem: '#date_begin' //指定元素
+  //});
+  //使用 class显示多个时间输入框
+  lay('.layui-input').each(function() {
+					laydate.render({
+						elem: this
+					});
+				});
+ 
+</script>
     <script type="text/javascript" >
     var socket = io.connect(GM_SERVER_IP_PORT);
     function getCookieArray(key) {
@@ -339,16 +353,17 @@
     function QueryLog(){
         var date_value = document.getElementById("date_begin").value;
         var date_value2 = document.getElementById("date_end").value;
-        if(date_value != ""){
+        if(date_value != "" && date_value2 != ""){
             var date_start = new Date(date_value);
-            var date_end = new  Date(date_value2);
-            var time1 = date_start.getTime();
-            var time2 = date_end.getTime();
-            socket.emit('QueryLog', zoneid,time1,time2);
+            var date_end = new  Date(date_value2+' 23:59:59:000 ');
+            var time1 = date_start.getTime()/1000;
+            var time2 = date_end.getTime()/1000+8*60*60;
+            socket.emit('QueryLog',time1,time2);
         } 
     }
     socket.on('QueryLogRsp',function(content){
-        alert('QueryLogRsp');
+        //alert('QueryLogRsp'+JSON.stringify(content) );
+        AddLogMessage(content);
     })
     function GetBag()
     {
@@ -469,6 +484,29 @@
         updataparam.loginuser = getCookieArray('loginuser');
         socket.emit('updatePlayer', host,port,updataparam);
         return false;
+    }
+    function AddLogMessage(message)
+    {
+        $("#myTableLog tr:not(:first)").empty(""); 
+		    var table=document.getElementById("myTableLog");
+		    for(var i=0; i<message.recordsets.length; i++)
+        {
+            var row=table.insertRow(1);
+            var col =0;
+            var cellid =row.insertCell(col++);
+            var cellopt =row.insertCell(col++);
+            var celluser =row.insertCell(col++);
+            var cellctx =row.insertCell(col++);
+            var cellltime = row.insertCell(col++);
+           
+            //alert( JSON.stringify(message.recordset[i]) );
+            cellid.innerHTML=message.recordset[i]["id"];
+            cellopt.innerHTML=message.recordset[i]["opt"];
+            celluser.innerHTML=message.recordset[i]["user"];
+            cellctx.innerHTML=message.recordset[i]["log"];
+            cellltime.innerHTML=message.recordset[i]["logtime"];
+          
+        }
     }
     function AddMessage(message)
     {

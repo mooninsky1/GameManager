@@ -36,6 +36,20 @@ function queryuser(socket,user)
         }
     });
 }
+function QueryLog(socket,  timestart, timeend){
+    var sql = "SELECT * from gm where DATEDIFF(SECOND, '1970-1-1', [logtime]) >= "+timestart+" and DATEDIFF(SECOND, '1970-1-1', [logtime]) <= "+timeend+" ";
+    console.log(sql);
+    logdb.querySql(sql, "",function (err, result) {//查询所有users表的数据
+        if(err)
+        {
+            console.log("db err");
+        }
+        else{
+            console.log(result);
+            socket.emit("QueryLogRsp",result) 
+        }
+    });
+}
 function searchPlayer(socket,host,port,indata)
 {
     debugger;
@@ -274,3 +288,4 @@ module.exports.updatePlayer = updatePlayer;
 module.exports.searchAccount = searchAccount;
 module.exports.sendNotice = sendNotice;
 module.exports.sendMailonTime = sendMailonTime;
+module.exports.QueryLog = QueryLog;
