@@ -1,7 +1,8 @@
-var db = require('./gamedb.js');
+var gamedb = require('./gamedb.js');
 var logdb = require('./db.js');
 var request = require('request');
-var http = require('http');  
+var http = require('http'); 
+var config = require('./config.js'); 
 
 var data = {  
     "uid": "4294967563",
@@ -25,7 +26,7 @@ var updatePlayerData = {
 function queryuser(socket,user)
 {
     var sql = "SELECT * from actor where [NickName]='"+user + "'";
-    db.querySql(sql, "",function (err, result) {//查询所有users表的数据
+    gamedb.querySql(sql, "",function (err, result) {//查询所有users表的数据
         if(err)
         {
             console.log("db err");
@@ -45,8 +46,28 @@ function QueryLog(socket,  timestart, timeend){
             console.log("db err");
         }
         else{
-            console.log(result);
+            //console.log(result);
             socket.emit("QueryLogRsp",result) 
+        }
+    });
+}
+function QueryPayLog(socket, timestart, timeend, actorid,zoneid) {
+    if(zoneid > config.PAY_LOG_DB_list.length){
+        console.log("QueryPayLog zonid error");
+        return;
+    }
+    var sql = "SELECT  a.* ,b.NickName  from pay as a LEFT JOIN actor as b ON a.actorid=b.ActorID where DATEDIFF(SECOND, '1970-1-1', [lupdate]) >= "+timestart+" and DATEDIFF(SECOND, '1970-1-1', [lupdate]) <= "+timeend+" ";
+    if(actorid){
+        sql += "and a.actorid = "+actorid+" ";
+    }
+    console.log(sql);
+    gamedb.querySql(config.PAY_LOG_DB_list[zoneid-1], sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            //console.log(result);
+            socket.emit("QueryPayLogRsp", JSON.stringify(result) );
         }
     });
 }
@@ -277,6 +298,21 @@ function sendMailonTime(socket,host,port,data,time)
     }, time);
     socket.emit("sendMailonTimeRsp","定时邮件发送成功")
 }
+function GetServerList(socket)
+{
+    var sql = "SELECT * from server";
+    console.log(sql);
+    logdb.querySql(sql, "",function (err, result) {//查询所有users表的数据
+        if(err)
+        {
+            console.log("db err");
+        }
+        else{
+            console.log(result);
+            socket.emit("GetServerListRsp",result) 
+        }
+    });
+}
 module.exports.GetBag = GetBag;
 module.exports.online = online;
 module.exports.sendMail = sendMail;
@@ -289,3 +325,5 @@ module.exports.searchAccount = searchAccount;
 module.exports.sendNotice = sendNotice;
 module.exports.sendMailonTime = sendMailonTime;
 module.exports.QueryLog = QueryLog;
+module.exports.GetServerList = GetServerList;
+module.exports.QueryPayLog = QueryPayLog;

@@ -1,142 +1,142 @@
 <!DOCTYPE html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="keywords" content="jquery,ui,easy,easyui,web">
-<meta name="description" content="easyui help you build your web page easily!">
 
-<title>运营管理工具导航页</title>
-<link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
-<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
-<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="echarts.js"></script>
-<script type="text/javascript" src="client.js"></script>
-<script src="laydate.js"></script>
-<script src="socket.io.js"> </script>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="keywords" content="jquery,ui,easy,easyui,web">
+  <meta name="description" content="easyui help you build your web page easily!">
+
+  <title>运营管理工具导航页</title>
+  <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
+  <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
+  <script type="text/javascript" src="echarts.js"></script>
+  <script type="text/javascript" src="client.js"></script>
+  <script src="laydate.js"></script>
+  <script src="socket.io.js"> </script>
 </head>
 
 <body>
-  
-<div id="tt" class="easyui-tabs" style="width:auto;height:500px;">
-    <div title="游戏账号查询" style="padding:20px;">
-				
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <div class="form-group" style="padding: 10px 10px 0px;">
-              <select id="serverbox0" class="form-control">
-              </select>										
-            </div>	
-          </ul>	 	
-            <form class="navbar-form navbar-left" role="search" >
-              <div class="form-group">
-                <input type="text" class="form-control" id="accountName" placeholder="请输入玩家账号"/>
-              </div> 
-              <button type="button" class="btn btn-default" id="FindByNameBtn" onclick="FindByName()" >查找</button>
-            </form> 
-				</div>
-				
-			<div class="row clearfix">
-		<div class="col-md-12 column">
-			<table class="table" id="myTable">
-				  <thead>
-            <tr>
-              <th>账号</th>
-              <th>密码</th>
-              <th>名字</th>
-              <th>UUID</th>
-              <th>境界等级</th>	
-              <th>肉身等级</th>	
-              <th>仙玉</th>
-              <th>灵石</th>	
-              <th>灵药</th>	
-              <th>灵木</th>	
-              <th>精铁</th>
-              <th>帮贡</th>
-						  <th>状态</th>
-            </tr>
-				  </thead>
-				  <tbody>
-					<tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" >
-						<td>account</td>
-						<td>password</td>
-						<td>又见一只奶酪君</td>
-						<td>5553546</td>
-            <td>30</td>
-            <td>30</td>
-            <td>30</td>
-            <td>30</td>
-            <td>30</td>
-						<td>535461</td>
-						<td>462161561</td>
-						<td>100506</td>
-						<td>不在线</td>
-					</tr>
-					
-				  </tbody>
-			  </table>
-		  </div>
-	  </div>
-  </div>
 
-    <div title="游戏角色名称查询" data-options="closable:true" style="overflow:auto;padding:20px;">
-      	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <div class="form-group" style="padding: 10px 10px 0px;">
-              <select id="serverbox1" class="form-control">
-              </select>										
-            </div>	
-          </ul>	 	
-            <form class="navbar-form navbar-left" role="search" >
-              <div class="form-group">
-                <input type="text" class="form-control" id="PlayerName" placeholder="请输入玩家名字"/>
-              </div> 
-              <button type="button" class="btn btn-default" id="FindByNameBtn" onclick="FindByPlayer()" >查找</button>
-            </form> 
-				</div>
-				
-			<div class="row clearfix">
-		<div class="col-md-12 column">
-			<table class="table" id="myTablePlayer">
-				<thead>
-					<tr>
-					  <th>名字</th>
-						<th>UUID</th>
-            <th>境界等级</th>	
-            <th>肉身等级</th>	
-            <th>仙玉</th>
-            <th>灵石</th>	
-            <th>灵药</th>	
-            <th>灵木</th>	
-            <th>精铁</th>
-            <th>帮贡</th>
-						<th>状态</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" >
-						<td>又见一只奶酪君</td>
-						<td>0</td>
-            <td>0</td>
-            <td>0</td>
-						<td>0</td>
-						<td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-						<td>不在线</td>
-					</tr>
-					
-				</tbody>
-			</table>
-		</div>
-	</div>
-	
+  <div id="tt" class="easyui-tabs" style="width:auto;height:800px;">
+    <div title="游戏账号查询" style="padding:20px;">
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <div class="form-group" style="padding: 10px 10px 0px;">
+            <select id="serverbox0" class="form-control">
+            </select>
+          </div>
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" id="accountName" placeholder="请输入玩家账号" />
+          </div>
+          <button type="button" class="btn btn-default" id="FindByNameBtn" onclick="FindByName()">查找</button>
+        </form>
+      </div>
+
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <table class="table" id="myTable">
+            <thead>
+              <tr>
+                <th>账号</th>
+                <th>密码</th>
+                <th>名字</th>
+                <th>UUID</th>
+                <th>境界等级</th>
+                <th>肉身等级</th>
+                <th>仙玉</th>
+                <th>灵石</th>
+                <th>灵药</th>
+                <th>灵木</th>
+                <th>精铁</th>
+                <th>帮贡</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                <td>account</td>
+                <td>password</td>
+                <td>又见一只奶酪君</td>
+                <td>5553546</td>
+                <td>30</td>
+                <td>30</td>
+                <td>30</td>
+                <td>30</td>
+                <td>30</td>
+                <td>535461</td>
+                <td>462161561</td>
+                <td>100506</td>
+                <td>不在线</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <div title="修改属性值" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+    <div title="游戏角色名称查询" data-options="closable:true" style="overflow:auto;padding:20px;">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <div class="form-group" style="padding: 10px 10px 0px;">
+            <select id="serverbox1" class="form-control">
+            </select>
+          </div>
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" id="PlayerName" placeholder="请输入玩家名字" />
+          </div>
+          <button type="button" class="btn btn-default" id="FindByNameBtn" onclick="FindByPlayer()">查找</button>
+        </form>
+      </div>
+
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <table class="table" id="myTablePlayer">
+            <thead>
+              <tr>
+                <th>名字</th>
+                <th>UUID</th>
+                <th>境界等级</th>
+                <th>肉身等级</th>
+                <th>仙玉</th>
+                <th>灵石</th>
+                <th>灵药</th>
+                <th>灵木</th>
+                <th>精铁</th>
+                <th>帮贡</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                <td>又见一只奶酪君</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>不在线</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!--div title="修改属性值" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
        <ul class="nav navbar-nav">
             <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
                 <select id="serverbox2" class="form-control" style="display:inlinek;">
@@ -151,463 +151,804 @@
                 <button type="button" class="btn btn-default" id="ModifyBtn" onclick="UpdatePlayer()" >修改</button>							
             </div>	
           </ul>	 
-    </div>
+    </div-->
 
     <div title="踢人封号" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
-       <ul class="nav navbar-nav">
-          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
-                <select id="serverbox3" class="form-control" style="display:inlinek;">
-                </select>	
-                <input type = "text" class="form-control" id = "KickActorid" placeholder="角色ID"  style="display:inline;" />
-                <input type = "text" class="form-control" id = "Kickparam1" placeholder="封号时长"  style="display:inline;" />
-                <button type="button" class="btn btn-default" id="BannedBtn" onclick="BannedPlayer()" >封号</button>
-                <button type="button" class="btn btn-default" id="KickBtn" onclick="KickPlayer()" >踢人</button>							
-          </div>	
-      </ul>	 
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <select id="serverbox3" class="form-control" style="display:inlinek;">
+          </select>
+          <input type="text" class="form-control" id="KickActorid" placeholder="角色ID" style="display:inline;" />
+          <input type="text" class="form-control" id="Kickparam1" placeholder="封号时长（秒），填0解封" style="display:inline;" />
+          <button type="button" class="btn btn-default" id="BannedBtn" onclick="BannedPlayer()">封号</button>
+          <button type="button" class="btn btn-default" id="KickBtn" onclick="KickPlayer()">踢人</button>
+        </div>
+      </ul>
     </div>
 
     <div title="发送邮件" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
-       <ul class="nav navbar-nav">
-          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
-              <select id="serverbox4" class="form-control" >
-              </select>	
-              <!-- input type = "text" class="form-control" id = "MailResID" placeholder="邮件资源ID"  / -->
-              <input type = "text" class="form-control" id = "MailTitle" placeholder="邮件标题少于16个汉字"  />
-              <input type = "text" class="form-control" id = "MailFrom" placeholder="邮件发送者"  />
-              <input type = "text" class="form-control" id = "MailTo" placeholder="邮件接收者"  />
-              <input type = "text" class="form-control" id = "MailContent" placeholder="邮件内容"  />
-              <textarea rows="5" cols="150">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <select id="serverbox4" class="form-control">
+          </select>
+          <!-- input type = "text" class="form-control" id = "MailResID" placeholder="邮件资源ID"  / -->
+          <input type="text" class="form-control" id="MailTitle" placeholder="邮件标题少于16个汉字" />
+          <!--input type = "text" class="form-control" id = "MailFrom" placeholder="邮件发送者"  /-->
+          <input type="text" class="form-control" id="MailContent" placeholder="邮件内容" />
+          <input type="text" class="form-control" id="MailTo" placeholder="邮件接收者角色id(多角色使用分号隔开,全服发邮件填-1)" />
+          <!--textarea rows="5" cols="150">
               邮件附件格式: [{"22_1":500},{"406_7":1}] ,其中 "22_1":500 表示人物属性钻石数量500,22代表钻石，1表示人物属性 ， "406_7":1表示金币包一个，406金币包道具，7表示物品
-              </textarea>
-              <input type = "text" class="form-control" id = "MailAttachments" placeholder="邮件附件"  />
-              <input type = "text" class="form-control" id = "MailEndTime" placeholder="邮件过期时间（单位小时）" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" />
-             
-  
-              <button type="button" class="btn btn-default"  onclick="SendMail()" >发送邮件</button>							
-          </div>	
-      </ul>	 
+              </textarea-->
+          <!--input type = "text" class="form-control" id = "MailAttachments" placeholder="邮件附件"  /-->
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" id="mail_item_id_1" placeholder="请输入物品ID"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+                <input type="text" class="form-control" id="mail_item_num_1" placeholder="请输入物品数量"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+              </div>
+            </form>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" id="mail_item_id_2" placeholder="请输入物品ID"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+                <input type="text" class="form-control" id="mail_item_num_2" placeholder="请输入物品数量"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+              </div>
+            </form>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" id="mail_item_id_3" placeholder="请输入物品ID"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+                <input type="text" class="form-control" id="mail_item_num_3" placeholder="请输入物品数量"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+              </div>
+            </form>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" id="mail_item_id_4" placeholder="请输入物品ID"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+                <input type="text" class="form-control" id="mail_item_num_4" placeholder="请输入物品数量"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+              </div>
+            </form>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" id="mail_item_id_5" placeholder="请输入物品ID"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+                <input type="text" class="form-control" id="mail_item_num_5" placeholder="请输入物品数量 "
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+              </div>
+            </form>
+          </div>
+
+          <input type="text" class="form-control" id="MailEndTime" placeholder="邮件过期时间（单位小时）"
+            onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" />
+          <button type="button" class="btn btn-default" onclick="SendMail()">发送邮件</button>
+        </div>
+      </ul>
     </div>
 
     <div title="数据统计" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
-       <ul class="nav navbar-nav">
-          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
-              <select id="serverbox5" class="form-control" >
-              </select>	
-              <div>
-                <input type = "text" class="form-control" readonly id = "online" value="服务器当前在线人数："  />
-                <button type="button" class="btn btn-default"  onclick="GetOnline()" >查询</button>		
-              </div>					
-          </div>	
-      </ul>	 
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <select id="serverbox5" class="form-control">
+          </select>
+          <div>
+            <input type="text" class="form-control" readonly id="online" value="服务器当前在线人数：" />
+            <button type="button" class="btn btn-default" onclick="GetOnline()">查询</button>
+          </div>
+        </div>
+      </ul>
     </div>
 
-     <div title="背包查询" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
-       <ul class="nav navbar-nav">
-          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
-              <select id="serverbox6" class="form-control" >
-              </select>	
-              <div>
-                <input type = "text" class="form-control"  id = "GetBagActorID" placeholder="查询背包角色ID"  />
-                <button type="button" class="btn btn-default"  onclick="GetBag()" >查询</button>
-                <br></br>
-                <textarea  rows="5" cols="150">
+    <div title="背包查询" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <select id="serverbox6" class="form-control">
+          </select>
+          <div>
+            <input type="text" class="form-control" id="GetBagActorID" placeholder="查询背包角色ID" />
+            <button type="button" class="btn btn-default" onclick="GetBag()">查询</button>
+            <br></br>
+            <!--textarea  rows="5" cols="150">
                    2_4:"资源ID"  3_4:"物品类型" 4_4:"物品名称" 6_4:"物品数量" 7_4:"物品品质" 11_4:"物品serverid"
-                </textarea>	
-                <br></br>	
-                <textarea  id = "GetBagRsp" rows="5" cols="150">
+                </textarea-->
+            <br></br>
+            <textarea id="GetBagRsp" rows="5" cols="150">
                     背包内容: 
-                </textarea>		
-              </div>					
-          </div>	
-      </ul>	 
+                </textarea>
+          </div>
+        </div>
+      </ul>
     </div>
 
     <div title="GM日志" data-options="closable:true" style="overflow:auto;padding:20px;">
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <form class="navbar-form navbar-left" role="search" >
-            <div class="form-group">
-              <input type="text" class="layui-input" placeholder="开始日期" id="date_begin">
-              <input type="text" class="layui-input" placeholder="结束日期" id="date_end">
-            </div> 
-            <button type="button" class="btn btn-default" id="QueryLogBtn" onclick="QueryLog()" >查找</button>
-          </form> 
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="layui-input" placeholder="开始日期" id="date_begin">
+            <input type="text" class="layui-input" placeholder="结束日期" id="date_end">
+          </div>
+          <button type="button" class="btn btn-default" id="QueryLogBtn" onclick="QueryLog()">查找</button>
+        </form>
       </div>
-      
-    <div class="row clearfix">
-    <div class="col-md-12 column">
-    <table class="table" id="myTableLog">
-      <thead>
-        <tr>
-          <th>编号</th>
-          <th>日志类型</th>
-          <th>操作账号</th>	
-          <th>操作内容</th>	
-          <th>时间</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" >
-          <td>1</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-        </tr>
-        
-      </tbody>
-    </table>
-  </div>
-  </div>
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <table class="table" id="myTableLog">
+            <thead>
+              <tr>
+                <th>编号</th>
+                <th>日志类型</th>
+                <th>操作账号</th>
+                <th>操作内容</th>
+                <th>时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
 
-  </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div title="充值日志" data-options="closable:true" style="overflow:auto;padding:20px;">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+              <select id="serverbox7" class="form-control"> </select>
+            <input type="text" class="layui-input" placeholder="开始日期" id="date_Pay_begin">
+            <input type="text" class="layui-input" placeholder="结束日期" id="date_Pay_end">
+            <input type="text" class="form-control" id="pay_actior_id" placeholder="请输入要查询的角色ID"
+              onkeyup="value=value.replace(/[^\d]/g,'') " />
+          </div>
+          <button type="button" class="btn btn-default" id="QueryPayLogBtn" onclick="QueryPayLog()">查找</button>
+        </form>
+      </div>
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <table class="table" id="myTablePayLog">
+            <thead>
+              <tr>
+                <th>编号</th>
+                <th>角色ID</th>
+                <th>角色名字</th>
+                <th>游戏支付订单ID</th>
+                <th>平台支付订单ID</th>
+                <th>支付状态1:创建订单，2:平台通知，3:充值完成</th>
+                <th>充值金额(分)</th>
+                <th>时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div title="游戏公告" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <input type="text" class="form-control" id="notice_title_id" placeholder="公告标题" />
+            <textarea id="notice_content_id" rows="5" cols="150">
+              公告内容
+            </textarea>
+
+          </div>
+          <button type="button" class="btn btn-default" onclick="NoticeCommit()">提交</button>
+        </div>
+      </ul>
+    </div>
+
+    <div title="服务器管理" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <button type="button" class="btn btn-default" id="GetServerList" onclick="GetServerList()">拉取服务器列表</button>
+          </div>
+          <div class="row clearfix">
+            <div class="col-md-12 column">
+              <table class="table" id="myTableServerList">
+                <thead>
+                  <tr>
+                    <th>编号</th>
+                    <th>服务器名字</th>
+                    <th>服务器状态</th>
+                    <th>是否显示</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <button type="button" class="btn btn-default" onclick="ServerCommit()">提交</button>
+        </div>
+
+      </ul>
+    </div>
 
     <div title="其他" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
-        <ul class="nav navbar-nav">
-           <div class="form-group" style="padding: 10px 10px 0px; display:inline;">	
-               <div>
-                 <!--button type="button" class="btn btn-default"  onclick="window.open('online.1.html')" >实时在线</button-->
-                 <button type="button" class="btn btn-default"  onclick="window.open('http://192.168.1.128:7656/')" >公告上传</button>
-                 <button type="button" class="btn btn-default"  onclick="window.open('mail.html')" >定时发放邮件</button>
-                 <button type="button" class="btn btn-default"  onclick="window.open('notice.html')" >实时公告</button>
-                 <!--button type="button" class="btn btn-default"  onclick="window.open('mail_post.html')" >使用http post 定时发放邮件</button-->
-               </div>					
-           </div>	
-       </ul>	 
-     </div>
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <!--button type="button" class="btn btn-default"  onclick="window.open('online.1.html')" >实时在线</button-->
+            <button type="button" class="btn btn-default"
+              onclick="window.open('http://134.175.152.108:7656/')">公告上传</button>
+            <button type="button" class="btn btn-default" onclick="window.open('mail.html')">定时发放邮件</button>
+            <button type="button" class="btn btn-default" onclick="window.open('notice.html')">实时公告</button>
+            <!--button type="button" class="btn btn-default"  onclick="window.open('mail_post.html')" >使用http post 定时发放邮件</button-->
+          </div>
+        </div>
+      </ul>
+    </div>
 
-</div>
-<script>
-  //执行一个laydate实例
-  //laydate.render({
-  //    elem: '#date_begin' //指定元素
-  //});
-  //使用 class显示多个时间输入框
-  lay('.layui-input').each(function() {
-					laydate.render({
-						elem: this
-					});
-				});
- 
-</script>
-    <script type="text/javascript" >
+
+  </div>
+  <script>
+    //执行一个laydate实例
+    //laydate.render({
+    //    elem: '#date_begin' //指定元素
+    //});
+    //使用 class显示多个时间输入框
+    lay('.layui-input').each(function () {
+      laydate.render({
+        elem: this,
+        type:'datetime' //显示时间，
+      });
+    });
+
+  </script>
+  <script type="text/javascript">
     var socket = io.connect(GM_SERVER_IP_PORT);
     function getCookieArray(key) {
       var arrStr = document.cookie.split(';');
-      for(var i = 0; i < arrStr.length; i++) {
+      for (var i = 0; i < arrStr.length; i++) {
         var temp = arrStr[i].split("=");
-        if(key === temp[0]) {
-            var current = new Array();
-            if(temp[1] == "") {//这一步判断是目的是为了避免key值对应的value为空
-                return null;
-            }
-            //current = JSON.parse(unescape(temp[1]));
-            current = (temp[1]);
-            return current;
+        if (key === temp[0]) {
+          var current = new Array();
+          if (temp[1] == "") {//这一步判断是目的是为了避免key值对应的value为空
+            return null;
+          }
+          //current = JSON.parse(unescape(temp[1]));
+          current = (temp[1]);
+          return current;
         }
-     }
+      }
       return null;
     };
-    function $my(id){return document.getElementById(id); }
+    function $my(id) { return document.getElementById(id); }
     function isJSON(str) {
-            if (typeof str == 'string') {
-                try {
-                    var obj=JSON.parse(str);
-                    if(typeof obj == 'object' && obj ){
-                        return true;
-                    }else{
-                        return false;
-                    }
-
-                } catch(e) {
-                    console.log('error：'+str+'!!!'+e);
-                    return false;
-                }
-            }
+      if (typeof str == 'string') {
+        try {
+          var obj = JSON.parse(str);
+          if (typeof obj == 'object' && obj) {
+            return true;
+          } else {
             return false;
-    }
-    $(document).ready(function(){
-       //document.getElementById("serverbox3").options.add(new Option("abc","123"));
-       var UIlist = [ "serverbox0","serverbox1","serverbox2","serverbox3","serverbox4","serverbox5","serverbox6"];
-       for(var i=0; i<UIlist.length; i++)
-       {
-         ShowServerList(UIlist[i],severlist);
-       }
-       
-    })
-    function ShowServerList(UI,severlist)
-    {
-        for(var i=0; i<severlist.length; i++)
-       {
-            var op=document.createElement("option");      // 新建OPTION (op) 
-            op.setAttribute("value",severlist[i]["value"]);                   // 设置OPTION的 VALUE 
-            op.setAttribute("area",severlist[i]["area"]); 
-            op.setAttribute("port",severlist[i]["port"]); 
-            op.appendChild(document.createTextNode(severlist[i]["name"])); // 设置OPTION的 TEXT
-            for(var j=0; j<4; j++)
-            {
-                document.getElementById(UI).appendChild(op);           // 为SELECT 新建一 OPTION(op)
-            }
-            
-       }
-    }
-    function QueryLog(){
-        var date_value = document.getElementById("date_begin").value;
-        var date_value2 = document.getElementById("date_end").value;
-        if(date_value != "" && date_value2 != ""){
-            var date_start = new Date(date_value);
-            var date_end = new  Date(date_value2+' 23:59:59:000 ');
-            var time1 = date_start.getTime()/1000;
-            var time2 = date_end.getTime()/1000+8*60*60;
-            socket.emit('QueryLog',time1,time2);
-        } 
-    }
-    socket.on('QueryLogRsp',function(content){
-        //alert('QueryLogRsp'+JSON.stringify(content) );
-        AddLogMessage(content);
-    })
-    function GetBag()
-    {
-        var serverboxid = "serverbox6"
-        var x=document.getElementById(serverboxid).selectedIndex;
-	      var host = $my(serverboxid).value;
-        var port = $my(serverboxid)[x].getAttribute("port");
-        
-        var param = {};
-        param.uid = document.getElementById("GetBagActorID").value;
+          }
 
-        socket.emit('GetBag', host,port,param);
-    }
-    socket.on('GetBagRsp',function(content){
-        alert(content["900002_3"].length);
-        var txt="";
-        for(var i=0; i<content["900002_3"].length; i++)
-        {
-          txt += JSON.stringify(content["900002_3"][i]["4_4"]["4_4"]);
-          txt +="*";
-          txt +=JSON.stringify(content["900002_3"][i]["4_4"]["6_4"]);
-          txt += "\r\n"
+        } catch (e) {
+          console.log('error：' + str + '!!!' + e);
+          return false;
         }
-        alert(txt);
-        //$my('GetBagRsp').value =JSON.stringify(content);
-        $my('GetBagRsp').value =txt;
+      }
+      return false;
+    }
+    $(document).ready(function () {
+      //document.getElementById("serverbox3").options.add(new Option("abc","123"));
+      //var UIlist = [ "serverbox0","serverbox1","serverbox2","serverbox3","serverbox4","serverbox5","serverbox6"];
+      var UIlist = ["serverbox0", "serverbox1", "serverbox3", "serverbox4", "serverbox5", "serverbox6","serverbox7"];
+      for (var i = 0; i < UIlist.length; i++) {
+        ShowServerList(UIlist[i], severlist);
+      }
+
     })
-    function GetOnline()
-    {
-        var serverboxid = "serverbox5"
-        var x=document.getElementById(serverboxid).selectedIndex;
-	      var host = $my(serverboxid).value;
-        var port = $my(serverboxid)[x].getAttribute("port");
-        
-        socket.emit('online', host,port);
+    function ShowServerList(UI, severlist) {
+      for (var i = 0; i < severlist.length; i++) {
+        var op = document.createElement("option");      // 新建OPTION (op) 
+        op.setAttribute("value", severlist[i]["value"]);                   // 设置OPTION的 VALUE 
+        op.setAttribute("area", severlist[i]["area"]);
+        op.setAttribute("port", severlist[i]["port"]);
+        op.appendChild(document.createTextNode(severlist[i]["name"])); // 设置OPTION的 TEXT
+        for (var j = 0; j < 4; j++) {
+          document.getElementById(UI).appendChild(op);           // 为SELECT 新建一 OPTION(op)
+        }
+
+      }
     }
-    socket.on('onlineRsp',function(content){
-        $my('online').value = content["count"];
+    function QueryLog() {
+      var date_value = document.getElementById("date_begin").value;
+      var date_value2 = document.getElementById("date_end").value;
+      if (date_value != "" && date_value2 != "") {
+        var date_start = new Date(date_value);
+        //var date_end = new Date(date_value2 + ' 23:59:59:000 ');
+        var date_end = new Date(date_value2 );
+        var time1 = date_start.getTime() / 1000+ 8 * 60 * 60;
+        var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
+        socket.emit('QueryLog', time1, time2);
+      }
+    }
+    function QueryPayLog() {
+      var x = document.getElementById("serverbox7").selectedIndex;
+      var zoneid = $my("serverbox7")[x].getAttribute("area");
+
+      var date_value = document.getElementById("date_Pay_begin").value;
+      var date_value2 = document.getElementById("date_Pay_end").value;
+      var actorid = document.getElementById("pay_actior_id").value;
+      if (date_value != "" && date_value2 != "") {
+        var date_start = new Date(date_value);
+        //var date_end = new Date(date_value2 + ' 23:59:59:000 ');  //有具体时间了
+        var date_end = new Date(date_value2 ); 
+        //var time1 = date_start.getTime() / 1000+ 8 * 60 * 60;
+        //var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
+        //插入日志也没有加8小时统一处理
+        var time1 = date_start.getTime() / 1000;
+        var time2 = date_end.getTime() / 1000;
+        socket.emit('QueryPayLog', time1, time2,actorid,zoneid);
+      }
+    }
+    socket.on('QueryLogRsp', function (content) {
+      //alert('QueryLogRsp'+JSON.stringify(content) );
+      AddLogMessage(content);
     })
-    function SendMail()
-    {
-      
-        var x=document.getElementById("serverbox4").selectedIndex;
-	      var host = $my("serverbox4").value;
-        var port = $my("serverbox4")[x].getAttribute("port");
-        
-        var param = {};
-        param.id = "1";//document.getElementById("MailResID").value;
-        param.title = document.getElementById("MailTitle").value;
-        param.from = document.getElementById("MailFrom").value;
-        param.to = document.getElementById("MailTo").value;
-        param.account = "";
-        param.channel = "";
-          
-        param.content = document.getElementById("MailContent").value;
-        param.showStart = new Date().getTime();
-        param.showEnd= new Date().getTime()+$my('MailEndTime').value*60*60*1000;
-        var arg = document.getElementById("MailAttachments").value;
-        if(arg.length == 0)
-        {
-           param.attachments =  {};
-        }
-        else
-        {
-             if(!isJSON(arg))
-            {
-                alert("邮件参数错误");
-                 return;
-             }
-            param.attachments= JSON.parse(arg);
-        }
-        alert("sendMail")
-        var loginuser =getCookieArray('loginuser');
-        param.loginuser = loginuser;
-        socket.emit('sendMail', host,port,param);
+    socket.on('QueryPayLogRsp', function (content) {
+      //alert( (content) );
+      AddPayLogMessage(content);
+    })
+    socket.on('GetServerListRsp', function (content) {
+      alert('GetServerListRsp')
+      AddServerListMessage(content);
+    })
+    function GetBag() {
+      var serverboxid = "serverbox6"
+      var x = document.getElementById(serverboxid).selectedIndex;
+      var host = $my(serverboxid).value;
+      var port = $my(serverboxid)[x].getAttribute("port");
+
+      var param = {};
+      param.uid = document.getElementById("GetBagActorID").value;
+
+      socket.emit('GetBag', host, port, param);
     }
-    socket.on('sendMailRsp',function(content){
+    socket.on('GetBagRsp', function (content) {
+      //alert(content["900002_3"].length);
+      var txt = "";
+      for (var i = 0; i < content["900002_3"].length; i++) {
+        txt += JSON.stringify(content["900002_3"][i]["4_4"]["4_4"]);
+        txt += "*";
+        txt += JSON.stringify(content["900002_3"][i]["4_4"]["6_4"]);
+        txt += "\r\n"
+      }
+      //alert(txt);
+      //$my('GetBagRsp').value =JSON.stringify(content);
+      $my('GetBagRsp').value = txt;
+    })
+    function GetOnline() {
+      var serverboxid = "serverbox5"
+      var x = document.getElementById(serverboxid).selectedIndex;
+      var host = $my(serverboxid).value;
+      var port = $my(serverboxid)[x].getAttribute("port");
+
+      socket.emit('online', host, port);
+    }
+    socket.on('onlineRsp', function (content) {
+      $my('online').value = content["count"];
+    })
+    function CheckMailItemNum(itemid, num) {
+      if ((itemid == 101000 && num >= 20) ||
+        (itemid == 101009 && num >= 10000) ||
+        (itemid == 101016 && num >= 1000) ||
+        (itemid == 101017 && num >= 100) ||
+        (itemid == 101018 && num >= 10) ||
+        (itemid == 101019 && num >= 10) ||
+        (itemid == 101020 && num >= 10) ||
+        (itemid == 101021 && num >= 10) ||
+        (itemid == 101022 && num >= 10) ||
+        (itemid == 401015 && num >= 50) ||
+        (itemid == 601006 && num >= 50)
+      ) {
+        return 1;
+      }
+      return 0;
+    }
+    function SendMail() {
+
+      var x = document.getElementById("serverbox4").selectedIndex;
+      var host = $my("serverbox4").value;
+      var port = $my("serverbox4")[x].getAttribute("port");
+
+      var param = {};
+      param.id = "1";//document.getElementById("MailResID").value;
+      param.title = document.getElementById("MailTitle").value;
+      param.from = "system";//document.getElementById("MailFrom").value;
+      param.to = document.getElementById("MailTo").value.replace(/\s*/g, "");
+      param.account = "";
+      param.channel = "";
+
+      param.content = document.getElementById("MailContent").value;
+      var MailAttachments = [];
+      var MailTips = "道具: ";
+      var MailTipsFlag = 0;
+      if ($my('mail_item_id_1').value && $my('mail_item_num_1').value) {
+        if (CheckMailItemNum($my('mail_item_id_1').value, $my('mail_item_num_1').value)) {
+          MailTipsFlag = 1;
+          MailTips += $my('mail_item_id_1').value;
+        }
+        var itemid = $my('mail_item_id_1').value + "_7";
+        MailAttachments.push({ [itemid]: parseInt($my('mail_item_num_1').value) });
+
+      }
+      if ($my('mail_item_id_2').value && $my('mail_item_num_2').value) {
+        if (CheckMailItemNum($my('mail_item_id_2').value, $my('mail_item_num_2').value)) {
+          MailTipsFlag = 1;
+          MailTips += $my('mail_item_id_2').value;
+        }
+        var itemid = $my('mail_item_id_2').value + "_7";
+        MailAttachments.push({ [itemid]: parseInt($my('mail_item_num_2').value) });
+      }
+      if ($my('mail_item_id_3').value && $my('mail_item_num_3').value) {
+        if (CheckMailItemNum($my('mail_item_id_3').value, $my('mail_item_num_3').value)) {
+          MailTipsFlag = 1;
+          MailTips += $my('mail_item_id_3').value;
+        }
+        var itemid = $my('mail_item_id_3').value + "_7";
+        MailAttachments.push({ [itemid]: parseInt($my('mail_item_num_3').value) });
+      }
+      if ($my('mail_item_id_4').value && $my('mail_item_num_4').value) {
+        if (CheckMailItemNum($my('mail_item_id_4').value, $my('mail_item_num_4').value)) {
+          MailTipsFlag = 1;
+          MailTips += $my('mail_item_id_4').value;
+        }
+        var itemid = $my('mail_item_id_4').value + "_7";
+        MailAttachments.push({ [itemid]: parseInt($my('mail_item_num_4').value) });
+      }
+      if ($my('mail_item_id_5').value && $my('mail_item_num_5').value) {
+        if (CheckMailItemNum($my('mail_item_id_5').value, $my('mail_item_num_5').value)) {
+          MailTipsFlag = 1;
+          MailTips += $my('mail_item_id_5').value;
+        }
+        var itemid = $my('mail_item_id_5').value + "_7";
+        MailAttachments.push({ [itemid]: parseInt($my('mail_item_num_5').value) });
+      }
+      MailTips += "数量异常请确认";
+      var arg = JSON.stringify(MailAttachments)
+      //alert("json"+arg);
+      if (!isJSON(arg)) {
+        alert("邮件参数错误");
+        return;
+      }
+      param.attachments = JSON.parse(arg);
+      //alert("obj"+param.attachments);
+
+      param.showStart = new Date().getTime();
+      param.showEnd = new Date().getTime() + $my('MailEndTime').value * 60 * 60 * 1000;
+
+      //var arg = document.getElementById("MailAttachments").value;
+      //if(arg.length == 0)
+      //{
+      //   param.attachments =  {};
+      //}
+      ///else
+      //{
+      //     if(!isJSON(arg))
+      //   {
+      //       alert("邮件参数错误");
+      //        return;
+      //    }
+      //   param.attachments= JSON.parse(arg);
+      //}
+      //alert("sendMail")
+      var loginuser = getCookieArray('loginuser');
+      param.loginuser = loginuser;
+
+      if (param.to == "") {
+        alert("接收者为空!!!");
+        return;
+      }
+
+      if (param.to == "-1") {
+        var r = confirm("是否要发送全服邮件");
+        if (r != true) {
+          return;
+        }
+        param.to = "";
+      }
+
+      if (MailTipsFlag) {
+        var r = confirm(MailTips);
+        if (r == true) {
+          alert("您按了确认！");
+          socket.emit('sendMail', host, port, param);
+          alert("发送邮件成功")
+        }
+        else {
+          alert("您按了取消！");
+        }
+      }
+      else {
+        socket.emit('sendMail', host, port, param);
+        alert("发送邮件成功")
+      }
+
+    }
+    socket.on('sendMailRsp', function (content) {
       alert(content);
     })
-    function BannedPlayer()
-    {
-      	var x=document.getElementById("serverbox3").selectedIndex;
-	      var host = $my("serverbox3").value;
-        var port = $my("serverbox3")[x].getAttribute("port");
-        var ActoridText = document.getElementById("KickActorid");
-        var param = {};
-        param.uid = ActoridText.value;
-        param.time = document.getElementById("Kickparam1").value;
-        param.mode = "";
-        param.loginuser = getCookieArray('loginuser');
-        socket.emit('BannedPlayer', host,port,param);
+    function BannedPlayer() {
+      var x = document.getElementById("serverbox3").selectedIndex;
+      var host = $my("serverbox3").value;
+      var port = $my("serverbox3")[x].getAttribute("port");
+      var ActoridText = document.getElementById("KickActorid");
+      var param = {};
+      param.uid = ActoridText.value;
+      param.time = document.getElementById("Kickparam1").value;
+      param.mode = "";
+      param.loginuser = getCookieArray('loginuser');
+      socket.emit('BannedPlayer', host, port, param);
     }
-    function KickPlayer()
-    {
-       	var x=document.getElementById("serverbox3").selectedIndex;
-        alert(document.getElementById("serverbox3"));
-	      var host = $my("serverbox3").value;
-        var port = $my("serverbox3")[x].getAttribute("port");
-        var ActoridText = document.getElementById("KickActorid");
-        var updataparam = {};
-        updataparam.uid = ActoridText.value;
-        updataparam.loginuser = getCookieArray('loginuser');
-        socket.emit('KickPlayer', host,port,updataparam);
+    function KickPlayer() {
+      var x = document.getElementById("serverbox3").selectedIndex;
+      alert(document.getElementById("serverbox3"));
+      var host = $my("serverbox3").value;
+      var port = $my("serverbox3")[x].getAttribute("port");
+      var ActoridText = document.getElementById("KickActorid");
+      var updataparam = {};
+      updataparam.uid = ActoridText.value;
+      updataparam.loginuser = getCookieArray('loginuser');
+      socket.emit('KickPlayer', host, port, updataparam);
     }
-    function UpdatePlayer(mousedown)
-    {
-        var ActoridText = document.getElementById("Actorid");
-        var boxtext = document.getElementById("PropBox");
-        var param1text = document.getElementById("param1");
-        var updataparam = {};
-        updataparam.uid = ActoridText.value;
-        updataparam.param = [{}];
-        updataparam.param[0] [boxtext.value+"_"] =param1text.value;
-       
-       	var x=document.getElementById("serverbox2").selectedIndex;
-        var host = $my("serverbox2").value
-        var port = $my("serverbox2")[x].getAttribute("port");
-        updataparam.loginuser = getCookieArray('loginuser');
-        socket.emit('updatePlayer', host,port,updataparam);
-        return false;
-    }
-    function AddLogMessage(message)
-    {
-        $("#myTableLog tr:not(:first)").empty(""); 
-		    var table=document.getElementById("myTableLog");
-		    for(var i=0; i<message.recordsets.length; i++)
-        {
-            var row=table.insertRow(1);
-            var col =0;
-            var cellid =row.insertCell(col++);
-            var cellopt =row.insertCell(col++);
-            var celluser =row.insertCell(col++);
-            var cellctx =row.insertCell(col++);
-            var cellltime = row.insertCell(col++);
-           
-            //alert( JSON.stringify(message.recordset[i]) );
-            cellid.innerHTML=message.recordset[i]["id"];
-            cellopt.innerHTML=message.recordset[i]["opt"];
-            celluser.innerHTML=message.recordset[i]["user"];
-            cellctx.innerHTML=message.recordset[i]["log"];
-            cellltime.innerHTML=message.recordset[i]["logtime"];
-          
-        }
-    }
-    function AddMessage(message)
-    {
-		    $("#myTable tr:not(:first)").empty(""); 
-		    var table=document.getElementById("myTable");
-		    for(var i=0; i<message.data.length; i++)
-        {
-            var row=table.insertRow(1);
-            var col =0;
-            var cellaccount=row.insertCell(col++);
-            var cellpassword=row.insertCell(col++);
-            var cellname=row.insertCell(col++);
-            var celluuid=row.insertCell(col++);
-            var celllevel = row.insertCell(col++);
-            var celllevel1 = row.insertCell(col++);
-            var celldiamond = row.insertCell(col++);
-            var cellgold = row.insertCell(col++);
-            var celllingyao = row.insertCell(col++);
-            var celllingmu = row.insertCell(col++);
-            var celljingtie = row.insertCell(col++);
-            var cellmenggong = row.insertCell(col++);
-            var cellonline = row.insertCell(col++);
+    function UpdatePlayer(mousedown) {
+      var ActoridText = document.getElementById("Actorid");
+      var boxtext = document.getElementById("PropBox");
+      var param1text = document.getElementById("param1");
+      var updataparam = {};
+      updataparam.uid = ActoridText.value;
+      updataparam.param = [{}];
+      updataparam.param[0][boxtext.value + "_"] = param1text.value;
 
-            cellaccount.innerHTML=message.data[i]["996_1"];
-            cellpassword.innerHTML=message.data[i]["0_1"];
-            cellname.innerHTML=message.data[i]["3_1"];
-            celluuid.innerHTML=message.data[i]["2_1"];
-            celllevel.innerHTML=message.data[i]["8_1"];
-            celllevel1.innerHTML=message.data[i]["12_1"];
-            cellgold.innerHTML=message.data[i]["10_1"];
-            celldiamond.innerHTML=message.data[i]["11_1"];
-            celllingyao.innerHTML=message.data[i]["20_1"];
-            celllingmu.innerHTML=message.data[i]["18_1"];
-            celljingtie.innerHTML=message.data[i]["19_1"];
-            cellmenggong.innerHTML=message.data[i]["44_1"];
-            cellonline.innerHTML=message.data[i]["999_1"];
+      var x = document.getElementById("serverbox2").selectedIndex;
+      var host = $my("serverbox2").value
+      var port = $my("serverbox2")[x].getAttribute("port");
+      updataparam.loginuser = getCookieArray('loginuser');
+      socket.emit('updatePlayer', host, port, updataparam);
+      return false;
+    }
+    function AddServerListMessage(message) {
+      alert('AddServerListMessage:' + message.recordset.length)
+      $("#myTableServerList tr:not(:first)").empty("");
+      var table = document.getElementById("myTableServerList");
+      for (var i = 0; i < message.recordsets.length; i++) {
+        var row = table.insertRow(1);
+        var col = 0;
+        var cellid = row.insertCell(col++);
+        var cellname = row.insertCell(col++);
+        var cellstat = row.insertCell(col++);
+        var cellflag = row.insertCell(col++);
+        var cellopen = row.insertCell(col++);
+
+        //alert( JSON.stringify(message.recordset[i]) );
+        cellid.innerHTML = message.recordset[i]["id"];
+        cellname.innerHTML = '<input value=' + message.recordset[i]["name"] + '></input>'; //message.recordset[i]["name"];
+        cellstat.innerHTML = '<select >  <option value ="1">正常</option>    <option value ="2">爆满</option>  <option value="3">维护</option>   <option value="4">关闭</option></select> ';
+        //'message.recordset[i]["stat"];
+        cellflag.innerHTML = message.recordset[i]["flag"];
+
+      }
+    }
+    function AddLogMessage(message) {
+      $("#myTableLog tr:not(:first)").empty("");
+      var table = document.getElementById("myTableLog");
+      for (var i = 0; i < message.recordset.length; i++) {
+        //var row = table.insertRow(1);  插入位置永远在第一行
+        //指定行的位置i+1,第0行为表头
+        var row = table.insertRow(i+1);
+        var col = 0;
+        var cellid = row.insertCell(col++);
+        var cellopt = row.insertCell(col++);
+        var celluser = row.insertCell(col++);
+        var cellctx = row.insertCell(col++);
+        var cellltime = row.insertCell(col++);
+
+        //alert( JSON.stringify(message.recordset[i]) );
+        cellid.innerHTML = i+1;//message.recordset[i]["id"];
+        cellopt.innerHTML = message.recordset[i]["opt"];
+        celluser.innerHTML = message.recordset[i]["user"];
+        cellctx.innerHTML = message.recordset[i]["log"];
+        cellltime.innerHTML = message.recordset[i]["logtime"];
+
+      }
+    }
+    function AddPayLogMessage(message1) {
+        //alert("ms1"+message1);
+        //console.log("====================>", message1);
+        var message = JSON.parse(message1);
+        //alert("ms"+message);
+        $("#myTablePayLog tr:not(:first)").empty("");
+        var table = document.getElementById("myTablePayLog");
+        for (var i = 0; i < message.recordset.length; i++) {
+          //指定行的位置i+1,第0行为表头
+          var row = table.insertRow(i+1);
+          var col = 0;
+          var cellid = row.insertCell(col++);
+          var cellactorid = row.insertCell(col++);
+          var cellactorname = row.insertCell(col++);
+          var cellcpid = row.insertCell(col++);
+          var cellplatid = row.insertCell(col++);
+          var cellstat = row.insertCell(col++);
+          var cellMoney = row.insertCell(col++);
+          var celltime = row.insertCell(col++);
+          //alert(message.recordsets.length);
+         // alert( JSON.stringify(message.recordset[i]) );
+          cellid.innerHTML = i+1;//message.recordset[i]["id"];
+          cellactorid.innerHTML = message.recordset[i]["actorid"];
+          cellactorname.innerHTML = message.recordset[i]["NickName"];
+          cellcpid.innerHTML = message.recordset[i]["payorder"];
+          cellplatid.innerHTML = message.recordset[i]["channel_order"];
+          cellstat.innerHTML = message.recordset[i]["state"];
+          cellMoney.innerHTML = message.recordset[i]["total_fee"];
+          var logdate = new Date(message.recordset[i]["logtime"]); 
+          celltime.innerHTML = message.recordset[i]["lupdate"];
         }
     }
-  
-    socket.on('searchAccountRsp',function(content)
-    {
-        AddMessage(content );
+    function AddMessage(message) {
+      $("#myTable tr:not(:first)").empty("");
+      var table = document.getElementById("myTable");
+      for (var i = 0; i < message.data.length; i++) {
+        var row = table.insertRow(1);
+        var col = 0;
+        var cellaccount = row.insertCell(col++);
+        var cellpassword = row.insertCell(col++);
+        var cellname = row.insertCell(col++);
+        var celluuid = row.insertCell(col++);
+        var celllevel = row.insertCell(col++);
+        var celllevel1 = row.insertCell(col++);
+        var celldiamond = row.insertCell(col++);
+        var cellgold = row.insertCell(col++);
+        var celllingyao = row.insertCell(col++);
+        var celllingmu = row.insertCell(col++);
+        var celljingtie = row.insertCell(col++);
+        var cellmenggong = row.insertCell(col++);
+        var cellonline = row.insertCell(col++);
+
+        cellaccount.innerHTML = message.data[i]["996_1"];
+        // cellpassword.innerHTML=message.data[i]["0_1"];
+        cellname.innerHTML = message.data[i]["3_1"];
+        celluuid.innerHTML = message.data[i]["2_1"];
+        celllevel.innerHTML = message.data[i]["8_1"];
+        celllevel1.innerHTML = message.data[i]["12_1"];
+        cellgold.innerHTML = message.data[i]["10_1"];
+        celldiamond.innerHTML = message.data[i]["11_1"];
+        celllingyao.innerHTML = message.data[i]["20_1"];
+        celllingmu.innerHTML = message.data[i]["18_1"];
+        celljingtie.innerHTML = message.data[i]["19_1"];
+        cellmenggong.innerHTML = message.data[i]["44_1"];
+        cellonline.innerHTML = message.data[i]["999_1"];
+      }
+    }
+
+    socket.on('searchAccountRsp', function (content) {
+      AddMessage(content);
     });
-     socket.on('searchPlayerRsp',function(content)
-    {
-        AddPlayerMessage(content );
+    socket.on('searchPlayerRsp', function (content) {
+      AddPlayerMessage(content);
     });
-    socket.on('BannedPlayerRsp',function(content){
+    socket.on('BannedPlayerRsp', function (content) {
       alert(content);
     })
-    function FindByName (mousedown)
-    {
-	    	var x=document.getElementById("serverbox0").selectedIndex;
-		    var host = $my("serverbox0").value;
-        var port = $my("serverbox0")[x].getAttribute("port");
-        socket.emit('searchAccount', host,port,{ user: $my('accountName').value ,area:$my("serverbox0")[x].getAttribute("area") });
-        return false;
+    function FindByName(mousedown) {
+      var x = document.getElementById("serverbox0").selectedIndex;
+      var host = $my("serverbox0").value;
+      var port = $my("serverbox0")[x].getAttribute("port");
+      socket.emit('searchAccount', host, port, { user: $my('accountName').value, area: $my("serverbox0")[x].getAttribute("area") });
+      return false;
     }
 
-    function AddPlayerMessage(message)
-    {
-        $("#myTablePlayer tr:not(:first)").empty(""); 
-        var table=document.getElementById("myTablePlayer");
-        for(var i=0; i<message.data.length; i++)
-        {
-            var row=table.insertRow(1);
-            var col =0;
-            var cellname=row.insertCell(col++);
-            var celluuid=row.insertCell(col++);
-            var celllevel = row.insertCell(col++);
-            var celllevel1 = row.insertCell(col++);
-            var celldiamond = row.insertCell(col++);
-            var cellgold = row.insertCell(col++);
-            var celllingyao = row.insertCell(col++);
-            var celllingmu = row.insertCell(col++);
-            var celljingtie = row.insertCell(col++);
-            var cellmenggong = row.insertCell(col++);
-            var cellonline = row.insertCell(col++);
+    function AddPlayerMessage(message) {
+      $("#myTablePlayer tr:not(:first)").empty("");
+      var table = document.getElementById("myTablePlayer");
+      for (var i = 0; i < message.data.length; i++) {
+        var row = table.insertRow(1);
+        var col = 0;
+        var cellname = row.insertCell(col++);
+        var celluuid = row.insertCell(col++);
+        var celllevel = row.insertCell(col++);
+        var celllevel1 = row.insertCell(col++);
+        var celldiamond = row.insertCell(col++);
+        var cellgold = row.insertCell(col++);
+        var celllingyao = row.insertCell(col++);
+        var celllingmu = row.insertCell(col++);
+        var celljingtie = row.insertCell(col++);
+        var cellmenggong = row.insertCell(col++);
+        var cellonline = row.insertCell(col++);
 
 
-            cellname.innerHTML=message.data[i]["3_1"];
-            celluuid.innerHTML=message.data[i]["2_1"];
-            celllevel.innerHTML=message.data[i]["8_1"];
-            celllevel1.innerHTML=message.data[i]["12_1"];
-            cellgold.innerHTML=message.data[i]["10_1"];
-            celldiamond.innerHTML=message.data[i]["11_1"];
-            celllingyao.innerHTML=message.data[i]["20_1"];
-            celllingmu.innerHTML=message.data[i]["18_1"];
-            celljingtie.innerHTML=message.data[i]["19_1"];
-            cellmenggong.innerHTML=message.data[i]["44_1"];
-            cellonline.innerHTML=message.data[i]["999_1"];
-        }
+        cellname.innerHTML = message.data[i]["3_1"];
+        celluuid.innerHTML = message.data[i]["2_1"];
+        celllevel.innerHTML = message.data[i]["8_1"];
+        celllevel1.innerHTML = message.data[i]["12_1"];
+        cellgold.innerHTML = message.data[i]["10_1"];
+        celldiamond.innerHTML = message.data[i]["11_1"];
+        celllingyao.innerHTML = message.data[i]["20_1"];
+        celllingmu.innerHTML = message.data[i]["18_1"];
+        celljingtie.innerHTML = message.data[i]["19_1"];
+        cellmenggong.innerHTML = message.data[i]["44_1"];
+        cellonline.innerHTML = message.data[i]["999_1"];
+      }
     }
-   
-    function FindByPlayer (mousedown)
-    {
-		  	var x=document.getElementById("serverbox1").selectedIndex;
-	    	var host = $my("serverbox1").value;
-        var port = $my("serverbox1")[x].getAttribute("port");
-        socket.emit('searchPlayer', host,port,{ user: $my('PlayerName').value ,area:$my("serverbox1")[x].getAttribute("area") });
-        return false;
+
+    function FindByPlayer(mousedown) {
+      var x = document.getElementById("serverbox1").selectedIndex;
+      var host = $my("serverbox1").value;
+      var port = $my("serverbox1")[x].getAttribute("port");
+      socket.emit('searchPlayer', host, port, { user: $my('PlayerName').value, area: $my("serverbox1")[x].getAttribute("area") });
+      return false;
     }
-    </script>
+    function NoticeCommit() {
+      alert('commit notice');
+      var temp = document.createElement('form');
+      temp.action = GM_NOTICE_IP_PORT;
+      temp.method = 'post';
+      temp.style.display = 'none';
+      {
+        var opt = document.createElement('textarea');
+        opt.name = "title";
+        opt.value = $my("notice_title_id").value;
+        temp.appendChild(opt);
+      }
+      {
+        var opt = document.createElement('textarea');
+        opt.name = "context";
+        opt.value = $my("notice_content_id").value;
+        temp.appendChild(opt);
+      }
+      document.body.appendChild(temp);
+      temp.submit();
+    }
+    function GetServerList() {
+      alert('GetServerList');
+      socket.emit('GetServerList');
+    }
+    function ServerCommint() {
+      alert('ServerCommint');
+    }
+  </script>
 </body>

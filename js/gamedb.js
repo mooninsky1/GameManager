@@ -1,23 +1,24 @@
 var mssql = require("mssql");
-//var conf = require("./gameconfig.js");
-var conf = require("./config.js");
 
+/*
 var restoreDefaults = function () {
     conf.GM_SERVER_DB;
 };
-var getConnection = function(callback){//连接数据库
+*/
+var getConnection = function(dbconfig,callback){//连接数据库
     if(!callback){
         callback = function(){};
     }
-    var con = new mssql.ConnectionPool(conf.GM_SERVER_DB, function(err) {
+    var con = new mssql.ConnectionPool(dbconfig, function(err) {
         if (err) {
+            console.log("connect db faild"+JSON.stringify(dbconfig));
             throw err;
         }
         callback(con);
     });
 }
-var querySql = function (sql, params, callBack) {//写sql语句自由查询
-    getConnection(function(connection){
+var querySql = function (db,sql, params, callBack) {//写sql语句自由查询
+    getConnection(db,function(connection){
         var ps = new mssql.PreparedStatement(connection);
         if (params != "") {
             for (var index in params) {
@@ -40,7 +41,7 @@ var querySql = function (sql, params, callBack) {//写sql语句自由查询
             });
         });
     });
-    restoreDefaults();
+    //restoreDefaults();
 };
 
 
@@ -75,7 +76,7 @@ var select = function (tableName, topNumber, whereSql, params, orderSql, callBac
             });
         });
     });
-    restoreDefaults();
+    //restoreDefaults();
 };
 
 var selectAll = function (tableName, callBack) {//查询该表所有数据
@@ -94,7 +95,7 @@ var selectAll = function (tableName, callBack) {//查询该表所有数据
             });
         });
     });
-    restoreDefaults();
+    //restoreDefaults();
 };
 
 var add = function (addObj, tableName, callBack) {//添加数据
@@ -132,7 +133,7 @@ var add = function (addObj, tableName, callBack) {//添加数据
             });
         });
     });
-    restoreDefaults();
+    //restoreDefaults();
 };
 
 var update = function (updateObj, whereObj, tableName, callBack) {//更新数据
@@ -175,7 +176,7 @@ var update = function (updateObj, whereObj, tableName, callBack) {//更新数据
             });
         });
     });
-    restoreDefaults();
+    //restoreDefaults();
 };
 
 var del = function (whereSql, params, tableName, callBack) {//删除数据
@@ -204,14 +205,13 @@ var del = function (whereSql, params, tableName, callBack) {//删除数据
             });
         });
     });
-    restoreDefaults();
+    //restoreDefaults();
 };
 
-//exports.config = conf;
-exports.del = del;
-exports.select = select;
-exports.update = update;
+//exports.del = del;
+//exports.select = select;
+//exports.update = update;
 exports.querySql = querySql;
-exports.selectAll = selectAll;
-exports.restoreDefaults = restoreDefaults;
+//exports.selectAll = selectAll;
+//exports.restoreDefaults = restoreDefaults;
 exports.add = add;
