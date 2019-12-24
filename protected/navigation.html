@@ -504,6 +504,9 @@
         var date_end = new Date(date_value2 );
         var time1 = date_start.getTime() / 1000+ 8 * 60 * 60;
         var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
+         //插入日志也没有加8小时统一处理
+        //var time1 = date_start.getTime() / 1000;
+        //var time2 = date_end.getTime() / 1000;
         socket.emit('QueryLog', time1, time2);
       }
     }
@@ -518,11 +521,9 @@
         var date_start = new Date(date_value);
         //var date_end = new Date(date_value2 + ' 23:59:59:000 ');  //有具体时间了
         var date_end = new Date(date_value2 ); 
-        //var time1 = date_start.getTime() / 1000+ 8 * 60 * 60;
-        //var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
-        //插入日志也没有加8小时统一处理
-        var time1 = date_start.getTime() / 1000;
-        var time2 = date_end.getTime() / 1000;
+        var time1 = date_start.getTime() / 1000+ 8 * 60 * 60;
+        var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
+       
         socket.emit('QueryPayLog', time1, time2,actorid,zoneid);
       }
     }
