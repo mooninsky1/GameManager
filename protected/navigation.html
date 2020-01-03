@@ -661,7 +661,12 @@
       //alert("obj"+param.attachments);
 
       param.showStart = new Date().getTime();
-      param.showEnd = new Date().getTime() + $my('MailEndTime').value * 60 * 60 * 1000;
+      if($my('MailEndTime').value){
+        param.showEnd = param.showStart + $my('MailEndTime').value * 60 * 60 * 1000;
+      }
+      else{
+        param.showEnd = param.showStart +  60 * 60 * 1000;
+      }
 
       //var arg = document.getElementById("MailAttachments").value;
       //if(arg.length == 0)
