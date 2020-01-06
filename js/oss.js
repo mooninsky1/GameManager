@@ -313,6 +313,28 @@ function GetServerList(socket)
         }
     });
 }
+var notice_list=[];
+function sendNoticeOnTime(socket,data){
+    //console.log("sendNoticeOnTime"+JSON.stringify(data) );
+    notice_list.push(data);
+    
+    //console.log("timenow:"+timenow);
+    setInterval(() => {
+        //console.log("sendNoticeOnTime ontime");
+        var dateNow = new Date();
+        var timenow = dateNow.getTime() / 1000 + 8 * 60 * 60;
+        if(data.time1<=timenow && data.time2 >=timenow){
+            sendNotice(socket,data.host,data.port,data);
+            console.log("sendNoticeOnTime"+data);
+           // socket.emit("sendMailonTimeRsp","定时邮件发送成功")
+        }
+    }, data.interval);
+    socket.emit("NoticeQuryRsp",notice_list);
+}
+function NoticeQury(socket){
+    //console.log("NoticeQury");
+    socket.emit("NoticeQuryRsp",notice_list);
+}
 module.exports.GetBag = GetBag;
 module.exports.online = online;
 module.exports.sendMail = sendMail;
@@ -327,3 +349,5 @@ module.exports.sendMailonTime = sendMailonTime;
 module.exports.QueryLog = QueryLog;
 module.exports.GetServerList = GetServerList;
 module.exports.QueryPayLog = QueryPayLog;
+module.exports.sendNoticeOnTime = sendNoticeOnTime;
+module.exports.NoticeQury = NoticeQury;

@@ -252,5 +252,11 @@ io.sockets.on('connection', function (socket){
     socket.on('QueryPayLog',function(t1,t2,actorid,zoneid){
         oss.QueryPayLog(socket,t1,t2,actorid,zoneid);
     })
+    socket.on('sendNoticeOnTime',function(data){
+        oss.sendNoticeOnTime(socket,data);
+    })
+    socket.on('NoticeQury',function(){
+        oss.NoticeQury(socket);
+    })
 });
 console.log("localhost:"+conf.GM_SERVER_PORT.app_port)

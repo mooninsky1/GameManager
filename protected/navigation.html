@@ -314,7 +314,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <form class="navbar-form navbar-left" role="search">
           <div class="form-group">
-              <select id="serverbox7" class="form-control"> </select>
+            <select id="serverbox7" class="form-control"> </select>
             <input type="text" class="layui-input" placeholder="开始日期" id="date_Pay_begin">
             <input type="text" class="layui-input" placeholder="结束日期" id="date_Pay_end">
             <input type="text" class="form-control" id="pay_actior_id" placeholder="请输入要查询的角色ID"
@@ -406,14 +406,58 @@
       </ul>
     </div>
 
+    <div title="游戏跑马灯公告" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <select id="serverbox8" class="form-control" style="width:100px;"> </select>
+            <li>时间段</li>
+            <input type="text" class="layui-input" placeholder="开始时间" id="date_note_begin">
+            <input type="text" class="layui-input" placeholder="结束时间" id="date_note_end">
+            <li>播放间隔(秒)</li>
+            <input type="text" class="form-control" style="width:100px;" placeholder="播放间隔(秒)" id="note_interval">
+            <br></br>
+            <input type = "text" class="form-control" id = "NoticeContent" placeholder="公告内容少于40个汉字"  />
+          </div>
+          <button type="button" class="btn btn-default" onclick="NoticeCommit1()">提交</button>
+          <button type="button" class="btn btn-default" onclick="NoticeQury()">查询</button>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+              <table class="table" id="myTableNotice">
+                <thead>
+                  <tr>
+                    <th>编号</th>
+                    <th>服务器</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>播放间隔(秒)</th>
+                    <th>公告内容</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </ul>
+    </div>
+
     <div title="其他" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
       <ul class="nav navbar-nav">
         <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
           <div>
             <!--button type="button" class="btn btn-default"  onclick="window.open('online.1.html')" >实时在线</button-->
-            <button type="button" class="btn btn-default"
-              onclick="window.open('http://134.175.152.108:7656/')">公告上传</button>
-            <button type="button" class="btn btn-default" onclick="window.open('mail.html')">定时发放邮件</button>
+            <!--button type="button" class="btn btn-default" onclick="window.open('http://134.175.152.108:7656/')">公告上传</button-->
+            <!--button type="button" class="btn btn-default" onclick="window.open('mail.html')">定时发放邮件</button-->
             <button type="button" class="btn btn-default" onclick="window.open('notice.html')">实时公告</button>
             <!--button type="button" class="btn btn-default"  onclick="window.open('mail_post.html')" >使用http post 定时发放邮件</button-->
           </div>
@@ -476,7 +520,7 @@
     $(document).ready(function () {
       //document.getElementById("serverbox3").options.add(new Option("abc","123"));
       //var UIlist = [ "serverbox0","serverbox1","serverbox2","serverbox3","serverbox4","serverbox5","serverbox6"];
-      var UIlist = ["serverbox0", "serverbox1", "serverbox3", "serverbox4", "serverbox5", "serverbox6","serverbox7"];
+      var UIlist = ["serverbox0", "serverbox1", "serverbox3", "serverbox4", "serverbox5", "serverbox6","serverbox7","serverbox8"];
       for (var i = 0; i < UIlist.length; i++) {
         ShowServerList(UIlist[i], severlist);
       }
@@ -488,6 +532,7 @@
         op.setAttribute("value", severlist[i]["value"]);                   // 设置OPTION的 VALUE 
         op.setAttribute("area", severlist[i]["area"]);
         op.setAttribute("port", severlist[i]["port"]);
+        op.setAttribute("text", severlist[i]["name"]);
         op.appendChild(document.createTextNode(severlist[i]["name"])); // 设置OPTION的 TEXT
         for (var j = 0; j < 4; j++) {
           document.getElementById(UI).appendChild(op);           // 为SELECT 新建一 OPTION(op)
@@ -921,6 +966,32 @@
       }
     }
 
+    function AddNoticeMessage(message) {
+      $("#myTableNotice tr:not(:first)").empty("");
+      var table = document.getElementById("myTableNotice");
+      
+      for (var i = 0; i < message.length; i++) {
+        var row = table.insertRow(i+1);
+        var col = 0;
+        var cellid = row.insertCell(col++);
+        var cellserver = row.insertCell(col++);
+        var celltime1 = row.insertCell(col++);
+        var celltime2 = row.insertCell(col++);
+        var cellinterval = row.insertCell(col++);
+        var cellcontext = row.insertCell(col++);
+       
+        cellid.innerHTML = i+1;
+        cellserver.innerHTML = message[i]["server"];
+        var t1_date = new Date((message[i]["time1"]-8*60*60)*1000).toLocaleString(); 
+        var t2_date = new Date((message[i]["time2"]-8*60*60)*1000).toLocaleString(); 
+        cellinterval.innerHTML = message[i]["interval"]/1000;
+        celltime1.innerHTML = t1_date;
+        celltime2.innerHTML = t2_date;
+        cellcontext.innerHTML = message[i]["content"];
+      }
+      
+    }
+
     function FindByPlayer(mousedown) {
       var x = document.getElementById("serverbox1").selectedIndex;
       var host = $my("serverbox1").value;
@@ -956,5 +1027,42 @@
     function ServerCommint() {
       alert('ServerCommint');
     }
+    function NoticeCommit1() {
+        var date_value = document.getElementById("date_note_begin").value;
+        var date_value2 = document.getElementById("date_note_end").value;
+        var date_value3 = document.getElementById("note_interval").value;
+        if (date_value != "" && date_value2 != "" && date_value3 != "") {
+          var date_start = new Date(date_value);
+          var date_end = new Date(date_value2);
+          var time1 = date_start.getTime() / 1000 + 8 * 60 * 60;
+          var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
+          var dateNow = new Date();
+          var timenow = dateNow.getTime() / 1000 + 8 * 60 * 60;
+          if(time2<=timenow || time2 <= time1){
+            alert("时间设置有误，请确认!");
+            return;
+          }
+          var x = document.getElementById("serverbox8").selectedIndex;
+          var host = $my("serverbox8").value;
+          var port = $my("serverbox8")[x].getAttribute("port");
+          var param = {};
+          param.time1 = time1;
+          param.time2 = time2;
+          param.interval = date_value3*1000;
+          param.host = host;
+          param.port = port;
+          param.content = document.getElementById("NoticeContent").value;
+          param.server= $my("serverbox8")[x].getAttribute("text");
+          //alert("sendNoticeOnTime"+JSON.stringify(param) )
+          socket.emit('sendNoticeOnTime', param);
+        }
+      }
+    function NoticeQury(){
+      socket.emit('NoticeQury');
+    }
+    socket.on('NoticeQuryRsp', function (content) {
+      //alert(JSON.stringify(content) );
+      AddNoticeMessage(content);
+    })
   </script>
 </body>
