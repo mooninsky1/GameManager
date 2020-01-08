@@ -313,6 +313,20 @@ function GetServerList(socket)
         }
     });
 }
+function UpdateServerStat(socket, data) {
+    var sql = "update server set name=" + "'"+data.name +"'" + ", stat =" + data.stat + ", flag=" + data.flag + ", [open]=" + data.open+" where id="+data.id;
+    console.log(sql);
+    logdb.querySql(sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            console.log(result);
+            socket.emit("UpdateServerStatRsp")
+        }
+    });
+}
+
 var notice_list=[];
 function sendNoticeOnTime(socket,data){
     //console.log("sendNoticeOnTime"+JSON.stringify(data) );
@@ -348,6 +362,7 @@ module.exports.sendNotice = sendNotice;
 module.exports.sendMailonTime = sendMailonTime;
 module.exports.QueryLog = QueryLog;
 module.exports.GetServerList = GetServerList;
+module.exports.UpdateServerStat = UpdateServerStat;
 module.exports.QueryPayLog = QueryPayLog;
 module.exports.sendNoticeOnTime = sendNoticeOnTime;
 module.exports.NoticeQury = NoticeQury;

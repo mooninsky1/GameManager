@@ -385,12 +385,16 @@
                     <th>编号</th>
                     <th>服务器名字</th>
                     <th>服务器状态</th>
+                    <th>是否推荐</th>
                     <th>是否显示</th>
+                    <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
                     <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -400,7 +404,7 @@
               </table>
             </div>
           </div>
-          <button type="button" class="btn btn-default" onclick="ServerCommit()">提交</button>
+          <!--button type="button" class="btn btn-default" onclick="ServerCommit()">提交</button-->
         </div>
 
       </ul>
@@ -458,7 +462,7 @@
             <!--button type="button" class="btn btn-default"  onclick="window.open('online.1.html')" >实时在线</button-->
             <!--button type="button" class="btn btn-default" onclick="window.open('http://134.175.152.108:7656/')">公告上传</button-->
             <!--button type="button" class="btn btn-default" onclick="window.open('mail.html')">定时发放邮件</button-->
-            <button type="button" class="btn btn-default" onclick="window.open('notice.html')">实时公告</button>
+            <!--button type="button" class="btn btn-default" onclick="window.open('notice.html')">实时公告</button-->
             <!--button type="button" class="btn btn-default"  onclick="window.open('mail_post.html')" >使用http post 定时发放邮件</button-->
           </div>
         </div>
@@ -581,7 +585,7 @@
       AddPayLogMessage(content);
     })
     socket.on('GetServerListRsp', function (content) {
-      alert('GetServerListRsp')
+      //alert('GetServerListRsp')
       AddServerListMessage(content);
     })
     function GetBag() {
@@ -704,13 +708,13 @@
       }
       param.attachments = JSON.parse(arg);
       //alert("obj"+param.attachments);
-
-      param.showStart = new Date().getTime();
+      //使用服务器的时间
+      //param.showStart = new Date().getTime();
       if($my('MailEndTime').value){
-        param.showEnd = param.showStart + $my('MailEndTime').value * 60 * 60 * 1000;
+        param.showEnd = $my('MailEndTime').value * 60 * 60 * 1000;
       }
       else{
-        param.showEnd = param.showStart +  60 * 60 * 1000;
+        param.showEnd = 60 * 60 * 1000;
       }
 
       //var arg = document.getElementById("MailAttachments").value;
@@ -804,27 +808,81 @@
       return false;
     }
     function AddServerListMessage(message) {
-      alert('AddServerListMessage:' + message.recordset.length)
+      //alert('AddServerListMessage:' + message.recordset.length)
       $("#myTableServerList tr:not(:first)").empty("");
       var table = document.getElementById("myTableServerList");
-      for (var i = 0; i < message.recordsets.length; i++) {
-        var row = table.insertRow(1);
+      for (var i = 0; i < message.recordset.length; i++) {
+        var row = table.insertRow(i+1);
         var col = 0;
         var cellid = row.insertCell(col++);
         var cellname = row.insertCell(col++);
         var cellstat = row.insertCell(col++);
         var cellflag = row.insertCell(col++);
         var cellopen = row.insertCell(col++);
-
+        var cellbtn =  row.insertCell(col++);
         //alert( JSON.stringify(message.recordset[i]) );
         cellid.innerHTML = message.recordset[i]["id"];
-        cellname.innerHTML = '<input value=' + message.recordset[i]["name"] + '></input>'; //message.recordset[i]["name"];
-        cellstat.innerHTML = '<select >  <option value ="1">正常</option>    <option value ="2">爆满</option>  <option value="3">维护</option>   <option value="4">关闭</option></select> ';
-        //'message.recordset[i]["stat"];
-        cellflag.innerHTML = message.recordset[i]["flag"];
+        cellname.innerHTML = '<input value=' + message.recordset[i]["name"] + '>'; //message.recordset[i]["name"];
+        
+        if(message.recordset[i]["stat"] == 1){
+          cellstat.innerHTML = '<select >  <option value ="1" selected>正常</option>    <option value ="2">爆满</option>  <option value="3">维护</option>   <option value="4">关闭</option>  </select> ';
+        }
+        if(message.recordset[i]["stat"] == 2){
+          cellstat.innerHTML = '<select >  <option value ="1">正常</option>    <option value ="2" selected>爆满</option>  <option value="3">维护</option>   <option value="4">关闭</option>  </select> ';
+        }
+        if(message.recordset[i]["stat"] == 3){
+          cellstat.innerHTML = '<select >  <option value ="1">正常</option>    <option value ="2">爆满</option>  <option value="3" selected>维护</option>   <option value="4">关闭</option>  </select> ';
+        }
+        if(message.recordset[i]["stat"] == 4){
+          cellstat.innerHTML = '<select >  <option value ="1">正常</option>    <option value ="2">爆满</option>  <option value="3">维护</option>   <option value="4" selected>关闭</option>  </select> ';
+        }
+        cellflag.innerHTML = '<input value=' +message.recordset[i]["flag"] + '>';
+        if(message.recordset[i]["flag"] == 1){
+          cellflag.innerHTML = '<select >  <option value ="1" selected>推荐</option>    <option value ="0">不推荐</option>   </select> ';
+        }
+        else{
+          cellflag.innerHTML = '<select >  <option value ="1">推荐</option>    <option value ="0" selected>不推荐</option>   </select> ';
+        }
+        if(message.recordset[i]["open"] == 1){
+          cellopen.innerHTML = '<select >  <option value ="1" selected>显示</option>    <option value ="0">不显示</option>   </select> ';
+        }
+        else{
+          cellopen.innerHTML = '<select >  <option value ="1">显示</option>    <option value ="0" selected>不显示</option>   </select> ';
+        }
+        cellbtn.innerHTML = '<button onclick=UpdateServerStat('+message.recordset[i]["id"]+','+i+')>修改</button>';
 
       }
     }
+    function UpdateServerStat(id,index) {
+        //alert("UpdateServerStat:" + index);
+        var table = document.getElementById("myTableServerList"); //获得整个表格对象
+        //编号col=0不可修改
+        var param={};
+        //param.id=index+1;
+        param.id=id;
+        //console.log("id:"+id+"indx:"+index);
+        for (var col = 1; col < 5; col++) {
+          if(col==1){
+            param.name=table.rows[index+1].cells[col].childNodes[0].value;
+          }
+          else if(col == 2){
+            param.stat=table.rows[index+1].cells[col].childNodes[0].value;
+          }
+          else if(col == 3){
+            param.flag=table.rows[index+1].cells[col].childNodes[0].value;
+          }
+          else if(col == 4){
+            param.open=table.rows[index+1].cells[col].childNodes[0].value;
+          }
+          //console.log(table.rows[index+1].cells[col].childNodes[0].value);
+        }
+        var loginuser = getCookieArray('loginuser');
+        param.loginuser = loginuser;
+        socket.emit('UpdateServerStat',param);
+      }
+      socket.on("UpdateServerStatRsp",function(){
+        alert("修改成功");
+      })
     function AddLogMessage(message) {
       $("#myTableLog tr:not(:first)").empty("");
       var table = document.getElementById("myTableLog");
@@ -1021,11 +1079,20 @@
       temp.submit();
     }
     function GetServerList() {
-      alert('GetServerList');
+      //alert('GetServerList');
       socket.emit('GetServerList');
     }
-    function ServerCommint() {
-      alert('ServerCommint');
+    function ServerCommit() {
+        var table = document.getElementById("myTableServerList"); //获得整个表格对象
+        console.log(JSON.stringify(table.rows[1].innerHTML));
+        for (var i = 1; i < table.rows.length-1; i++) {
+          //表格的第i行，第2列
+          for (var j = 0; j < 4; j++) {
+            //table.rows[i].cells[j].innerText.trim(" ");
+            //console.log(table.rows[i].cells[j].innerHTML);
+            console.log(table.rows[i].cells[j].childNodes[0].value);
+          }
+        }
     }
     function NoticeCommit1() {
         var date_value = document.getElementById("date_note_begin").value;

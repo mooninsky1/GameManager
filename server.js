@@ -214,12 +214,15 @@ io.sockets.on('connection', function (socket){
         delete data.loginuser;
         write_log(loginuser,'封号',JSON.stringify(data));
     })
-    socket.on('sendMail',function(host,port,data){
-        console.log('sendMail:');
-        oss.sendMail(socket,host,port,data);
+    socket.on('sendMail', function (host, port, data) {
+        //console.log('sendMail:');
+        //邮件使用服务器时间
+        data.showStart = new Date().getTime();
+        data.showEnd += data.showStart;
+        oss.sendMail(socket, host, port, data);
         loginuser = data.loginuser;
         delete data.loginuser;
-        write_log(loginuser,'发送邮件',JSON.stringify(data));
+        write_log(loginuser, '发送邮件', JSON.stringify(data));
     })
     socket.on('online',function(host,port){
         console.log('online');
@@ -248,6 +251,13 @@ io.sockets.on('connection', function (socket){
     socket.on('GetServerList',function(){
         console.log('GetServerList');
         oss.GetServerList(socket);
+    })
+    socket.on('UpdateServerStat',function(data){
+        console.log('UpdateServerStat');
+        oss.UpdateServerStat(socket,data);
+        loginuser = data.loginuser;
+        delete data.loginuser;
+        write_log(loginuser, '修改服务器状态', JSON.stringify(data));
     })
     socket.on('QueryPayLog',function(t1,t2,actorid,zoneid){
         oss.QueryPayLog(socket,t1,t2,actorid,zoneid);
