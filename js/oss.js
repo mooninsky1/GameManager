@@ -56,10 +56,11 @@ function QueryPayLog(socket, timestart, timeend, actorid,zoneid) {
         console.log("QueryPayLog zonid error");
         return;
     }
-    var sql = "SELECT  a.* ,b.NickName  from pay as a LEFT JOIN actor as b ON a.actorid=b.ActorID where state <> 1 and DATEDIFF(SECOND, '1970-1-1', [lupdate]) >= "+timestart+" and DATEDIFF(SECOND, '1970-1-1', [lupdate]) <= "+timeend+" ORDER BY lupdate";
+    var sql = "SELECT  a.* ,b.NickName  from pay as a LEFT JOIN actor as b ON a.actorid=b.ActorID where state <> 1 and DATEDIFF(SECOND, '1970-1-1', [lupdate]) >= "+timestart+" and DATEDIFF(SECOND, '1970-1-1', [lupdate]) <= "+timeend+"  ";
     if(actorid){
         sql += "and a.actorid = "+actorid+" ";
     }
+    sql +="  ORDER BY lupdate DESC "
     console.log(sql);
     gamedb.querySql(config.PAY_LOG_DB_list[zoneid-1], sql, "", function (err, result) {//查询所有users表的数据
         if (err) {

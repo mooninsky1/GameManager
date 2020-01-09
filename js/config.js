@@ -16,6 +16,8 @@ var GM_Account_DB = {
 };
 var PAY_LOG_DB_list = [ 
 {user:'sa', password:'123456', server:'192.168.1.128', database: 'hygame_region_1', port: 1433, options: {  encrypt: true},    pool: {   min: 0,  max: 10,  idleTimeoutMillis: 3000  }},
+{user:'sa', password:'123456', server:'192.168.1.128', database: 'hygame_region_1', port: 1433, options: {  encrypt: true},    pool: {   min: 0,  max: 10,  idleTimeoutMillis: 3000  }},
+{user:'sa', password:'123456', server:'192.168.1.128', database: 'hygame_region_lhf1', port: 1433, options: {  encrypt: true},    pool: {   min: 0,  max: 10,  idleTimeoutMillis: 3000  }},
 ];
 //游戏服务器数据库
 var GM_SERVER_DB = {
@@ -42,7 +44,7 @@ var GM_LOGSERVER_DB = {
 };
 //GM服务器监听端口
 var GM_SERVER_PORT = {
-    app_port : 8082,            //浏览器端口
+    app_port : 8060,            //浏览器端口
     socket_io_port : 8081,      //浏览器跟后端node.js 使用socket.io通信端口
 };
 
