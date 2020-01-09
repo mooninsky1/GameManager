@@ -56,7 +56,7 @@ function QueryPayLog(socket, timestart, timeend, actorid,zoneid) {
         console.log("QueryPayLog zonid error");
         return;
     }
-    var sql = "SELECT  a.* ,b.NickName  from pay as a LEFT JOIN actor as b ON a.actorid=b.ActorID where DATEDIFF(SECOND, '1970-1-1', [lupdate]) >= "+timestart+" and DATEDIFF(SECOND, '1970-1-1', [lupdate]) <= "+timeend+" ";
+    var sql = "SELECT  a.* ,b.NickName  from pay as a LEFT JOIN actor as b ON a.actorid=b.ActorID where state <> 1 and DATEDIFF(SECOND, '1970-1-1', [lupdate]) >= "+timestart+" and DATEDIFF(SECOND, '1970-1-1', [lupdate]) <= "+timeend+" ORDER BY lupdate";
     if(actorid){
         sql += "and a.actorid = "+actorid+" ";
     }

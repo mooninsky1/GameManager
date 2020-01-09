@@ -733,6 +733,10 @@
       //}
       //alert("sendMail")
       var loginuser = getCookieArray('loginuser');
+      if(loginuser == null){
+        alert("登录超时请重新登录!");
+        return;
+      }
       param.loginuser = loginuser;
 
       if (param.to == "") {
@@ -778,6 +782,10 @@
       param.time = document.getElementById("Kickparam1").value;
       param.mode = "";
       param.loginuser = getCookieArray('loginuser');
+      if(param.loginuser == null){
+        alert("登录超时请重新登录!");
+        return;
+      }
       socket.emit('BannedPlayer', host, port, param);
     }
     function KickPlayer() {
@@ -789,6 +797,10 @@
       var updataparam = {};
       updataparam.uid = ActoridText.value;
       updataparam.loginuser = getCookieArray('loginuser');
+      if(updataparam.loginuser == null){
+        alert("登录超时请重新登录!");
+        return;
+      }
       socket.emit('KickPlayer', host, port, updataparam);
     }
     function UpdatePlayer(mousedown) {
@@ -804,6 +816,10 @@
       var host = $my("serverbox2").value
       var port = $my("serverbox2")[x].getAttribute("port");
       updataparam.loginuser = getCookieArray('loginuser');
+      if(updataparam.loginuser == null){
+        alert("登录超时请重新登录!");
+        return;
+      }
       socket.emit('updatePlayer', host, port, updataparam);
       return false;
     }
@@ -877,6 +893,10 @@
           //console.log(table.rows[index+1].cells[col].childNodes[0].value);
         }
         var loginuser = getCookieArray('loginuser');
+        if(loginuser == null){
+          alert("登录超时请重新登录!");
+          return;
+        }
         param.loginuser = loginuser;
         socket.emit('UpdateServerStat',param);
       }

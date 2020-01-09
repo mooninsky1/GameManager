@@ -195,33 +195,47 @@ io.sockets.on('connection', function (socket){
     
     socket.on('updatePlayer',function(host,port,data)
     {
-        oss.updatePlayer(socket,host,port,data);
         loginuser = data.loginuser;
+        if(loginuser == null){
+            console.log("登录超时请重新登录!");
+            return;
+        }
         delete data.loginuser;
+        oss.updatePlayer(socket,host,port,data);
         write_log(loginuser,'修改属性',JSON.stringify(data));
     });
     socket.on('KickPlayer',function(host,port,data)
     {
-        console.log('KickPlayer')
-        oss.KickPlayer(socket,host,port,data);
         loginuser = data.loginuser;
+        if(loginuser == null){
+            console.log("登录超时请重新登录!");
+            return;
+        }
         delete data.loginuser;
+        oss.KickPlayer(socket,host,port,data);
         write_log(loginuser,'踢人',JSON.stringify(data));
     })
     socket.on('BannedPlayer',function(host,port,data){
-        oss.BannedPlayer(socket,host,port,data);
         loginuser = data.loginuser;
+        if(loginuser == null){
+            console.log("登录超时请重新登录!");
+            return;
+        }
         delete data.loginuser;
+        oss.BannedPlayer(socket,host,port,data);
         write_log(loginuser,'封号',JSON.stringify(data));
     })
     socket.on('sendMail', function (host, port, data) {
-        //console.log('sendMail:');
+        loginuser = data.loginuser;
+        if(loginuser == null){
+            console.log("登录超时请重新登录!");
+            return;
+        }
+        delete data.loginuser;
         //邮件使用服务器时间
         data.showStart = new Date().getTime();
         data.showEnd += data.showStart;
         oss.sendMail(socket, host, port, data);
-        loginuser = data.loginuser;
-        delete data.loginuser;
         write_log(loginuser, '发送邮件', JSON.stringify(data));
     })
     socket.on('online',function(host,port){
@@ -253,10 +267,13 @@ io.sockets.on('connection', function (socket){
         oss.GetServerList(socket);
     })
     socket.on('UpdateServerStat',function(data){
-        console.log('UpdateServerStat');
-        oss.UpdateServerStat(socket,data);
         loginuser = data.loginuser;
+        if(loginuser == null){
+            console.log("登录超时请重新登录!");
+            return;
+        }
         delete data.loginuser;
+        oss.UpdateServerStat(socket,data);
         write_log(loginuser, '修改服务器状态', JSON.stringify(data));
     })
     socket.on('QueryPayLog',function(t1,t2,actorid,zoneid){
