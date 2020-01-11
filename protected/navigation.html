@@ -333,6 +333,7 @@
                 <th>角色名字</th>
                 <th>游戏支付订单ID</th>
                 <th>平台支付订单ID</th>
+                <th>商品ID</th>
                 <th>支付状态1:创建订单，2:平台通知，3:充值完成</th>
                 <th>充值金额(分)</th>
                 <th>时间</th>
@@ -341,6 +342,7 @@
             <tbody>
               <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -942,6 +944,7 @@
           var cellactorname = row.insertCell(col++);
           var cellcpid = row.insertCell(col++);
           var cellplatid = row.insertCell(col++);
+          var cellproductid = row.insertCell(col++);
           var cellstat = row.insertCell(col++);
           var cellMoney = row.insertCell(col++);
           var celltime = row.insertCell(col++);
@@ -952,6 +955,7 @@
           cellactorname.innerHTML = message.recordset[i]["NickName"];
           cellcpid.innerHTML = message.recordset[i]["payorder"];
           cellplatid.innerHTML = message.recordset[i]["channel_order"];
+          cellproductid.innerHTML = message.recordset[i]["paytype"];
           cellstat.innerHTML = message.recordset[i]["state"];
           cellMoney.innerHTML = message.recordset[i]["total_fee"];
           var logdate = new Date(message.recordset[i]["logtime"]); 
