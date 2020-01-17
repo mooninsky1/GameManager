@@ -315,7 +315,7 @@ function GetServerList(socket)
     });
 }
 function UpdateServerStat(socket, data) {
-    var sql = "update server set name=" + "'"+data.name +"'" + ", stat =" + data.stat + ", flag=" + data.flag + ", [open]=" + data.open+" where id="+data.id;
+    var sql = "update server set name=" + "'"+data.name +"'" + ", stat =" + data.stat + ", flag=" + data.flag + ", [open]=" + data.open+", [tips]="  + "'"+data.tips +"'"+" where id="+data.id;
     console.log(sql);
     logdb.querySql(sql, "", function (err, result) {//查询所有users表的数据
         if (err) {

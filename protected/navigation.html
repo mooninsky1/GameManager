@@ -389,12 +389,14 @@
                     <th>服务器状态</th>
                     <th>是否推荐</th>
                     <th>是否显示</th>
+                    <th>状态提示语</th>
                     <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
                     <td>1</td>
+                    <td>0</td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -837,6 +839,7 @@
         var cellstat = row.insertCell(col++);
         var cellflag = row.insertCell(col++);
         var cellopen = row.insertCell(col++);
+        var celltips = row.insertCell(col++);
         var cellbtn =  row.insertCell(col++);
         //alert( JSON.stringify(message.recordset[i]) );
         cellid.innerHTML = message.recordset[i]["id"];
@@ -867,6 +870,7 @@
         else{
           cellopen.innerHTML = '<select >  <option value ="1">显示</option>    <option value ="0" selected>不显示</option>   </select> ';
         }
+        celltips.innerHTML = '<input value=' + message.recordset[i]["tips"] + '>'; 
         cellbtn.innerHTML = '<button onclick=UpdateServerStat('+message.recordset[i]["id"]+','+i+')>修改</button>';
 
       }
@@ -879,7 +883,7 @@
         //param.id=index+1;
         param.id=id;
         //console.log("id:"+id+"indx:"+index);
-        for (var col = 1; col < 5; col++) {
+        for (var col = 1; col < 6; col++) {
           if(col==1){
             param.name=table.rows[index+1].cells[col].childNodes[0].value;
           }
@@ -891,6 +895,9 @@
           }
           else if(col == 4){
             param.open=table.rows[index+1].cells[col].childNodes[0].value;
+          }   
+          else if(col == 5){
+            param.tips=table.rows[index+1].cells[col].childNodes[0].value;
           }
           //console.log(table.rows[index+1].cells[col].childNodes[0].value);
         }
