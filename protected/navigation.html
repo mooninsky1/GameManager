@@ -14,6 +14,7 @@
   <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
   <script type="text/javascript" src="echarts.js"></script>
   <script type="text/javascript" src="client.js"></script>
+  <script type="text/javascript" src="common.js"></script>
   <script src="laydate.js"></script>
   <script src="socket.io.js"> </script>
 </head>
@@ -425,26 +426,66 @@
             <li>播放间隔(秒)</li>
             <input type="text" class="form-control" style="width:100px;" placeholder="播放间隔(秒)" id="note_interval">
             <br></br>
-            <input type = "text" class="form-control" id = "NoticeContent" placeholder="公告内容少于40个汉字"  />
+            <input type="text" class="form-control" id="NoticeContent" placeholder="公告内容少于40个汉字" />
           </div>
           <button type="button" class="btn btn-default" onclick="NoticeCommit1()">提交</button>
           <button type="button" class="btn btn-default" onclick="NoticeQury()">查询</button>
         </div>
         <div class="row clearfix">
+          <div class="col-md-12 column">
+            <table class="table" id="myTableNotice">
+              <thead>
+                <tr>
+                  <th>编号</th>
+                  <th>服务器</th>
+                  <th>开始时间</th>
+                  <th>结束时间</th>
+                  <th>播放间隔(秒)</th>
+                  <th>公告内容</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ul>
+    </div>
+
+    <div title="活动修改" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <select id="serverbox9" class="form-control"> </select>
+            <button type="button" class="btn btn-default" id="GetActiveList" onclick="GetActiveList()">拉取活动列表</button>
+          </div>
+          <div class="row clearfix">
             <div class="col-md-12 column">
-              <table class="table" id="myTableNotice">
+              <table class="table" id="myTableActiveList">
                 <thead>
                   <tr>
                     <th>编号</th>
+                    <th>活动名称</th>
+                    <th>活动开始时间</th>
+                    <th>活动结束时间</th>
+                    <th>limitValue</th>
+                    <th>活动第几轮</th>
                     <th>服务器</th>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>播放间隔(秒)</th>
-                    <th>公告内容</th>
+                    <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                    <td>1</td>
+                    <td>0</td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -452,10 +493,170 @@
                     <td>0</td>
                     <td>0</td>
                   </tr>
+
                 </tbody>
               </table>
             </div>
           </div>
+        </div>
+      </ul>
+    </div>
+
+    <div title="活动增加" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group">
+          <select id="serverbox10" class="form-control"> </select>
+
+          <select id="PropBox" class="form-control" style="display:inline;">
+            <option value="10">累计充值</option>
+            <option value="12">道庭令</option>
+          </select>
+          <input type="text" class="layui-input" placeholder="开始日期" id="activity_date_begin">
+          <input type="text" class="layui-input" placeholder="结束日期" id="activity_date_end">
+          <input type="text" class="form-control" id="activity_param1" placeholder="limitValue"
+            onkeyup="value=value.replace(/[^\d]/g,'') " />
+          <input type="text" class="form-control" id="activity_param2" placeholder="countFlag"
+            onkeyup="value=value.replace(/[^\d]/g,'') " />
+          <button type="button" class="btn btn-default" id="AddActivityBtn" onclick="AddActivity()">提交活动</button>
+          <button type="button" class="btn btn-default" id="AddActivityRewardBtn"
+            onclick="AddActivityReward()">增加奖励</button>
+
+        </div>
+
+        <div class="row clearfix">
+          <div class="col-md-12 column">
+            <table class="table" id="myTableActiveList">
+              <thead>
+                <tr>
+                  <th>奖励编号</th>
+                  <th>道具1ID</th>
+                  <th>道具1数量</th>
+                  <th>道具2ID</th>
+                  <th>道具2数量</th>
+                  <th>道具3ID</th>
+                  <th>道具3数量</th>
+                  <th>道具4ID</th>
+                  <th>道具4数量</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </ul>
+    </div>
+
+    <div title="活动奖励修改" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <select id="serverbox11" class="form-control"> </select>
+            <input type="text" class="form-control" id="find_activityid" placeholder="输入活动的id编码"
+              onkeyup="value=value.replace(/[^\d]/g,'') " />
+            <button type="button" class="btn btn-default" id="GetActiveRewardListBtn"
+              onclick="GetActiveRewardList()">拉取活动奖励列表</button>
+          </div>
+          <div>
+            <input type="text" class="form-control" readonly id="activid" value="" />
+            <input type="text" class="form-control" readonly id="activid" value="" />
+            <input type="text" class="form-control" readonly id="activid" value="" />
+            <input type="text" class="form-control" readonly id="activid" value="" />
+            <input type="text" class="form-control" readonly id="activid" value="" />
+          </div>
+          <div class="row clearfix">
+            <div class="col-md-12 column">
+              <table class="table" id="myTableActiveList">
+                <thead>
+                  <tr>
+                    <th>奖励编号</th>
+                    <th>道具1ID</th>
+                    <th>道具1数量</th>
+                    <th>道具2ID</th>
+                    <th>道具2数量</th>
+                    <th>道具3ID</th>
+                    <th>道具3数量</th>
+                    <th>道具4ID</th>
+                    <th>道具4数量</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </ul>
+    </div>
+
+    <div title="服务器白名单开关" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <select id="serverbox12" class="form-control"> </select>
+            <input type="text" class="form-control" readonly id="WhiteList" value="白名单状态：" />
+          </div>
+          <button type="button" class="btn btn-default" onclick="WhiteListQuery()">查询</button>
+          <button type="button" class="btn btn-default" onclick="WhiteListOpen()">开启</button>
+          <button type="button" class="btn btn-default" onclick="WhiteListClose()">关闭</button>
+        </div>
+      </ul>
+    </div>
+
+    <div title="客户端资源更新" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <p>
+              客户端版更新状态:
+            </p>
+            <select id="ClientUpdateBox" class="form-control" style="display:inline;">
+              <option value="1">正常</option>
+              <option value="2">预更新</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-default" onclick="ClientUpdateQuery()">查询</button>
+          <button type="button" class="btn btn-default" onclick="ClientUpdateSet()">修改</button>
+    
+          <div>
+            <br>
+            </br>
+            <p>
+              客户端版本号:
+            </p>
+            <input type="text" class="form-control" id="ClientVersion" value="" />
+          </div>
+          <button type="button" class="btn btn-default" onclick="ClientVersionQuery()">查询</button>
+          <button type="button" class="btn btn-default" onclick="ClientVersionSet()">修改</button>
+        </div>
       </ul>
     </div>
 
@@ -472,8 +673,7 @@
         </div>
       </ul>
     </div>
-
-
+  
   </div>
   <script>
     //执行一个laydate实例
@@ -484,7 +684,7 @@
     lay('.layui-input').each(function () {
       laydate.render({
         elem: this,
-        type:'datetime' //显示时间，
+        type: 'datetime' //显示时间，
       });
     });
 
@@ -528,11 +728,13 @@
     $(document).ready(function () {
       //document.getElementById("serverbox3").options.add(new Option("abc","123"));
       //var UIlist = [ "serverbox0","serverbox1","serverbox2","serverbox3","serverbox4","serverbox5","serverbox6"];
-      var UIlist = ["serverbox0", "serverbox1", "serverbox3", "serverbox4", "serverbox5", "serverbox6","serverbox7","serverbox8"];
+      var UIlist = ["serverbox0", "serverbox1", "serverbox3", "serverbox4", "serverbox5", "serverbox6", "serverbox7", "serverbox8", "serverbox9", "serverbox10", "serverbox11", "serverbox12"];
       for (var i = 0; i < UIlist.length; i++) {
         ShowServerList(UIlist[i], severlist);
       }
-
+      ClientUpdateQuery();
+      ClientVersionQuery();
+      //WhiteListQuery();
     })
     function ShowServerList(UI, severlist) {
       for (var i = 0; i < severlist.length; i++) {
@@ -554,10 +756,10 @@
       if (date_value != "" && date_value2 != "") {
         var date_start = new Date(date_value);
         //var date_end = new Date(date_value2 + ' 23:59:59:000 ');
-        var date_end = new Date(date_value2 );
-        var time1 = date_start.getTime() / 1000+ 8 * 60 * 60;
+        var date_end = new Date(date_value2);
+        var time1 = date_start.getTime() / 1000 + 8 * 60 * 60;
         var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
-         //插入日志也没有加8小时统一处理
+        //插入日志也没有加8小时统一处理
         //var time1 = date_start.getTime() / 1000;
         //var time2 = date_end.getTime() / 1000;
         socket.emit('QueryLog', time1, time2);
@@ -573,11 +775,11 @@
       if (date_value != "" && date_value2 != "") {
         var date_start = new Date(date_value);
         //var date_end = new Date(date_value2 + ' 23:59:59:000 ');  //有具体时间了
-        var date_end = new Date(date_value2 ); 
-        var time1 = date_start.getTime() / 1000+ 8 * 60 * 60;
+        var date_end = new Date(date_value2);
+        var time1 = date_start.getTime() / 1000 + 8 * 60 * 60;
         var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
-       
-        socket.emit('QueryPayLog', time1, time2,actorid,zoneid);
+
+        socket.emit('QueryPayLog', time1, time2, actorid, zoneid);
       }
     }
     socket.on('QueryLogRsp', function (content) {
@@ -714,10 +916,10 @@
       //alert("obj"+param.attachments);
       //使用服务器的时间
       //param.showStart = new Date().getTime();
-      if($my('MailEndTime').value){
+      if ($my('MailEndTime').value) {
         param.showEnd = $my('MailEndTime').value * 60 * 60 * 1000;
       }
-      else{
+      else {
         param.showEnd = 60 * 60 * 1000;
       }
 
@@ -737,7 +939,7 @@
       //}
       //alert("sendMail")
       var loginuser = getCookieArray('loginuser');
-      if(loginuser == null){
+      if (loginuser == null) {
         alert("登录超时请重新登录!");
         return;
       }
@@ -786,7 +988,7 @@
       param.time = document.getElementById("Kickparam1").value;
       param.mode = "";
       param.loginuser = getCookieArray('loginuser');
-      if(param.loginuser == null){
+      if (param.loginuser == null) {
         alert("登录超时请重新登录!");
         return;
       }
@@ -801,7 +1003,7 @@
       var updataparam = {};
       updataparam.uid = ActoridText.value;
       updataparam.loginuser = getCookieArray('loginuser');
-      if(updataparam.loginuser == null){
+      if (updataparam.loginuser == null) {
         alert("登录超时请重新登录!");
         return;
       }
@@ -820,7 +1022,7 @@
       var host = $my("serverbox2").value
       var port = $my("serverbox2")[x].getAttribute("port");
       updataparam.loginuser = getCookieArray('loginuser');
-      if(updataparam.loginuser == null){
+      if (updataparam.loginuser == null) {
         alert("登录超时请重新登录!");
         return;
       }
@@ -832,7 +1034,7 @@
       $("#myTableServerList tr:not(:first)").empty("");
       var table = document.getElementById("myTableServerList");
       for (var i = 0; i < message.recordset.length; i++) {
-        var row = table.insertRow(i+1);
+        var row = table.insertRow(i + 1);
         var col = 0;
         var cellid = row.insertCell(col++);
         var cellname = row.insertCell(col++);
@@ -840,85 +1042,85 @@
         var cellflag = row.insertCell(col++);
         var cellopen = row.insertCell(col++);
         var celltips = row.insertCell(col++);
-        var cellbtn =  row.insertCell(col++);
+        var cellbtn = row.insertCell(col++);
         //alert( JSON.stringify(message.recordset[i]) );
         cellid.innerHTML = message.recordset[i]["id"];
         cellname.innerHTML = '<input value=' + message.recordset[i]["name"] + '>'; //message.recordset[i]["name"];
-        
-        if(message.recordset[i]["stat"] == 1){
+
+        if (message.recordset[i]["stat"] == 1) {
           cellstat.innerHTML = '<select >  <option value ="1" selected>正常</option>    <option value ="2">爆满</option>  <option value="3">维护</option>   <option value="4">关闭</option>  </select> ';
         }
-        if(message.recordset[i]["stat"] == 2){
+        if (message.recordset[i]["stat"] == 2) {
           cellstat.innerHTML = '<select >  <option value ="1">正常</option>    <option value ="2" selected>爆满</option>  <option value="3">维护</option>   <option value="4">关闭</option>  </select> ';
         }
-        if(message.recordset[i]["stat"] == 3){
+        if (message.recordset[i]["stat"] == 3) {
           cellstat.innerHTML = '<select >  <option value ="1">正常</option>    <option value ="2">爆满</option>  <option value="3" selected>维护</option>   <option value="4">关闭</option>  </select> ';
         }
-        if(message.recordset[i]["stat"] == 4){
+        if (message.recordset[i]["stat"] == 4) {
           cellstat.innerHTML = '<select >  <option value ="1">正常</option>    <option value ="2">爆满</option>  <option value="3">维护</option>   <option value="4" selected>关闭</option>  </select> ';
         }
-        cellflag.innerHTML = '<input value=' +message.recordset[i]["flag"] + '>';
-        if(message.recordset[i]["flag"] == 1){
+        cellflag.innerHTML = '<input value=' + message.recordset[i]["flag"] + '>';
+        if (message.recordset[i]["flag"] == 1) {
           cellflag.innerHTML = '<select >  <option value ="1" selected>推荐</option>    <option value ="0">不推荐</option>   </select> ';
         }
-        else{
+        else {
           cellflag.innerHTML = '<select >  <option value ="1">推荐</option>    <option value ="0" selected>不推荐</option>   </select> ';
         }
-        if(message.recordset[i]["open"] == 1){
+        if (message.recordset[i]["open"] == 1) {
           cellopen.innerHTML = '<select >  <option value ="1" selected>显示</option>    <option value ="0">不显示</option>   </select> ';
         }
-        else{
+        else {
           cellopen.innerHTML = '<select >  <option value ="1">显示</option>    <option value ="0" selected>不显示</option>   </select> ';
         }
-        celltips.innerHTML = '<input value=' + message.recordset[i]["tips"] + '>'; 
-        cellbtn.innerHTML = '<button onclick=UpdateServerStat('+message.recordset[i]["id"]+','+i+')>修改</button>';
+        celltips.innerHTML = '<input value=' + message.recordset[i]["tips"] + '>';
+        cellbtn.innerHTML = '<button onclick=UpdateServerStat(' + message.recordset[i]["id"] + ',' + i + ')>修改</button>';
 
       }
     }
-    function UpdateServerStat(id,index) {
-        //alert("UpdateServerStat:" + index);
-        var table = document.getElementById("myTableServerList"); //获得整个表格对象
-        //编号col=0不可修改
-        var param={};
-        //param.id=index+1;
-        param.id=id;
-        //console.log("id:"+id+"indx:"+index);
-        for (var col = 1; col < 6; col++) {
-          if(col==1){
-            param.name=table.rows[index+1].cells[col].childNodes[0].value;
-          }
-          else if(col == 2){
-            param.stat=table.rows[index+1].cells[col].childNodes[0].value;
-          }
-          else if(col == 3){
-            param.flag=table.rows[index+1].cells[col].childNodes[0].value;
-          }
-          else if(col == 4){
-            param.open=table.rows[index+1].cells[col].childNodes[0].value;
-          }   
-          else if(col == 5){
-            param.tips=table.rows[index+1].cells[col].childNodes[0].value;
-          }
-          //console.log(table.rows[index+1].cells[col].childNodes[0].value);
+    function UpdateServerStat(id, index) {
+      //alert("UpdateServerStat:" + index);
+      var table = document.getElementById("myTableServerList"); //获得整个表格对象
+      //编号col=0不可修改
+      var param = {};
+      //param.id=index+1;
+      param.id = id;
+      //console.log("id:"+id+"indx:"+index);
+      for (var col = 1; col < 6; col++) {
+        if (col == 1) {
+          param.name = table.rows[index + 1].cells[col].childNodes[0].value;
         }
-        var loginuser = getCookieArray('loginuser');
-        if(loginuser == null){
-          alert("登录超时请重新登录!");
-          return;
+        else if (col == 2) {
+          param.stat = table.rows[index + 1].cells[col].childNodes[0].value;
         }
-        param.loginuser = loginuser;
-        socket.emit('UpdateServerStat',param);
+        else if (col == 3) {
+          param.flag = table.rows[index + 1].cells[col].childNodes[0].value;
+        }
+        else if (col == 4) {
+          param.open = table.rows[index + 1].cells[col].childNodes[0].value;
+        }
+        else if (col == 5) {
+          param.tips = table.rows[index + 1].cells[col].childNodes[0].value;
+        }
+        //console.log(table.rows[index+1].cells[col].childNodes[0].value);
       }
-      socket.on("UpdateServerStatRsp",function(){
-        alert("修改成功");
-      })
+      var loginuser = getCookieArray('loginuser');
+      if (loginuser == null) {
+        alert("登录超时请重新登录!");
+        return;
+      }
+      param.loginuser = loginuser;
+      socket.emit('UpdateServerStat', param);
+    }
+    socket.on("UpdateServerStatRsp", function () {
+      alert("修改成功");
+    })
     function AddLogMessage(message) {
       $("#myTableLog tr:not(:first)").empty("");
       var table = document.getElementById("myTableLog");
       for (var i = 0; i < message.recordset.length; i++) {
         //var row = table.insertRow(1);  插入位置永远在第一行
         //指定行的位置i+1,第0行为表头
-        var row = table.insertRow(i+1);
+        var row = table.insertRow(i + 1);
         var col = 0;
         var cellid = row.insertCell(col++);
         var cellopt = row.insertCell(col++);
@@ -927,7 +1129,7 @@
         var cellltime = row.insertCell(col++);
 
         //alert( JSON.stringify(message.recordset[i]) );
-        cellid.innerHTML = i+1;//message.recordset[i]["id"];
+        cellid.innerHTML = i + 1;//message.recordset[i]["id"];
         cellopt.innerHTML = message.recordset[i]["opt"];
         celluser.innerHTML = message.recordset[i]["user"];
         cellctx.innerHTML = message.recordset[i]["log"];
@@ -936,38 +1138,38 @@
       }
     }
     function AddPayLogMessage(message1) {
-        //alert("ms1"+message1);
-        //console.log("====================>", message1);
-        var message = JSON.parse(message1);
-        //alert("ms"+message);
-        $("#myTablePayLog tr:not(:first)").empty("");
-        var table = document.getElementById("myTablePayLog");
-        for (var i = 0; i < message.recordset.length; i++) {
-          //指定行的位置i+1,第0行为表头
-          var row = table.insertRow(i+1);
-          var col = 0;
-          var cellid = row.insertCell(col++);
-          var cellactorid = row.insertCell(col++);
-          var cellactorname = row.insertCell(col++);
-          var cellcpid = row.insertCell(col++);
-          var cellplatid = row.insertCell(col++);
-          var cellproductid = row.insertCell(col++);
-          var cellstat = row.insertCell(col++);
-          var cellMoney = row.insertCell(col++);
-          var celltime = row.insertCell(col++);
-          //alert(message.recordsets.length);
-         // alert( JSON.stringify(message.recordset[i]) );
-          cellid.innerHTML = i+1;//message.recordset[i]["id"];
-          cellactorid.innerHTML = message.recordset[i]["actorid"];
-          cellactorname.innerHTML = message.recordset[i]["NickName"];
-          cellcpid.innerHTML = message.recordset[i]["payorder"];
-          cellplatid.innerHTML = message.recordset[i]["channel_order"];
-          cellproductid.innerHTML = message.recordset[i]["paytype"];
-          cellstat.innerHTML = message.recordset[i]["state"];
-          cellMoney.innerHTML = message.recordset[i]["total_fee"];
-          var logdate = new Date(message.recordset[i]["logtime"]); 
-          celltime.innerHTML = message.recordset[i]["lupdate"];
-        }
+      //alert("ms1"+message1);
+      //console.log("====================>", message1);
+      var message = JSON.parse(message1);
+      //alert("ms"+message);
+      $("#myTablePayLog tr:not(:first)").empty("");
+      var table = document.getElementById("myTablePayLog");
+      for (var i = 0; i < message.recordset.length; i++) {
+        //指定行的位置i+1,第0行为表头
+        var row = table.insertRow(i + 1);
+        var col = 0;
+        var cellid = row.insertCell(col++);
+        var cellactorid = row.insertCell(col++);
+        var cellactorname = row.insertCell(col++);
+        var cellcpid = row.insertCell(col++);
+        var cellplatid = row.insertCell(col++);
+        var cellproductid = row.insertCell(col++);
+        var cellstat = row.insertCell(col++);
+        var cellMoney = row.insertCell(col++);
+        var celltime = row.insertCell(col++);
+        //alert(message.recordsets.length);
+        // alert( JSON.stringify(message.recordset[i]) );
+        cellid.innerHTML = i + 1;//message.recordset[i]["id"];
+        cellactorid.innerHTML = message.recordset[i]["actorid"];
+        cellactorname.innerHTML = message.recordset[i]["NickName"];
+        cellcpid.innerHTML = message.recordset[i]["payorder"];
+        cellplatid.innerHTML = message.recordset[i]["channel_order"];
+        cellproductid.innerHTML = message.recordset[i]["paytype"];
+        cellstat.innerHTML = message.recordset[i]["state"];
+        cellMoney.innerHTML = message.recordset[i]["total_fee"];
+        var logdate = new Date(message.recordset[i]["logtime"]);
+        celltime.innerHTML = message.recordset[i]["lupdate"];
+      }
     }
     function AddMessage(message) {
       $("#myTable tr:not(:first)").empty("");
@@ -1058,9 +1260,9 @@
     function AddNoticeMessage(message) {
       $("#myTableNotice tr:not(:first)").empty("");
       var table = document.getElementById("myTableNotice");
-      
+
       for (var i = 0; i < message.length; i++) {
-        var row = table.insertRow(i+1);
+        var row = table.insertRow(i + 1);
         var col = 0;
         var cellid = row.insertCell(col++);
         var cellserver = row.insertCell(col++);
@@ -1068,17 +1270,17 @@
         var celltime2 = row.insertCell(col++);
         var cellinterval = row.insertCell(col++);
         var cellcontext = row.insertCell(col++);
-       
-        cellid.innerHTML = i+1;
+
+        cellid.innerHTML = i + 1;
         cellserver.innerHTML = message[i]["server"];
-        var t1_date = new Date((message[i]["time1"]-8*60*60)*1000).toLocaleString(); 
-        var t2_date = new Date((message[i]["time2"]-8*60*60)*1000).toLocaleString(); 
-        cellinterval.innerHTML = message[i]["interval"]/1000;
+        var t1_date = new Date((message[i]["time1"] - 8 * 60 * 60) * 1000).toLocaleString();
+        var t2_date = new Date((message[i]["time2"] - 8 * 60 * 60) * 1000).toLocaleString();
+        cellinterval.innerHTML = message[i]["interval"] / 1000;
         celltime1.innerHTML = t1_date;
         celltime2.innerHTML = t2_date;
         cellcontext.innerHTML = message[i]["content"];
       }
-      
+
     }
 
     function FindByPlayer(mousedown) {
@@ -1114,53 +1316,289 @@
       socket.emit('GetServerList');
     }
     function ServerCommit() {
-        var table = document.getElementById("myTableServerList"); //获得整个表格对象
-        console.log(JSON.stringify(table.rows[1].innerHTML));
-        for (var i = 1; i < table.rows.length-1; i++) {
-          //表格的第i行，第2列
-          for (var j = 0; j < 4; j++) {
-            //table.rows[i].cells[j].innerText.trim(" ");
-            //console.log(table.rows[i].cells[j].innerHTML);
-            console.log(table.rows[i].cells[j].childNodes[0].value);
-          }
-        }
-    }
-    function NoticeCommit1() {
-        var date_value = document.getElementById("date_note_begin").value;
-        var date_value2 = document.getElementById("date_note_end").value;
-        var date_value3 = document.getElementById("note_interval").value;
-        if (date_value != "" && date_value2 != "" && date_value3 != "") {
-          var date_start = new Date(date_value);
-          var date_end = new Date(date_value2);
-          var time1 = date_start.getTime() / 1000 + 8 * 60 * 60;
-          var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
-          var dateNow = new Date();
-          var timenow = dateNow.getTime() / 1000 + 8 * 60 * 60;
-          if(time2<=timenow || time2 <= time1){
-            alert("时间设置有误，请确认!");
-            return;
-          }
-          var x = document.getElementById("serverbox8").selectedIndex;
-          var host = $my("serverbox8").value;
-          var port = $my("serverbox8")[x].getAttribute("port");
-          var param = {};
-          param.time1 = time1;
-          param.time2 = time2;
-          param.interval = date_value3*1000;
-          param.host = host;
-          param.port = port;
-          param.content = document.getElementById("NoticeContent").value;
-          param.server= $my("serverbox8")[x].getAttribute("text");
-          //alert("sendNoticeOnTime"+JSON.stringify(param) )
-          socket.emit('sendNoticeOnTime', param);
+      var table = document.getElementById("myTableServerList"); //获得整个表格对象
+      console.log(JSON.stringify(table.rows[1].innerHTML));
+      for (var i = 1; i < table.rows.length - 1; i++) {
+        //表格的第i行，第2列
+        for (var j = 0; j < 4; j++) {
+          //table.rows[i].cells[j].innerText.trim(" ");
+          //console.log(table.rows[i].cells[j].innerHTML);
+          console.log(table.rows[i].cells[j].childNodes[0].value);
         }
       }
-    function NoticeQury(){
+    }
+    function NoticeCommit1() {
+      var date_value = document.getElementById("date_note_begin").value;
+      var date_value2 = document.getElementById("date_note_end").value;
+      var date_value3 = document.getElementById("note_interval").value;
+      if (date_value != "" && date_value2 != "" && date_value3 != "") {
+        var date_start = new Date(date_value);
+        var date_end = new Date(date_value2);
+        var time1 = date_start.getTime() / 1000 + 8 * 60 * 60;
+        var time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
+        var dateNow = new Date();
+        var timenow = dateNow.getTime() / 1000 + 8 * 60 * 60;
+        if (time2 <= timenow || time2 <= time1) {
+          alert("时间设置有误，请确认!");
+          return;
+        }
+        var x = document.getElementById("serverbox8").selectedIndex;
+        var host = $my("serverbox8").value;
+        var port = $my("serverbox8")[x].getAttribute("port");
+        var param = {};
+        param.time1 = time1;
+        param.time2 = time2;
+        param.interval = date_value3 * 1000;
+        param.host = host;
+        param.port = port;
+        param.content = document.getElementById("NoticeContent").value;
+        param.server = $my("serverbox8")[x].getAttribute("text");
+        //alert("sendNoticeOnTime"+JSON.stringify(param) )
+        socket.emit('sendNoticeOnTime', param);
+      }
+    }
+    function NoticeQury() {
       socket.emit('NoticeQury');
     }
     socket.on('NoticeQuryRsp', function (content) {
       //alert(JSON.stringify(content) );
       AddNoticeMessage(content);
     })
+    function GetActiveList() {
+      var x = document.getElementById("serverbox9").selectedIndex;
+      var host = $my("serverbox9").value;
+      var port = $my("serverbox9")[x].getAttribute("port");
+      var zoneid = $my("serverbox9")[x].getAttribute("area");
+      socket.emit('GetActiveList', host, port, zoneid);
+    }
+
+    Date.prototype.Format = function (fmt) {
+      var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "H+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+      };
+      if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+      for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+      return fmt;
+    }
+
+    socket.on('GetActiveListRsp', function (message, host, port, zoneid) {
+      $("#myTableActiveList tr:not(:first)").empty("");
+      var table = document.getElementById("myTableActiveList");
+      for (var i = 0; i < message.recordset.length; i++) {
+        var row = table.insertRow(i + 1);
+        var col = 0;
+        var cellid = row.insertCell(col++);
+        var cellname = row.insertCell(col++);
+
+        var cellstart = row.insertCell(col++);
+        var cellend = row.insertCell(col++);
+        var celllimitValue = row.insertCell(col++);
+        var cellcountFlag = row.insertCell(col++);
+        var celltips = row.insertCell(col++);
+        var cellbtn = row.insertCell(col++);
+        //alert( JSON.stringify(message.recordset[i]) );
+        cellid.innerHTML = message.recordset[i]["activityId"];
+
+        cellname.innerHTML = '活动名字';
+        for (var j = 0; j < ACTIVITY.length; j++) {
+          if (message.recordset[i]["activityId"] == ACTIVITY[j].id) {
+            cellname.innerHTML = ACTIVITY[j].name;
+          }
+        }
+        //var t1_date = new Date((message.recordset[i]["startTime"]-8*60*60)*1000).toLocaleString(); 
+        //var t2_date = new Date((message.recordset[i]["endTime"]-8*60*60)*1000).toLocaleString(); 
+
+
+        var date1 = new Date((message.recordset[i]["startTime"] - 8 * 60 * 60) * 1000).Format("yyyy-MM-dd HH:mm:ss");
+        var date2 = new Date((message.recordset[i]["endTime"] - 8 * 60 * 60) * 1000).Format("yyyy-MM-dd HH:mm:ss");
+
+        cellstart.innerHTML = "<input class='layui-input' value='" + date1 + "'>";
+        cellend.innerHTML = "<input class='layui-input' value=' " + date2 + "'>";
+        celllimitValue.innerHTML = "<input  value='" + message.recordset[i]["limitValue"] + "'>";
+        cellcountFlag.innerHTML = '<input  value=' + message.recordset[i]["countFlag"] + '>'
+        celltips.innerHTML = zoneid + "区";
+        var param = {};
+
+        cellbtn.innerHTML = '<button onclick=UpdateActivityStat(' + message.recordset[i]["activityId"] + ',' + i + ',' + '"' + host + '"' + ',' + port + ',' + zoneid + ')>修改</button>';
+      }
+      lay('.layui-input').each(function () {
+        laydate.render({
+          elem: this,
+          type: 'datetime' //显示时间，
+        });
+      });
+    })
+    function UpdateActivityStat(id, index, host, port, zoneid) {
+
+      var table = document.getElementById("myTableActiveList"); //获得整个表格对象
+      //编号col=0不可修改
+      var param = {};
+      param.activityId = id;
+      param.host = host;
+      param.port = port;
+      param.zoneid = zoneid;
+      console.log("table:" + table);
+      console.log("id:" + id + "indx:" + index + "host:" + param.host + "port:" + param.port + "zoneid:" + param.zoneid);
+      for (var col = 2; col < 6; col++) {
+
+        console.log("col:" + col + "value:" + table.rows[index + 1].cells[col].childNodes[0].value);
+        if (col == 2) {
+
+          var date = new Date(table.rows[index + 1].cells[col].childNodes[0].value);
+          var time1 = date.getTime();
+          param.startTime = time1 / 1000 + 8 * 60 * 60;
+        }
+        else if (col == 3) {
+          var date = new Date(table.rows[index + 1].cells[col].childNodes[0].value);
+          var time1 = date.getTime();
+          param.endTime = time1 / 1000 + 8 * 60 * 60;
+        }
+        else if (col == 4) {
+          param.limitValue = table.rows[index + 1].cells[col].childNodes[0].value;
+        }
+        else if (col == 5) {
+          param.countFlag = table.rows[index + 1].cells[col].childNodes[0].value;
+        }
+      }
+      var loginuser = getCookieArray('loginuser');
+      if (loginuser == null) {
+        alert("登录超时请重新登录!");
+        return;
+      }
+      param.loginuser = loginuser;
+      socket.emit('UpdateActivityStat', param);
+    }
+    socket.on("UpdateActivityStatRsp", function (data) {
+      alert(data);
+    })
+    function AddActivity() {
+      var date_value = document.getElementById("activity_date_begin").value;
+      var date_value2 = document.getElementById("activity_date_end").value;
+      var time1;
+      var time2;
+      if (date_value != "" && date_value2 != "") {
+        var date_start = new Date(date_value);
+        var date_end = new Date(date_value2);
+        time1 = date_start.getTime() / 1000 + 8 * 60 * 60;
+        time2 = date_end.getTime() / 1000 + 8 * 60 * 60;
+        var dateNow = new Date();
+        var timenow = dateNow.getTime() / 1000 + 8 * 60 * 60;
+        if (time2 <= timenow || time2 <= time1) {
+          alert("时间设置有误，请确认!");
+          return;
+        }
+        var x = document.getElementById("serverbox10").selectedIndex;
+        var host = $my("serverbox10").value;
+        var port = $my("serverbox10")[x].getAttribute("port");
+        var zoneid = $my("serverbox10")[x].getAttribute("area");
+
+        var param = {};
+        param.activityId = parseInt($my("PropBox").value);
+        param.host = host;
+        param.port = port;
+        param.zoneid = zoneid;
+        param.startTime = parseInt(time1);
+        param.endTime = parseInt(time2);
+        param.limitValue = parseInt($my("activity_param1").value);
+        param.countFlag = parseInt($my("activity_param2").value);
+        var loginuser = getCookieArray('loginuser');
+        if (loginuser == null) {
+          alert("登录超时请重新登录!");
+          return;
+        }
+        param.loginuser = loginuser;
+        socket.emit('AddActivity', param);
+      }
+    }
+    socket.on("AddActivityRsp", function (data) {
+      alert(data);
+    })
+    function WhiteListQuery() {
+      var x = document.getElementById("serverbox12").selectedIndex;
+      var host = $my("serverbox12").value;
+      var port = $my("serverbox12")[x].getAttribute("port");
+      socket.emit('WhiteListQuery', host, port);
+    }
+    function WhiteListOpen() {
+      var x = document.getElementById("serverbox12").selectedIndex;
+      var host = $my("serverbox12").value;
+      var port = $my("serverbox12")[x].getAttribute("port");
+      var param = {};
+      param.flag = 1;
+      socket.emit('WhiteListSwitch', host, port, param);
+    }
+    function WhiteListClose() {
+      var x = document.getElementById("serverbox12").selectedIndex;
+      var host = $my("serverbox12").value;
+      var port = $my("serverbox12")[x].getAttribute("port");
+      var param = {};
+      param.flag = 0;
+      socket.emit('WhiteListSwitch', host, port, param);
+    }
+    socket.on("WhiteListSwitchRsp", function (data) {
+      if (data["WhiteFlag"] > 0) {
+        $my('WhiteList').value = "白名单开启";
+      }
+      else {
+        $my('WhiteList').value = "白名单关闭";
+      }
+
+    })
+    socket.on("WhiteListQueryRsp", function (data) {
+      if (data["WhiteFlag"] > 0) {
+        $my('WhiteList').value = "白名单开启";
+      }
+      else {
+        $my('WhiteList').value = "白名单关闭";
+      }
+    })
+    function ClientUpdateQuery() {
+      socket.emit('ClientUpdateQuery');
+    }
+    socket.on("ClientUpdateQueryRsp", function (param) {
+     // $my("ClientUpdateBox").value = 2;
+      $my("ClientUpdateBox").options[param.flag-1].selected = true;  
+    })
+    function ClientUpdateSet() {
+      var param = {};
+      param.flag = parseInt($my("ClientUpdateBox").value);
+      var loginuser = getCookieArray('loginuser');
+      if (loginuser == null) {
+        alert("登录超时请重新登录!");
+        return;
+      }
+      param.loginuser = loginuser;
+      socket.emit('ClientUpdateSet', param);
+    }
+    socket.on("ClientUpdateSetRsp", function (param) {
+      alert(param);
+    }) 
+    function ClientVersionQuery(){
+      socket.emit('ClientVersionQuery');
+    }
+    socket.on("ClientVersionQueryRsp", function (param) {
+      $my("ClientVersion").value = param.version;  
+    }) 
+    function ClientVersionSet(){
+      var param = {};
+      param.version = $my("ClientVersion").value;
+      var loginuser = getCookieArray('loginuser');
+      if (loginuser == null) {
+        alert("登录超时请重新登录!");
+        return;
+      }
+      param.loginuser = loginuser;
+      socket.emit('ClientVersionSet',param);
+    }
+    socket.on("ClientVersionSetRsp", function (param) {
+      alert(param);
+    }) 
   </script>
 </body>

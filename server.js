@@ -285,5 +285,52 @@ io.sockets.on('connection', function (socket){
     socket.on('NoticeQury',function(){
         oss.NoticeQury(socket);
     })
+    socket.on("GetActiveList",function(host,port,zoneid){
+        oss.GetActiveList(socket,host,port,zoneid);
+    })  
+    socket.on('UpdateActivityStat',function(data){
+        loginuser = data.loginuser;
+        if(loginuser == null){
+            console.log("登录超时请重新登录!");
+            return;
+        }
+        delete data.loginuser;
+        oss.UpdateActivityStat(socket,data);
+        write_log(loginuser, '修改活动状态', JSON.stringify(data));
+    })
+    socket.on('AddActivity', function (data) {
+        loginuser = data.loginuser;
+        if (loginuser == null) {
+            console.log("登录超时请重新登录!");
+            return;
+        }
+        delete data.loginuser;
+        oss.AddActivity(socket, data);
+        write_log(loginuser, '增加活动状态', JSON.stringify(data));
+    })
+    socket.on('WhiteListSwitch',function(host,port,param){
+        oss.WhiteListSwitch(socket,host,port,param);
+    })
+    socket.on('WhiteListQuery', function (host, port) {
+        oss.WhiteListQuery(socket, host, port);
+    })
+    socket.on('ClientUpdateQuery', function () {
+        oss.ClientUpdateQuery(socket);
+    })
+    socket.on('ClientUpdateSet', function (data) {
+        loginuser = data.loginuser;
+        delete data.loginuser;
+        oss.ClientUpdateSet(socket, data);
+        write_log(loginuser, '修改客户端更新状态', JSON.stringify(data));
+    })
+    socket.on('ClientVersionQuery', function () {
+        oss.ClientVersionQuery(socket);
+    })
+    socket.on('ClientVersionSet', function (data) {
+        loginuser = data.loginuser;
+        delete data.loginuser;
+        oss.ClientVersionSet(socket, data);
+        write_log(loginuser, '修改客户端版本号', JSON.stringify(data));
+    })
 });
 console.log("localhost:"+conf.GM_SERVER_PORT.app_port)

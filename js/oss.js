@@ -32,7 +32,7 @@ function queryuser(socket,user)
             console.log("db err");
         }
         else{
-            console.log(result);
+            //console.log(result);
             socket.emit("queryuserrsp",result) 
         }
     });
@@ -61,7 +61,7 @@ function QueryPayLog(socket, timestart, timeend, actorid,zoneid) {
         sql += "and a.actorid = "+actorid+" ";
     }
     sql +="  ORDER BY lupdate DESC "
-    console.log(sql);
+    //console.log(sql);
     gamedb.querySql(config.PAY_LOG_DB_list[zoneid-1], sql, "", function (err, result) {//查询所有users表的数据
         if (err) {
             console.log("db err");
@@ -150,8 +150,8 @@ function queryPlayer(socket,host,port,user)
 }
 function updatePlayer(socket,host,port,data)
 {
-    console.log(data);
-    console.log(host);
+    //console.log(data);
+    //console.log(host);
     Playeroptions.hostname = host;
     Playeroptions.port = port;
     Playeroptions.path = "/updatePlayer?"
@@ -173,7 +173,7 @@ function updatePlayer(socket,host,port,data)
 }
 function KickPlayer(socket,host,port,data)
 {
-    console.log('KickPlayer')
+    //console.log('KickPlayer')
     Playeroptions.hostname = host;
     Playeroptions.port = port;
     Playeroptions.path = "/quitPlayer?"
@@ -231,24 +231,23 @@ function sendMail(socket,host,port,data)
     req.write(JSON.stringify(data));
     req.end();
 }
-function online(socket,host,port)
-{
+function online(socket, host, port) {
     Playeroptions.hostname = host;
     Playeroptions.port = port;
     Playeroptions.path = "/online?"
-    var req = http.request(Playeroptions, function (res) {  
-        console.log('STATUS: ' + res.statusCode);  
-        console.log('HEADERS: ' + JSON.stringify(res.headers));  
-        res.setEncoding('utf8');  
-        res.on('data', function (chunk) {  
-            console.log('BODY: ' + chunk);  
-           socket.emit("onlineRsp",JSON.parse(chunk)) 
-        });  
-    });  
-    req.on('error', function (e) {  
-        console.log('problem with request: ' + e.message);  
-        });  
-    var data = {     };//这是需要提交的数据 
+    var req = http.request(Playeroptions, function (res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            console.log('BODY: ' + chunk);
+            socket.emit("onlineRsp", JSON.parse(chunk))
+        });
+    });
+    req.on('error', function (e) {
+        console.log('problem with request: ' + e.message);
+    });
+    var data = {};//这是需要提交的数据 
     req.write(JSON.stringify(data));
     req.end();
 }
@@ -302,7 +301,7 @@ function sendMailonTime(socket,host,port,data,time)
 function GetServerList(socket)
 {
     var sql = "SELECT * from server";
-    console.log(sql);
+    //console.log(sql);
     logdb.querySql(sql, "",function (err, result) {//查询所有users表的数据
         if(err)
         {
@@ -316,7 +315,7 @@ function GetServerList(socket)
 }
 function UpdateServerStat(socket, data) {
     var sql = "update server set name=" + "'"+data.name +"'" + ", stat =" + data.stat + ", flag=" + data.flag + ", [open]=" + data.open+", [tips]="  + "'"+data.tips +"'"+" where id="+data.id;
-    console.log(sql);
+    //console.log(sql);
     logdb.querySql(sql, "", function (err, result) {//查询所有users表的数据
         if (err) {
             console.log("db err");
@@ -350,6 +349,207 @@ function NoticeQury(socket){
     //console.log("NoticeQury");
     socket.emit("NoticeQuryRsp",notice_list);
 }
+function GetActiveList(socket,host,port,zoneid){
+    if(zoneid > config.PAY_LOG_DB_list.length){
+        console.log("QueryPayLog zonid error");
+        return;
+    }
+    var sql = "SELECT  *   from ActivityServerData ";
+    console.log(sql);
+    gamedb.querySql(config.PAY_LOG_DB_list[zoneid-1], sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            //console.log(result);
+            socket.emit("GetActiveListRsp",result,host,port,zoneid );
+        }
+    });
+}
+function UpdateActivityStat(socket,data){
+    //更新数据库
+    if(data.zoneid > config.PAY_LOG_DB_list.length ||
+       data.zoneid ==undefined ||
+       data.zoneid ==null ||
+       data.zoneid <1
+        ){
+        console.log("QueryPayLog zonid error");
+        return;
+    }
+    var sql = "update  ActivityServerData set startTime="+data.startTime+", endTime="+data.endTime+", limitValue="+data.limitValue+", countFlag="+data.countFlag+" where activityId="+data.activityId;
+    //console.log(sql);
+    gamedb.querySql(config.PAY_LOG_DB_list[data.zoneid - 1], sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            console.log("更新活动成功:" + result);
+            socket.emit("UpdateActivityStatRsp","更新活动数据库成功");
+            //通知场景服
+            Playeroptions.hostname = data.host;
+            Playeroptions.port = data.port;
+            Playeroptions.path = "/updateActivity?"
+            var req = http.request(Playeroptions, function (res) {
+                console.log('STATUS: ' + res.statusCode);
+                console.log('HEADERS: ' + JSON.stringify(res.headers));
+                res.setEncoding('utf8');
+                res.on('data', function (chunk) {
+                    console.log('BODY: ' + chunk);
+                    socket.emit("UpdateActivityStatRsp", "通知游戏服成功")
+                });
+            });
+            req.on('error', function (e) {
+                console.log('problem with request: ' + e.message);
+            });
+            req.write(JSON.stringify(data));
+            req.end();
+        }
+    });
+}
+function AddActivity(socket,data){
+    //更新数据库
+    if(data.zoneid > config.PAY_LOG_DB_list.length ||
+       data.zoneid ==undefined ||
+       data.zoneid ==null ||
+       data.zoneid <1
+        ){
+        console.log("QueryPayLog zonid error");
+        return;
+    }
+    var sql = "insert into ActivityServerData ([activityId],[startTime],[endTime],[limitValue],[countFlag]) VALUES("+data.activityId+","+data.startTime+","+data.endTime+", "+data.limitValue+", "+data.countFlag+")";
+    //console.log(sql);
+    //console.log("db:"+JSON.stringify( config.PAY_LOG_DB_list[data.zoneid - 1]));
+    gamedb.querySql(config.PAY_LOG_DB_list[data.zoneid - 1], sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+            socket.emit("AddActivityRsp","添加活动失败,请检查ID是否重复");
+        }
+        else {
+            //console.log("添加活动成功:" + result);
+            socket.emit("AddActivityRsp","添加活动成功数据库成功");
+            //通知场景服
+            Playeroptions.hostname = data.host;
+            Playeroptions.port = data.port;
+            Playeroptions.path = "/updateActivity?"
+            var req = http.request(Playeroptions, function (res) {
+                console.log('STATUS: ' + res.statusCode);
+                console.log('HEADERS: ' + JSON.stringify(res.headers));
+                res.setEncoding('utf8');
+                res.on('data', function (chunk) {
+                    //console.log('BODY: ' + chunk);
+                    socket.emit("UpdateActivityStatRsp", "通知游戏服成功")
+                });
+            });
+            req.on('error', function (e) {
+                console.log('problem with request: ' + e.message);
+            });
+            req.write(JSON.stringify(data));
+            req.end();
+        }
+    });
+}
+
+function WhiteListSwitch(socket,host,port,param){
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/WhiteListSwitch?"
+    var req = http.request(Playeroptions, function (res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            console.log('BODY: ' + chunk);
+            socket.emit("WhiteListSwitchRsp", JSON.parse(chunk))
+        });
+    });
+    req.on('error', function (e) {
+        console.log('problem with request: ' + e.message);
+    });
+    req.write(JSON.stringify(param));
+    req.end();
+}
+function WhiteListQuery(socket, host, port) {
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/WhiteListQuery?"
+    var req = http.request(Playeroptions, function (res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            console.log('BODY: ' + chunk);
+            socket.emit("WhiteListQueryRsp", JSON.parse(chunk))
+        });
+    });
+    req.on('error', function (e) {
+        console.log('problem with request: ' + e.message);
+    });
+    var data = {};//这是需要提交的数据 
+    req.write(JSON.stringify(data));
+    req.end();
+}
+function ClientUpdateQuery(socket) {
+    var sql = "SELECT * from updateflag where id=1";
+    //console.log(sql);
+    logdb.querySql(sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            //console.log(result);
+            result.recordset.forEach(element => {
+                var param={};
+                param.flag = element.flag;
+                socket.emit("ClientUpdateQueryRsp", param);
+                return;
+            });
+
+        }
+    });
+}
+function ClientUpdateSet(socket, param) {
+    var sql = "update  updateflag set flag=" + param.flag;
+    //console.log(sql);
+    logdb.querySql(sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            socket.emit("ClientUpdateSetRsp", "修改成功");
+        }
+    });
+}
+function ClientVersionQuery(socket) {
+    var sql = "SELECT * from updateflag where id=1";
+    //console.log(sql);
+    logdb.querySql(sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            //console.log(result);
+            result.recordset.forEach(element => {
+                var param={};
+                param.version = element.version;
+                socket.emit("ClientVersionQueryRsp", param);
+                return;
+            });
+
+        }
+    });
+}
+function ClientVersionSet(socket, param) {
+    var sql = "update  updateflag set version=" +"'"+ param.version+"'";
+    //console.log(sql);
+    logdb.querySql(sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            socket.emit("ClientVersionSetRsp", "修改成功");
+        }
+    });
+}
 module.exports.GetBag = GetBag;
 module.exports.online = online;
 module.exports.sendMail = sendMail;
@@ -367,3 +567,12 @@ module.exports.UpdateServerStat = UpdateServerStat;
 module.exports.QueryPayLog = QueryPayLog;
 module.exports.sendNoticeOnTime = sendNoticeOnTime;
 module.exports.NoticeQury = NoticeQury;
+module.exports.GetActiveList = GetActiveList;
+module.exports.UpdateActivityStat = UpdateActivityStat;
+module.exports.AddActivity = AddActivity;
+module.exports.WhiteListSwitch = WhiteListSwitch;
+module.exports.WhiteListQuery = WhiteListQuery;
+module.exports.ClientUpdateQuery = ClientUpdateQuery;
+module.exports.ClientUpdateSet = ClientUpdateSet;
+module.exports.ClientVersionQuery = ClientVersionQuery;
+module.exports.ClientVersionSet = ClientVersionSet;

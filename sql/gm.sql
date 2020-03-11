@@ -11,7 +11,7 @@ Target Server Type    : SQL Server
 Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2019-12-17 14:22:48
+Date: 2020-03-11 14:42:05
 */
 
 
@@ -30,7 +30,19 @@ CREATE TABLE [dbo].[gm] (
 
 
 GO
-DBCC CHECKIDENT(N'[dbo].[gm]', RESEED, 57)
+DBCC CHECKIDENT(N'[dbo].[gm]', RESEED, 226)
+GO
+
+-- ----------------------------
+-- Table structure for mac
+-- ----------------------------
+DROP TABLE [dbo].[mac]
+GO
+CREATE TABLE [dbo].[mac] (
+[mac] varchar(64) NOT NULL 
+)
+
+
 GO
 
 -- ----------------------------
@@ -43,7 +55,34 @@ CREATE TABLE [dbo].[server] (
 [name] varchar(100) NULL ,
 [stat] int NULL ,
 [flag] int NULL ,
-[open] int NULL 
+[open] int NULL ,
+[tips] varchar(200) NULL 
+)
+
+
+GO
+
+-- ----------------------------
+-- Table structure for updateflag
+-- ----------------------------
+DROP TABLE [dbo].[updateflag]
+GO
+CREATE TABLE [dbo].[updateflag] (
+[id] int NOT NULL ,
+[flag] int NULL ,
+[version] varchar(128) NULL 
+)
+
+
+GO
+
+-- ----------------------------
+-- Table structure for url
+-- ----------------------------
+DROP TABLE [dbo].[url]
+GO
+CREATE TABLE [dbo].[url] (
+[url] varchar(256) NOT NULL 
 )
 
 
@@ -73,6 +112,16 @@ ALTER TABLE [dbo].[gm] ADD PRIMARY KEY ([id])
 GO
 
 -- ----------------------------
+-- Indexes structure for table mac
+-- ----------------------------
+
+-- ----------------------------
+-- Primary Key structure for table mac
+-- ----------------------------
+ALTER TABLE [dbo].[mac] ADD PRIMARY KEY ([mac])
+GO
+
+-- ----------------------------
 -- Indexes structure for table server
 -- ----------------------------
 
@@ -80,6 +129,26 @@ GO
 -- Primary Key structure for table server
 -- ----------------------------
 ALTER TABLE [dbo].[server] ADD PRIMARY KEY ([id])
+GO
+
+-- ----------------------------
+-- Indexes structure for table updateflag
+-- ----------------------------
+
+-- ----------------------------
+-- Primary Key structure for table updateflag
+-- ----------------------------
+ALTER TABLE [dbo].[updateflag] ADD PRIMARY KEY ([id])
+GO
+
+-- ----------------------------
+-- Indexes structure for table url
+-- ----------------------------
+
+-- ----------------------------
+-- Primary Key structure for table url
+-- ----------------------------
+ALTER TABLE [dbo].[url] ADD PRIMARY KEY ([url])
 GO
 
 -- ----------------------------
