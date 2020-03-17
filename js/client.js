@@ -1,4 +1,4 @@
-var severlist=[ {"name":"内网服","value":"192.168.1.10","area":"2","port":"8081" },
+var severlist=[ {"name":"内网服","value":"192.168.1.143","area":"2","port":"8081" },
                 {"name":"李涵锋","value":"192.168.1.128","area":"3","port":"8082" },
                 {"name":"陈文顺","value":"192.168.1.113","area":"4","port":"8083" },
                 {"name":"谢子旗","value":"192.168.1.121","area":"5","port":"8083" },

@@ -52,7 +52,14 @@ function QueryLog(socket,  timestart, timeend){
     });
 }
 function QueryPayLog(socket, timestart, timeend, actorid,zoneid) {
-    if(zoneid > config.PAY_LOG_DB_list.length){
+    var DB;
+    if(zoneid <= config.PAY_LOG_DB_list.length && zoneid >= 1){
+       DB = config.PAY_LOG_DB_list[zoneid-1];
+    }
+    else if(zoneid == 999){
+        DB = config.PAY_LOG_DB_list_EXT[0];
+    }
+    else{
         console.log("QueryPayLog zonid error");
         return;
     }
@@ -61,8 +68,8 @@ function QueryPayLog(socket, timestart, timeend, actorid,zoneid) {
         sql += "and a.actorid = "+actorid+" ";
     }
     sql +="  ORDER BY lupdate DESC "
-    //console.log(sql);
-    gamedb.querySql(config.PAY_LOG_DB_list[zoneid-1], sql, "", function (err, result) {//查询所有users表的数据
+    //console.log(DB);
+    gamedb.querySql(DB, sql, "", function (err, result) {//查询所有users表的数据
         if (err) {
             console.log("db err");
         }
@@ -152,6 +159,10 @@ function updatePlayer(socket,host,port,data)
 {
     //console.log(data);
     //console.log(host);
+    if(config.PAY_LOG_DB_list_EXT[0].server != host){
+        console.log("此服不可以设置属性");
+        socket.emit("updatePlayerRSP","此服不可以设置属性");
+    }
     Playeroptions.hostname = host;
     Playeroptions.port = port;
     Playeroptions.path = "/updatePlayer?"
@@ -350,13 +361,20 @@ function NoticeQury(socket){
     socket.emit("NoticeQuryRsp",notice_list);
 }
 function GetActiveList(socket,host,port,zoneid){
-    if(zoneid > config.PAY_LOG_DB_list.length){
+    var DB;
+    if(zoneid <= config.PAY_LOG_DB_list.length && zoneid >= 1){
+       DB = config.PAY_LOG_DB_list[zoneid-1];
+    }
+    else if(zoneid == 999){
+        DB = config.PAY_LOG_DB_list_EXT[0];
+    }
+    else{
         console.log("QueryPayLog zonid error");
         return;
     }
     var sql = "SELECT  *   from ActivityServerData ";
     console.log(sql);
-    gamedb.querySql(config.PAY_LOG_DB_list[zoneid-1], sql, "", function (err, result) {//查询所有users表的数据
+    gamedb.querySql(DB, sql, "", function (err, result) {//查询所有users表的数据
         if (err) {
             console.log("db err");
         }
@@ -368,17 +386,20 @@ function GetActiveList(socket,host,port,zoneid){
 }
 function UpdateActivityStat(socket,data){
     //更新数据库
-    if(data.zoneid > config.PAY_LOG_DB_list.length ||
-       data.zoneid ==undefined ||
-       data.zoneid ==null ||
-       data.zoneid <1
-        ){
+    var DB;
+    if(data.zoneid <= config.PAY_LOG_DB_list.length && data.zoneid >= 1){
+       DB = config.PAY_LOG_DB_list[data.zoneid-1];
+    }
+    else if(data.zoneid == 999){
+        DB = config.PAY_LOG_DB_list_EXT[0];
+    }
+    else{
         console.log("QueryPayLog zonid error");
         return;
     }
     var sql = "update  ActivityServerData set startTime="+data.startTime+", endTime="+data.endTime+", limitValue="+data.limitValue+", countFlag="+data.countFlag+" where activityId="+data.activityId;
     //console.log(sql);
-    gamedb.querySql(config.PAY_LOG_DB_list[data.zoneid - 1], sql, "", function (err, result) {//查询所有users表的数据
+    gamedb.querySql(DB, sql, "", function (err, result) {//查询所有users表的数据
         if (err) {
             console.log("db err");
         }
@@ -389,6 +410,7 @@ function UpdateActivityStat(socket,data){
             Playeroptions.hostname = data.host;
             Playeroptions.port = data.port;
             Playeroptions.path = "/updateActivity?"
+            console.log(JSON.stringify(Playeroptions));
             var req = http.request(Playeroptions, function (res) {
                 console.log('STATUS: ' + res.statusCode);
                 console.log('HEADERS: ' + JSON.stringify(res.headers));
@@ -408,18 +430,21 @@ function UpdateActivityStat(socket,data){
 }
 function AddActivity(socket,data){
     //更新数据库
-    if(data.zoneid > config.PAY_LOG_DB_list.length ||
-       data.zoneid ==undefined ||
-       data.zoneid ==null ||
-       data.zoneid <1
-        ){
+    var DB;
+    if(data.zoneid <= config.PAY_LOG_DB_list.length && data.zoneid >= 1){
+       DB = config.PAY_LOG_DB_list[data.zoneid-1];
+    }
+    else if(data.zoneid == 999){
+        DB = config.PAY_LOG_DB_list_EXT[0];
+    }
+    else{
         console.log("QueryPayLog zonid error");
         return;
     }
     var sql = "insert into ActivityServerData ([activityId],[startTime],[endTime],[limitValue],[countFlag]) VALUES("+data.activityId+","+data.startTime+","+data.endTime+", "+data.limitValue+", "+data.countFlag+")";
     //console.log(sql);
     //console.log("db:"+JSON.stringify( config.PAY_LOG_DB_list[data.zoneid - 1]));
-    gamedb.querySql(config.PAY_LOG_DB_list[data.zoneid - 1], sql, "", function (err, result) {//查询所有users表的数据
+    gamedb.querySql(DB, sql, "", function (err, result) {//查询所有users表的数据
         if (err) {
             console.log("db err");
             socket.emit("AddActivityRsp","添加活动失败,请检查ID是否重复");

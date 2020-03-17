@@ -24,6 +24,9 @@ var PAY_LOG_DB_list = [
 {user:'sa', password:'123456', server:'192.168.1.10', database: 'kkk', port: 1433, options: {  encrypt: true},    pool: {   min: 0,  max: 10,  idleTimeoutMillis: 3000  }},
 {user:'sa', password:'123456', server:'192.168.1.10', database: 'hygame_region_mcx', port: 1433, options: {  encrypt: true},    pool: {   min: 0,  max: 10,  idleTimeoutMillis: 3000  }},
 ];
+var PAY_LOG_DB_list_EXT = [ 
+    {user:'sa', password:'123456', server:'192.168.1.143', database: 'hygame_region_1', port: 1433, options: {  encrypt: true},    pool: {   min: 0,  max: 10,  idleTimeoutMillis: 3000  }},
+    ];
 //游戏服务器数据库
 var GM_SERVER_DB = {
     user: 'sa',
@@ -59,3 +62,4 @@ module.exports.GM_SERVER_DB = GM_SERVER_DB;
 module.exports.GM_LOGSERVER_DB = GM_LOGSERVER_DB;
 module.exports.GM_SERVER_PORT = GM_SERVER_PORT;
 module.exports.PAY_LOG_DB_list = PAY_LOG_DB_list;
+module.exports.PAY_LOG_DB_list_EXT = PAY_LOG_DB_list_EXT;
