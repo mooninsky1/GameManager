@@ -575,6 +575,25 @@ function ClientVersionSet(socket, param) {
         }
     });
 }
+function activitymdfy(socket,host, port, param){
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/activitymdfy?"
+    var req = http.request(Playeroptions, function (res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            //console.log('BODY: ' + chunk);
+            socket.emit("activitymdfyRsp", "活动补发成功")
+        });
+    });
+    req.on('error', function (e) {
+        console.log('problem with request: ' + e.message);
+    });
+    req.write(JSON.stringify(param));
+    req.end();
+}
 module.exports.GetBag = GetBag;
 module.exports.online = online;
 module.exports.sendMail = sendMail;
@@ -601,3 +620,5 @@ module.exports.ClientUpdateQuery = ClientUpdateQuery;
 module.exports.ClientUpdateSet = ClientUpdateSet;
 module.exports.ClientVersionQuery = ClientVersionQuery;
 module.exports.ClientVersionSet = ClientVersionSet;
+module.exports.activitymdfy = activitymdfy;
+

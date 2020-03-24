@@ -665,6 +665,25 @@
         </div>
       </ul>
     </div>
+    
+    <div title="活动补发" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+        <ul class="nav navbar-nav">
+          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+            <div>
+              <select id="serverbox13" class="form-control"> </select>
+              <input type="text" class="form-control" id="actorid_activity_mdify" placeholder="输入角色ID"
+              onkeyup="value=value.replace(/[^\d]/g,'') " />
+              <select id="activity_mdify_Box" class="form-control" style="display:inline;">
+                  <option value="1">月卡</option>
+                  <option value="2">终身卡</option>
+                  <option value="5">境界仙卦</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-default" onclick="activitymdfy()">补发</button>
+          </div>
+        </ul>
+      </div>
+
 
     <div title="其他" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
       <ul class="nav navbar-nav">
@@ -734,7 +753,7 @@
     $(document).ready(function () {
       //document.getElementById("serverbox3").options.add(new Option("abc","123"));
       //var UIlist = [ "serverbox0","serverbox1","serverbox2","serverbox2","serverbox3","serverbox4","serverbox5","serverbox6"];
-      var UIlist = ["serverbox0", "serverbox1", "serverbox2","serverbox3", "serverbox4", "serverbox5", "serverbox6", "serverbox7", "serverbox8", "serverbox9", "serverbox10", "serverbox11", "serverbox12"];
+      var UIlist = ["serverbox0", "serverbox1", "serverbox2","serverbox3", "serverbox4", "serverbox5", "serverbox6", "serverbox7", "serverbox8", "serverbox9", "serverbox10", "serverbox11", "serverbox12","serverbox13"];
       for (var i = 0; i < UIlist.length; i++) {
         ShowServerList(UIlist[i], severlist);
       }
@@ -1609,5 +1628,23 @@
     socket.on("ClientVersionSetRsp", function (param) {
       alert(param);
     }) 
+    function activitymdfy(){
+      var x = document.getElementById("serverbox13").selectedIndex;
+      var host = $my("serverbox13").value;
+      var port = $my("serverbox13")[x].getAttribute("port");
+      var param = {};
+      param.activityId = parseInt($my("activity_mdify_Box").value);
+      param.uid = $my("actorid_activity_mdify").value;
+      var loginuser = getCookieArray('loginuser');
+      if (loginuser == null) {
+        alert("登录超时请重新登录!");
+        return;
+      }
+      param.loginuser = loginuser;
+      socket.emit('activitymdfy', host, port, param);
+    }
+    socket.on('activitymdfyRsp',function(param){
+      alert(param);
+    })
   </script>
 </body>

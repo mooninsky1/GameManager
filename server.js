@@ -332,5 +332,11 @@ io.sockets.on('connection', function (socket){
         oss.ClientVersionSet(socket, data);
         write_log(loginuser, '修改客户端版本号', JSON.stringify(data));
     })
+    socket.on('activitymdfy',function(host, port, param){
+        loginuser = param.loginuser;
+        delete param.loginuser;
+        oss.activitymdfy(socket,host, port, param);
+        write_log(loginuser, '活动补发', JSON.stringify(param)); 
+    })
 });
 console.log("localhost:"+conf.GM_SERVER_PORT.app_port)
