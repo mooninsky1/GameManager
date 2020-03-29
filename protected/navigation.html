@@ -511,7 +511,7 @@
       <ul class="nav navbar-nav">
         <div class="form-group">
           <select id="serverbox10" class="form-control"> </select>
-
+        
           <select id="ActivePropBox" class="form-control" style="display:inline;">
             <option value="10">累计充值</option>
             <option value="12">道庭令</option>
@@ -522,15 +522,17 @@
             onkeyup="value=value.replace(/[^\d]/g,'') " />
           <input type="text" class="form-control" id="activity_param2" placeholder="countFlag"
             onkeyup="value=value.replace(/[^\d]/g,'') " />
+          <fieldset class="form-group col-xs-3 col-lg-offset-3">
+            <input type="file" class="form-control"  id="file-value">
+          </fieldset>
           <button type="button" class="btn btn-default" id="AddActivityBtn" onclick="AddActivity()">提交活动</button>
-          <button type="button" class="btn btn-default" id="AddActivityRewardBtn"
-            onclick="AddActivityReward()">增加奖励</button>
-
+          <button type="button" class="btn btn-default" id="AddActivityRewardBtn" onclick="AddActivityReward()">增加奖励</button>
+        
         </div>
 
         <div class="row clearfix">
           <div class="col-md-12 column">
-            <table class="table" id="myTableActiveList">
+            <table class="table" id="myTableActiveRewardList">
               <thead>
                 <tr>
                   <th>奖励编号</th>
@@ -570,21 +572,17 @@
         <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
           <div>
             <select id="serverbox11" class="form-control"> </select>
-            <input type="text" class="form-control" id="find_activityid" placeholder="输入活动的id编码"
-              onkeyup="value=value.replace(/[^\d]/g,'') " />
+            <select id="ActivePropBox_alterReward" class="form-control" style="display:inline;">
+                <option value="10">累计充值</option>
+                <option value="12">道庭令</option>
+              </select>
             <button type="button" class="btn btn-default" id="GetActiveRewardListBtn"
               onclick="GetActiveRewardList()">拉取活动奖励列表</button>
           </div>
-          <div>
-            <input type="text" class="form-control" readonly id="activid" value="" />
-            <input type="text" class="form-control" readonly id="activid" value="" />
-            <input type="text" class="form-control" readonly id="activid" value="" />
-            <input type="text" class="form-control" readonly id="activid" value="" />
-            <input type="text" class="form-control" readonly id="activid" value="" />
-          </div>
+          
           <div class="row clearfix">
             <div class="col-md-12 column">
-              <table class="table" id="myTableActiveList">
+              <table class="table" id="myTableActiveRewardAlterList">
                 <thead>
                   <tr>
                     <th>奖励编号</th>
@@ -717,10 +715,13 @@
   <script type="text/javascript">
     var socket = io.connect(GM_SERVER_IP_PORT);
     function getCookieArray(key) {
+      //console.log("getkey:"+key);
       var arrStr = document.cookie.split(';');
+      //console.log("arrStr:"+arrStr);
       for (var i = 0; i < arrStr.length; i++) {
         var temp = arrStr[i].split("=");
-        if (key === temp[0]) {
+        //console.log("cookie key:"+temp);
+        if (key === temp[0].trim()) {
           var current = new Array();
           if (temp[1] == "") {//这一步判断是目的是为了避免key值对应的value为空
             return null;
@@ -1506,6 +1507,74 @@
     socket.on("UpdateActivityStatRsp", function (data) {
       alert(data);
     })
+    function GetActiveRewardList() {
+      var x = document.getElementById("serverbox11").selectedIndex;
+      var host = $my("serverbox11").value;
+      var port = $my("serverbox11")[x].getAttribute("port");
+      var zoneid = $my("serverbox11")[x].getAttribute("area");
+      var activityId = parseInt($my("ActivePropBox_alterReward").value);
+      socket.emit('GetActiveRewardList', host, port, zoneid,activityId);
+    }
+
+    socket.on('GetActiveRewardListRsp', function (message, host, port, zoneid) {
+      $("#myTableActiveRewardAlterList tr:not(:first)").empty("");
+      var table = document.getElementById("myTableActiveRewardAlterList");
+      for (var i = 0; i < message.recordset.length; i++) {
+        var row = table.insertRow(i + 1);
+        var col = 0;
+        var cellid = row.insertCell(col++);
+        var cellitem1 = row.insertCell(col++);
+        var cellnum1 = row.insertCell(col++);
+        var cellitem2 = row.insertCell(col++);
+        var cellnum2 = row.insertCell(col++);
+        var cellitem3 = row.insertCell(col++);
+        var cellnum3 = row.insertCell(col++);
+        var cellitem4 = row.insertCell(col++);
+        var cellnum4 = row.insertCell(col++);
+        var cellbtn = row.insertCell(col++);
+
+        cellid.innerHTML = message.recordset[i]["rewardId"];
+        cellitem1.innerHTML = "<input class='layui-input' value='" + message.recordset[i]["item1"] + "'>";
+        cellnum1.innerHTML = "<input class='layui-input' value=' " + message.recordset[i]["item1Num"] + "'>";
+        cellitem2.innerHTML = "<input class='layui-input' value='" + message.recordset[i]["item2"] + "'>";
+        cellnum2.innerHTML = "<input class='layui-input' value=' " + message.recordset[i]["item2Num"] + "'>";
+        cellitem3.innerHTML = "<input class='layui-input' value='" + message.recordset[i]["item3"] + "'>";
+        cellnum3.innerHTML = "<input class='layui-input' value=' " + message.recordset[i]["item3Num"] + "'>";
+        cellitem4.innerHTML = "<input class='layui-input' value='" + message.recordset[i]["item4"] + "'>";
+        cellnum4.innerHTML = "<input class='layui-input' value=' " + message.recordset[i]["item4Num"] + "'>";
+    
+        cellbtn.innerHTML = '<button onclick=UpdateActivityRewardStat(' + message.recordset[i]["rewardId"] + ',' + i + ',' + '"' + host + '"' + ',' + port + ',' + zoneid + ')>修改</button>';
+      }
+
+    })
+    function UpdateActivityRewardStat(id, index, host, port, zoneid) {
+      //alert("aaaa");
+      var table = document.getElementById("myTableActiveRewardAlterList"); //获得整个表格对象
+      //编号col=0不可修改
+      var param = {};
+      param.activityId = parseInt($my("ActivePropBox_alterReward").value);
+      param.rewardId = id;
+      param.host = host;
+      param.port = port;
+      param.zoneid = zoneid;
+      var colItem=["item1","item1Num","item2","item2Num","item3","item3Num","item4","item4Num"];
+      for (var col = 1; col < 9; col++) {
+          param[ colItem[col-1 ]] = table.rows[index + 1].cells[col].childNodes[0].value;
+      }
+      var loginuser = getCookieArray('loginuser');
+      if (loginuser == null) {
+        alert("登录超时请重新登录!");
+        return;
+      }
+      param.loginuser = loginuser;
+      console.log("d:"+JSON.stringify(param));
+      socket.emit('UpdateActivityRewardStat', param);
+    }
+    socket.on("UpdateActivityRewardStatRsp", function (data) {
+      alert(data);
+    })
+
+
     function AddActivity() {
       var date_value = document.getElementById("activity_date_begin").value;
       var date_value2 = document.getElementById("activity_date_end").value;
@@ -1644,6 +1713,100 @@
       socket.emit('activitymdfy', host, port, param);
     }
     socket.on('activitymdfyRsp',function(param){
+      alert(param);
+    })
+    function AddActivityReward() {
+        var data = [];
+        var files = document.getElementById("file-value").files;
+        //var regp = new RegExp(".*,\".*,.*\"$");
+        var regp = new RegExp(".*,\".*,\".*,\".*,\".*,\".*,.*\"$");
+        if (files.length) {
+          var file = files[0];
+
+          var reader = new FileReader(); //new一个FileReader实例
+          if (typeof FileReader == 'undefined') {
+            layer.alert("你的浏览器暂不支持该功能", { title: "提示", skin: "layui-layer-molv" });
+            file.setAttribute("disabled", "disabled");
+            return;
+          }
+          reader.readAsText(file);
+          reader.onload = function (f) {
+            //显示文件  
+            var relArr = this.result.split("\r\n");
+            if (!$.isEmptyObject(relArr) && relArr.length > 1) {
+              for (var key = 5, len = relArr.length; key < len; key++) {
+                var values = relArr[key];
+                //console.log("line:"+values);
+                if (regp.test(values)) {
+                  alert("文件内容中有英文逗号，麻烦修改后再上传，含有英文逗号的内容是：" + values);
+                  return;
+                }
+                if (!$.isEmptyObject(values)) {
+                  var obj = {};
+                  var objArr = values.split(",");
+                  //console.log("values:"+JSON.stringify(objArr));
+                  var col = ["id", "item1", "num1", "item2", "num2", "item3", "num3"];
+                  for (var i = 0; i < 7; i++) {
+                    if (objArr[i] != "") {
+                      obj[col[i]] = objArr[i];
+                    }
+                    else {
+                      obj[col[i]] = 0;
+                    }
+                  }
+                  data.push(obj);
+                }
+              }
+
+            }
+            //console.log(data);
+
+            $("#myTableActiveRewardList tr:not(:first)").empty("");
+            var table = document.getElementById("myTableActiveRewardList");
+            for (var i = 0; i < data.length; i++) {
+              var row = table.insertRow(i + 1);
+              var col = 0;
+              var cellid = row.insertCell(col++);
+              var cellitem1 = row.insertCell(col++);
+              var cellnum1 = row.insertCell(col++);
+              var cellitem2 = row.insertCell(col++);
+              var cellnum2 = row.insertCell(col++);
+              var cellitem3 = row.insertCell(col++);
+              var cellnum3 = row.insertCell(col++);
+              
+              cellid.innerHTML = data[i]["id"];
+              cellitem1.innerHTML =data[i]["item1"];
+              cellnum1.innerHTML =data[i]["num1"];
+              cellitem2.innerHTML = data[i]["item2"];
+              cellnum2.innerHTML = data[i]["num2"];
+              cellitem3.innerHTML = data[i]["item3"];
+              cellnum3.innerHTML = data[i]["num3"];
+            }
+            if(data.length <=0){
+              alert("活动奖励内容为空");
+              return;
+            }
+            var x = document.getElementById("serverbox10").selectedIndex;
+            var host = $my("serverbox10").value;
+            var port = $my("serverbox10")[x].getAttribute("port");
+            var zoneid = $my("serverbox10")[x].getAttribute("area");
+            var param = {};
+            param.activityId = parseInt($my("ActivePropBox").value);
+            param.zoneid = zoneid;
+            var loginuser = getCookieArray('loginuser');
+            if (loginuser == null) {
+              alert("登录超时请重新登录!");
+              //return;
+            }
+            param.loginuser = loginuser;
+    
+            param.data = data;
+            socket.emit('AddActivityReward', host, port, param);
+          }
+        }
+      }
+
+      socket.on('AddActivityRewardRsp',function(param){
       alert(param);
     })
   </script>

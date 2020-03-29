@@ -11,9 +11,29 @@ Target Server Type    : SQL Server
 Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2020-03-11 14:42:05
+Date: 2020-03-25 09:46:27
 */
 
+
+-- ----------------------------
+-- Table structure for actorlog
+-- ----------------------------
+DROP TABLE [dbo].[actorlog]
+GO
+CREATE TABLE [dbo].[actorlog] (
+[id] int NOT NULL IDENTITY(1,1) ,
+[opt] varchar(100) NULL ,
+[param1] varchar(100) NULL ,
+[param2] varchar(100) NULL ,
+[param3] varchar(100) NULL ,
+[param4] varchar(100) NULL ,
+[param5] varchar(100) NULL 
+)
+
+
+GO
+DBCC CHECKIDENT(N'[dbo].[actorlog]', RESEED, 272)
+GO
 
 -- ----------------------------
 -- Table structure for gm
@@ -30,7 +50,7 @@ CREATE TABLE [dbo].[gm] (
 
 
 GO
-DBCC CHECKIDENT(N'[dbo].[gm]', RESEED, 226)
+DBCC CHECKIDENT(N'[dbo].[gm]', RESEED, 271)
 GO
 
 -- ----------------------------
@@ -99,6 +119,16 @@ CREATE TABLE [dbo].[users] (
 )
 
 
+GO
+
+-- ----------------------------
+-- Indexes structure for table actorlog
+-- ----------------------------
+
+-- ----------------------------
+-- Primary Key structure for table actorlog
+-- ----------------------------
+ALTER TABLE [dbo].[actorlog] ADD PRIMARY KEY ([id])
 GO
 
 -- ----------------------------

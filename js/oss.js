@@ -384,6 +384,42 @@ function GetActiveList(socket,host,port,zoneid){
         }
     });
 }
+function GetActiveRewardList(socket,host,port,zoneid,activityId){
+    var DB;
+    if(zoneid <= config.PAY_LOG_DB_list.length && zoneid >= 1){
+       DB = config.PAY_LOG_DB_list[zoneid-1];
+    }
+    else if(zoneid == 999){
+        DB = config.PAY_LOG_DB_list_EXT[0];
+    }
+    else{
+        console.log("QueryPayLog zonid error");
+        return;
+    }
+    var tableName="";
+    if(activityId == 10){
+        tableName="tLeiJiReward"
+    }
+    else if(activityId == 12){
+        tableName="tActiveReward"
+    }
+    else{
+        console.log("table name invalid");
+        return;
+    }
+    var sql = "SELECT  *   from "+tableName ;
+    console.log(sql);
+    gamedb.querySql(DB, sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            //console.log(result);
+            socket.emit("GetActiveRewardListRsp",result,host,port,zoneid );
+        }
+    });
+}
+
 function UpdateActivityStat(socket,data){
     //更新数据库
     var DB;
@@ -428,6 +464,68 @@ function UpdateActivityStat(socket,data){
         }
     });
 }
+
+
+function UpdateActivityRewardStat(socket,data){
+    //更新数据库
+    var DB;
+    if(data.zoneid <= config.PAY_LOG_DB_list.length && data.zoneid >= 1){
+       DB = config.PAY_LOG_DB_list[data.zoneid-1];
+    }
+    else if(data.zoneid == 999){
+        DB = config.PAY_LOG_DB_list_EXT[0];
+    }
+    else{
+        console.log("QueryPayLog zonid error");
+        return;
+    }
+    var tableName="";
+    if(data.activityId == 10){
+        //累计充值
+        tableName = "tLeiJiReward";
+    }
+    else if(data.activityId == 12){
+        tableName = "tActiveReward";
+    }
+    else{
+        console.log("table name invalid");
+        return;
+    }
+    var sql = "update  "+tableName+"  set item1="+data.item1+", item1Num="+data.item1Num+", item2="+data.item2+", item2Num="+data.item2Num+", item3="+data.item3+", item3Num="+data.item3Num+", item4="+data.item4+", item4Num="+data.item4Num+" where rewardId="+data.rewardId;
+    console.log(sql);
+    gamedb.querySql(DB, sql, "", function (err, result) {//查询所有users表的数据
+        if (err) {
+            console.log("db err");
+        }
+        else {
+            console.log("更新活动奖励成功:" + result);
+            socket.emit("UpdateActivityRewardStatRsp","更新活动奖励数据库成功");
+            //通知场景服
+            Playeroptions.hostname = data.host;
+            Playeroptions.port = data.port;
+            Playeroptions.path = "/updateActivityReward?"
+            console.log(JSON.stringify(Playeroptions));
+            var req = http.request(Playeroptions, function (res) {
+                console.log('STATUS: ' + res.statusCode);
+                console.log('HEADERS: ' + JSON.stringify(res.headers));
+                res.setEncoding('utf8');
+                res.on('data', function (chunk) {
+                    console.log('BODY: ' + chunk);
+                    socket.emit("UpdateActivityRewardStatRsp", "通知游戏服成功")
+                });
+            });
+            req.on('error', function (e) {
+                console.log('problem with request: ' + e.message);
+            });
+            var postData={};
+            postData.activityId = data.activityId;
+            req.write(JSON.stringify(postData));
+            req.end();
+        }
+    });
+}
+
+
 function AddActivity(socket,data){
     //更新数据库
     var DB;
@@ -473,6 +571,84 @@ function AddActivity(socket,data){
         }
     });
 }
+
+function AddActivityReward(socket,host,port,data){
+    //更新数据库
+    var DB;
+    if(data.zoneid <= config.PAY_LOG_DB_list.length && data.zoneid >= 1){
+       DB = config.PAY_LOG_DB_list[data.zoneid-1];
+    }
+    else if(data.zoneid == 999){
+        DB = config.PAY_LOG_DB_list_EXT[0];
+    }
+    else{
+        console.log("QueryPayLog zonid error");
+        return;
+    }
+    var tableName="";
+    if(data.activityId == 10){
+        //累计充值
+        tableName = "tLeiJiReward";
+    }
+    else if(data.activityId == 12){
+        tableName = "tActiveReward";
+    }
+    else{
+        console.log("table name invalid");
+        return;
+    }
+    var delActiveRewardSql = "delete "+tableName;
+    gamedb.querySql(DB, delActiveRewardSql, "", function (err, result){
+        if(err){
+            console.log("delActiveRewardSql err:"+delActiveRewardSql);
+            socket.emit("AddActivityRewardRsp","删除活动奖励失败,请联系管理员");
+            return;
+        }
+        else{
+            var count=0;
+            for(var i=0; i<data.data.length; i++){
+                var addActiveRewardSql = "insert into "+tableName+" ([rewardId],[item1],[item1Num],[item2],[item2Num],[item3],[item3Num])  VALUES("+
+                data.data[i]["id"]+","+data.data[i]["item1"]+","+data.data[i]["num1"]+","+data.data[i]["item2"]+","+data.data[i]["num2"]+","+data.data[i]["item3"]+","+data.data[i]["num3"]+")";
+
+                gamedb.querySql(DB, addActiveRewardSql, "", function (err, result){
+                    if(err){
+                        console.log("addActiveRewardSql err:"+result);
+                        socket.emit("AddActivityRewardRsp","添加活动奖励失败,请联系管理员");
+                    }
+                    else{
+                        count++;
+                        if(count==data.data.length-1){
+                            socket.emit("AddActivityRewardRsp","添加活动奖励成功");
+                            Playeroptions.hostname = host;
+                            Playeroptions.port = port;
+                            Playeroptions.path = "/updateActivityReward?"
+                            var req = http.request(Playeroptions, function (res) {
+                                console.log('STATUS: ' + res.statusCode);
+                                console.log('HEADERS: ' + JSON.stringify(res.headers));
+                                res.setEncoding('utf8');
+                                res.on('data', function (chunk) {
+                                    //console.log('BODY: ' + chunk);
+                                    socket.emit("AddActivityRewardRsp", "通知游戏服成功")
+                                });
+                            });
+                            req.on('error', function (e) {
+                                console.log('problem with request: ' + e.message);
+                            });
+                            var postData={};
+                            postData.activityId = data.activityId;
+                            req.write(JSON.stringify(postData));
+                            req.end();
+                        }
+                    }
+                });
+   
+            }
+           
+        }
+    });
+
+}
+
 
 function WhiteListSwitch(socket,host,port,param){
     Playeroptions.hostname = host;
@@ -612,7 +788,9 @@ module.exports.QueryPayLog = QueryPayLog;
 module.exports.sendNoticeOnTime = sendNoticeOnTime;
 module.exports.NoticeQury = NoticeQury;
 module.exports.GetActiveList = GetActiveList;
+module.exports.GetActiveRewardList = GetActiveRewardList;
 module.exports.UpdateActivityStat = UpdateActivityStat;
+module.exports.UpdateActivityRewardStat = UpdateActivityRewardStat;
 module.exports.AddActivity = AddActivity;
 module.exports.WhiteListSwitch = WhiteListSwitch;
 module.exports.WhiteListQuery = WhiteListQuery;
@@ -621,4 +799,5 @@ module.exports.ClientUpdateSet = ClientUpdateSet;
 module.exports.ClientVersionQuery = ClientVersionQuery;
 module.exports.ClientVersionSet = ClientVersionSet;
 module.exports.activitymdfy = activitymdfy;
+module.exports.AddActivityReward = AddActivityReward;
 

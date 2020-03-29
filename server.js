@@ -155,7 +155,7 @@ function write_log(loginuser,opt,data)
     //delete data.keyToDelete;
     var newDate = new Date();
     var sql = "insert INTO gm ([user], [opt],[log], [logtime]) VALUES('"+loginuser + "','"+opt + "','"+data + "' , CONVERT(datetime,'"+newDate.toLocaleString()+"',101))";
-    console.log(sql);
+    //console.log(sql);
     db.querySql(sql, "",function (err, result) {//查询所有users表的数据
         if(err)
         {
@@ -288,6 +288,9 @@ io.sockets.on('connection', function (socket){
     socket.on("GetActiveList",function(host,port,zoneid){
         oss.GetActiveList(socket,host,port,zoneid);
     })  
+    socket.on("GetActiveRewardList",function(host,port,zoneid,activityId){
+        oss.GetActiveRewardList(socket,host,port,zoneid,activityId);
+    })
     socket.on('UpdateActivityStat',function(data){
         loginuser = data.loginuser;
         if(loginuser == null){
@@ -298,6 +301,17 @@ io.sockets.on('connection', function (socket){
         oss.UpdateActivityStat(socket,data);
         write_log(loginuser, '修改活动状态', JSON.stringify(data));
     })
+    socket.on('UpdateActivityRewardStat',function(data){
+        loginuser = data.loginuser;
+        if(loginuser == null){
+            console.log("登录超时请重新登录!");
+            return;
+        }
+        delete data.loginuser;
+        oss.UpdateActivityRewardStat(socket,data);
+        write_log(loginuser, '修改活动奖励', JSON.stringify(data));
+    })
+    
     socket.on('AddActivity', function (data) {
         loginuser = data.loginuser;
         if (loginuser == null) {
@@ -337,6 +351,12 @@ io.sockets.on('connection', function (socket){
         delete param.loginuser;
         oss.activitymdfy(socket,host, port, param);
         write_log(loginuser, '活动补发', JSON.stringify(param)); 
+    })
+    socket.on('AddActivityReward', function (host, port,param) {
+        loginuser = param.loginuser;
+        delete param.loginuser;
+        oss.AddActivityReward(socket, host, port, param);
+        write_log(loginuser, '活动奖励', JSON.stringify(param));
     })
 });
 console.log("localhost:"+conf.GM_SERVER_PORT.app_port)
