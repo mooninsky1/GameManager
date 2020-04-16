@@ -272,7 +272,12 @@ function GetBag(socket,host,port,data){
         res.setEncoding('utf8');  
         res.on('data', function (chunk) {  
             console.log('BODY: ' + chunk);  
-           socket.emit("GetBagRsp",JSON.parse(chunk)) 
+            try {
+                socket.emit("GetBagRsp",JSON.parse(chunk));
+              } catch (e) {
+                console.log('bagdata is invalid json');
+                return ;
+              }
         });  
     });  
     req.on('error', function (e) {  
@@ -491,7 +496,7 @@ function UpdateActivityRewardStat(socket,data){
         console.log("table name invalid");
         return;
     }
-    var sql = "update  "+tableName+"  set item1="+data.item1+", item1Num="+data.item1Num+", item2="+data.item2+", item2Num="+data.item2Num+", item3="+data.item3+", item3Num="+data.item3Num+", item4="+data.item4+", item4Num="+data.item4Num+" where rewardId="+data.rewardId;
+    var sql = "update  "+tableName+"  set condition="+data.con+",  item1="+data.item1+", item1Num="+data.item1Num+", item2="+data.item2+", item2Num="+data.item2Num+", item3="+data.item3+", item3Num="+data.item3Num+", item4="+data.item4+", item4Num="+data.item4Num+" where rewardId="+data.rewardId;
     console.log(sql);
     gamedb.querySql(DB, sql, "", function (err, result) {//查询所有users表的数据
         if (err) {
@@ -607,8 +612,8 @@ function AddActivityReward(socket,host,port,data){
         else{
             var count=0;
             for(var i=0; i<data.data.length; i++){
-                var addActiveRewardSql = "insert into "+tableName+" ([rewardId],[item1],[item1Num],[item2],[item2Num],[item3],[item3Num])  VALUES("+
-                data.data[i]["id"]+","+data.data[i]["item1"]+","+data.data[i]["num1"]+","+data.data[i]["item2"]+","+data.data[i]["num2"]+","+data.data[i]["item3"]+","+data.data[i]["num3"]+")";
+                var addActiveRewardSql = "insert into "+tableName+" ([rewardId],[item1],[item1Num],[item2],[item2Num],[item3],[item3Num],[item4],[item4Num],[condition])  VALUES("+
+                data.data[i]["id"]+","+data.data[i]["item1"]+","+data.data[i]["num1"]+","+data.data[i]["item2"]+","+data.data[i]["num2"]+","+data.data[i]["item3"]+","+data.data[i]["num3"]+","+data.data[i]["item4"]+","+data.data[i]["num4"]+","+data.data[i]["con"]+")";
 
                 gamedb.querySql(DB, addActiveRewardSql, "", function (err, result){
                     if(err){
@@ -770,6 +775,26 @@ function activitymdfy(socket,host, port, param){
     req.write(JSON.stringify(param));
     req.end();
 }
+function Pay(socket,host, port, param){
+    Playeroptions.hostname = host;
+    Playeroptions.port = port;
+    Playeroptions.path = "/Pay?"
+    var req = http.request(Playeroptions, function (res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            //console.log('BODY: ' + chunk);
+            socket.emit("PayRsp", chunk)
+        });
+    });
+    req.on('error', function (e) {
+        console.log('problem with request: ' + e.message);
+    });
+    req.write(JSON.stringify(param));
+    req.end();
+}
+
 module.exports.GetBag = GetBag;
 module.exports.online = online;
 module.exports.sendMail = sendMail;
@@ -800,4 +825,5 @@ module.exports.ClientVersionQuery = ClientVersionQuery;
 module.exports.ClientVersionSet = ClientVersionSet;
 module.exports.activitymdfy = activitymdfy;
 module.exports.AddActivityReward = AddActivityReward;
+module.exports.Pay = Pay;
 

@@ -138,25 +138,25 @@
     </div>
 
     <div title="修改属性值" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
-       <ul class="nav navbar-nav">
-            <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
-                <select id="serverbox2" class="form-control" style="display:inlinek;">
-                </select>	
-                <input type = "text" class="form-control" id = "Actorid" placeholder="角色ID"  style="display:inline;" />
-                <select id="PropBox" class="form-control"  style="display:inline;" >
-                <option value="8">境界等级</option>
-                <option value="9">设置经验</option>
-                <option value="10">设置灵石</option>
-                <option value="11">设置仙玉</option>
-                <option value="12">炼体等级</option>
-                <option value="55">悟道等级</option>
-                <option value="63">普通副本最大通关ID</option>
-                <option value="64">精英副本最大通关ID</option>
-                </select>
-                <input type = "text" class="form-control" id = "param1" placeholder="修改值"  style="display:inline;" />
-                <button type="button" class="btn btn-default" id="ModifyBtn" onclick="UpdatePlayer()" >修改</button>							
-            </div>	
-          </ul>	 
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <select id="serverbox2" class="form-control" style="display:inlinek;">
+          </select>
+          <input type="text" class="form-control" id="Actorid" placeholder="角色ID" style="display:inline;" />
+          <select id="PropBox" class="form-control" style="display:inline;">
+            <option value="8">境界等级</option>
+            <option value="9">设置经验</option>
+            <option value="10">设置灵石</option>
+            <option value="11">设置仙玉</option>
+            <option value="12">炼体等级</option>
+            <option value="55">悟道等级</option>
+            <option value="63">普通副本最大通关ID</option>
+            <option value="64">精英副本最大通关ID</option>
+          </select>
+          <input type="text" class="form-control" id="param1" placeholder="修改值" style="display:inline;" />
+          <button type="button" class="btn btn-default" id="ModifyBtn" onclick="UpdatePlayer()">修改</button>
+        </div>
+      </ul>
     </div>
 
     <div title="踢人封号" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
@@ -186,7 +186,7 @@
               邮件附件格式: [{"22_1":500},{"406_7":1}] ,其中 "22_1":500 表示人物属性钻石数量500,22代表钻石，1表示人物属性 ， "406_7":1表示金币包一个，406金币包道具，7表示物品
               </textarea-->
           <!--input type = "text" class="form-control" id = "MailAttachments" placeholder="邮件附件"  /-->
-
+          <li>道具奖励</li>
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <form class="navbar-form navbar-left" role="search">
               <div class="form-group">
@@ -237,7 +237,39 @@
               </div>
             </form>
           </div>
+          <li>属性奖励</li>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" id="mail_prop_id_1" placeholder="请输入属性ID"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+                <input type="text" class="form-control" id="mail_prop_num_1" placeholder="请输入属性数量 "
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+              </div>
+            </form>
+          </div>
 
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" id="mail_prop_id_2" placeholder="请输入属性ID"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+                <input type="text" class="form-control" id="mail_prop_num_2" placeholder="请输入属性数量 "
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+              </div>
+            </form>
+          </div>
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" id="mail_prop_id_3" placeholder="请输入属性ID"
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+                <input type="text" class="form-control" id="mail_prop_num_3" placeholder="请输入属性数量 "
+                  onkeyup="value=value.replace(/[^\d]/g,'') " />
+              </div>
+            </form>
+          </div>
           <input type="text" class="form-control" id="MailEndTime" placeholder="邮件过期时间（单位小时）"
             onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" />
           <button type="button" class="btn btn-default" onclick="SendMail()">发送邮件</button>
@@ -511,10 +543,11 @@
       <ul class="nav navbar-nav">
         <div class="form-group">
           <select id="serverbox10" class="form-control"> </select>
-        
+
           <select id="ActivePropBox" class="form-control" style="display:inline;">
             <option value="10">累计充值</option>
             <option value="12">道庭令</option>
+            <option value="13">卦象</option>
           </select>
           <input type="text" class="layui-input" placeholder="开始日期" id="activity_date_begin">
           <input type="text" class="layui-input" placeholder="结束日期" id="activity_date_end">
@@ -523,11 +556,12 @@
           <input type="text" class="form-control" id="activity_param2" placeholder="countFlag"
             onkeyup="value=value.replace(/[^\d]/g,'') " />
           <fieldset class="form-group col-xs-3 col-lg-offset-3">
-            <input type="file" class="form-control"  id="file-value">
+            <input type="file" class="form-control" id="file-value">
           </fieldset>
           <button type="button" class="btn btn-default" id="AddActivityBtn" onclick="AddActivity()">提交活动</button>
-          <button type="button" class="btn btn-default" id="AddActivityRewardBtn" onclick="AddActivityReward()">增加奖励</button>
-        
+          <button type="button" class="btn btn-default" id="AddActivityRewardBtn"
+            onclick="AddActivityReward()">增加奖励</button>
+
         </div>
 
         <div class="row clearfix">
@@ -536,6 +570,7 @@
               <thead>
                 <tr>
                   <th>奖励编号</th>
+                  <th>条件</th>
                   <th>道具1ID</th>
                   <th>道具1数量</th>
                   <th>道具2ID</th>
@@ -548,6 +583,7 @@
               </thead>
               <tbody>
                 <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
+                  <td>0</td>
                   <td>0</td>
                   <td>0</td>
                   <td>0</td>
@@ -573,19 +609,21 @@
           <div>
             <select id="serverbox11" class="form-control"> </select>
             <select id="ActivePropBox_alterReward" class="form-control" style="display:inline;">
-                <option value="10">累计充值</option>
-                <option value="12">道庭令</option>
-              </select>
+              <option value="10">累计充值</option>
+              <option value="12">道庭令</option>
+              <option value="13">卦象</option>
+            </select>
             <button type="button" class="btn btn-default" id="GetActiveRewardListBtn"
               onclick="GetActiveRewardList()">拉取活动奖励列表</button>
           </div>
-          
+
           <div class="row clearfix">
             <div class="col-md-12 column">
               <table class="table" id="myTableActiveRewardAlterList">
                 <thead>
                   <tr>
                     <th>奖励编号</th>
+                    <th>条件</th>
                     <th>道具1ID</th>
                     <th>道具1数量</th>
                     <th>道具2ID</th>
@@ -600,6 +638,7 @@
                 <tbody>
                   <tr width="100" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;">
                     <td>1</td>
+                    <td>0</td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -649,7 +688,7 @@
           </div>
           <button type="button" class="btn btn-default" onclick="ClientUpdateQuery()">查询</button>
           <button type="button" class="btn btn-default" onclick="ClientUpdateSet()">修改</button>
-    
+
           <div>
             <br>
             </br>
@@ -663,24 +702,36 @@
         </div>
       </ul>
     </div>
-    
+
     <div title="活动补发" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
-        <ul class="nav navbar-nav">
-          <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
-            <div>
-              <select id="serverbox13" class="form-control"> </select>
-              <input type="text" class="form-control" id="actorid_activity_mdify" placeholder="输入角色ID"
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <div>
+            <select id="serverbox13" class="form-control"> </select>
+            <input type="text" class="form-control" id="actorid_activity_mdify" placeholder="输入角色ID"
               onkeyup="value=value.replace(/[^\d]/g,'') " />
-              <select id="activity_mdify_Box" class="form-control" style="display:inline;">
-                  <option value="1">月卡</option>
-                  <option value="2">终身卡</option>
-                  <option value="5">境界仙卦</option>
-              </select>
-            </div>
-            <button type="button" class="btn btn-default" onclick="activitymdfy()">补发</button>
+            <select id="activity_mdify_Box" class="form-control" style="display:inline;">
+              <option value="1">月卡</option>
+              <option value="2">终身卡</option>
+              <option value="5">境界仙卦</option>
+            </select>
           </div>
-        </ul>
-      </div>
+          <button type="button" class="btn btn-default" onclick="activitymdfy()">补发</button>
+        </div>
+      </ul>
+    </div>
+
+    <div title="补单充值" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <select id="serverbox14" class="form-control" style="display:inlinek;">
+          </select>
+          <input type="text" class="form-control" id="PayActorid" placeholder="角色ID" style="display:inline;" />
+          <input type="text" class="form-control" id="Payparam1" placeholder="订单ID" style="display:inline;" onkeyup="value=value.replace(/[^\d]/g,'') "/>
+          <button type="button" class="btn btn-default" id="PayBtn" onclick="Pay()">补单</button>
+        </div>
+      </ul>
+    </div>
 
 
     <div title="其他" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
@@ -696,7 +747,7 @@
         </div>
       </ul>
     </div>
-  
+
   </div>
   <script>
     //执行一个laydate实例
@@ -754,7 +805,7 @@
     $(document).ready(function () {
       //document.getElementById("serverbox3").options.add(new Option("abc","123"));
       //var UIlist = [ "serverbox0","serverbox1","serverbox2","serverbox2","serverbox3","serverbox4","serverbox5","serverbox6"];
-      var UIlist = ["serverbox0", "serverbox1", "serverbox2","serverbox3", "serverbox4", "serverbox5", "serverbox6", "serverbox7", "serverbox8", "serverbox9", "serverbox10", "serverbox11", "serverbox12","serverbox13"];
+      var UIlist = ["serverbox0", "serverbox1", "serverbox2", "serverbox3", "serverbox4", "serverbox5", "serverbox6", "serverbox7", "serverbox8", "serverbox9", "serverbox10", "serverbox11", "serverbox12", "serverbox13","serverbox14"];
       for (var i = 0; i < UIlist.length; i++) {
         ShowServerList(UIlist[i], severlist);
       }
@@ -931,22 +982,36 @@
         var itemid = $my('mail_item_id_5').value + "_7";
         MailAttachments.push({ [itemid]: parseInt($my('mail_item_num_5').value) });
       }
+
+      if ($my('mail_prop_id_1').value && $my('mail_prop_num_1').value) {
+        var propid = $my('mail_prop_id_1').value + "_1";
+        MailAttachments.push({ [propid]: parseInt($my('mail_prop_num_1').value) });
+      }
+      if ($my('mail_prop_id_2').value && $my('mail_prop_num_2').value) {
+        var propid = $my('mail_prop_id_2').value + "_1";
+        MailAttachments.push({ [propid]: parseInt($my('mail_prop_num_2').value) });
+      }
+      if ($my('mail_prop_id_3').value && $my('mail_prop_num_3').value) {
+        var propid = $my('mail_prop_id_3').value + "_1";
+        MailAttachments.push({ [propid]: parseInt($my('mail_prop_num_3').value) });
+      }
+
       MailTips += "数量异常请确认";
       var arg = JSON.stringify(MailAttachments)
-      //alert("json"+arg);
+      alert("json" + arg);
       if (!isJSON(arg)) {
         alert("邮件参数错误");
         return;
       }
       param.attachments = JSON.parse(arg);
-      //alert("obj"+param.attachments);
+      alert("obj" + param.attachments);
       //使用服务器的时间
       //param.showStart = new Date().getTime();
       if ($my('MailEndTime').value) {
         param.showEnd = $my('MailEndTime').value * 60 * 60 * 1000;
       }
       else {
-        param.showEnd = 60 * 60 * 1000*24*30;
+        param.showEnd = 60 * 60 * 1000 * 24 * 30;
       }
 
       //var arg = document.getElementById("MailAttachments").value;
@@ -1513,7 +1578,7 @@
       var port = $my("serverbox11")[x].getAttribute("port");
       var zoneid = $my("serverbox11")[x].getAttribute("area");
       var activityId = parseInt($my("ActivePropBox_alterReward").value);
-      socket.emit('GetActiveRewardList', host, port, zoneid,activityId);
+      socket.emit('GetActiveRewardList', host, port, zoneid, activityId);
     }
 
     socket.on('GetActiveRewardListRsp', function (message, host, port, zoneid) {
@@ -1523,6 +1588,7 @@
         var row = table.insertRow(i + 1);
         var col = 0;
         var cellid = row.insertCell(col++);
+        var cellcon = row.insertCell(col++);
         var cellitem1 = row.insertCell(col++);
         var cellnum1 = row.insertCell(col++);
         var cellitem2 = row.insertCell(col++);
@@ -1534,6 +1600,7 @@
         var cellbtn = row.insertCell(col++);
 
         cellid.innerHTML = message.recordset[i]["rewardId"];
+        cellcon.innerHTML = "<input class='layui-input' value='" + message.recordset[i]["condition"] + "'>";
         cellitem1.innerHTML = "<input class='layui-input' value='" + message.recordset[i]["item1"] + "'>";
         cellnum1.innerHTML = "<input class='layui-input' value=' " + message.recordset[i]["item1Num"] + "'>";
         cellitem2.innerHTML = "<input class='layui-input' value='" + message.recordset[i]["item2"] + "'>";
@@ -1542,7 +1609,7 @@
         cellnum3.innerHTML = "<input class='layui-input' value=' " + message.recordset[i]["item3Num"] + "'>";
         cellitem4.innerHTML = "<input class='layui-input' value='" + message.recordset[i]["item4"] + "'>";
         cellnum4.innerHTML = "<input class='layui-input' value=' " + message.recordset[i]["item4Num"] + "'>";
-    
+
         cellbtn.innerHTML = '<button onclick=UpdateActivityRewardStat(' + message.recordset[i]["rewardId"] + ',' + i + ',' + '"' + host + '"' + ',' + port + ',' + zoneid + ')>修改</button>';
       }
 
@@ -1557,9 +1624,9 @@
       param.host = host;
       param.port = port;
       param.zoneid = zoneid;
-      var colItem=["item1","item1Num","item2","item2Num","item3","item3Num","item4","item4Num"];
-      for (var col = 1; col < 9; col++) {
-          param[ colItem[col-1 ]] = table.rows[index + 1].cells[col].childNodes[0].value;
+      var colItem = ["con", "item1", "item1Num", "item2", "item2Num", "item3", "item3Num", "item4", "item4Num"];
+      for (var col = 1; col < 10; col++) {
+        param[colItem[col - 1]] = table.rows[index + 1].cells[col].childNodes[0].value;
       }
       var loginuser = getCookieArray('loginuser');
       if (loginuser == null) {
@@ -1567,7 +1634,7 @@
         return;
       }
       param.loginuser = loginuser;
-      console.log("d:"+JSON.stringify(param));
+      console.log("d:" + JSON.stringify(param));
       socket.emit('UpdateActivityRewardStat', param);
     }
     socket.on("UpdateActivityRewardStatRsp", function (data) {
@@ -1660,8 +1727,8 @@
       socket.emit('ClientUpdateQuery');
     }
     socket.on("ClientUpdateQueryRsp", function (param) {
-     // $my("ClientUpdateBox").value = 2;
-      $my("ClientUpdateBox").options[param.flag-1].selected = true;  
+      // $my("ClientUpdateBox").value = 2;
+      $my("ClientUpdateBox").options[param.flag - 1].selected = true;
     })
     function ClientUpdateSet() {
       var param = {};
@@ -1676,14 +1743,14 @@
     }
     socket.on("ClientUpdateSetRsp", function (param) {
       alert(param);
-    }) 
-    function ClientVersionQuery(){
+    })
+    function ClientVersionQuery() {
       socket.emit('ClientVersionQuery');
     }
     socket.on("ClientVersionQueryRsp", function (param) {
-      $my("ClientVersion").value = param.version;  
-    }) 
-    function ClientVersionSet(){
+      $my("ClientVersion").value = param.version;
+    })
+    function ClientVersionSet() {
       var param = {};
       param.version = $my("ClientVersion").value;
       var loginuser = getCookieArray('loginuser');
@@ -1692,12 +1759,12 @@
         return;
       }
       param.loginuser = loginuser;
-      socket.emit('ClientVersionSet',param);
+      socket.emit('ClientVersionSet', param);
     }
     socket.on("ClientVersionSetRsp", function (param) {
       alert(param);
-    }) 
-    function activitymdfy(){
+    })
+    function activitymdfy() {
       var x = document.getElementById("serverbox13").selectedIndex;
       var host = $my("serverbox13").value;
       var port = $my("serverbox13")[x].getAttribute("port");
@@ -1712,102 +1779,231 @@
       param.loginuser = loginuser;
       socket.emit('activitymdfy', host, port, param);
     }
-    socket.on('activitymdfyRsp',function(param){
+    socket.on('activitymdfyRsp', function (param) {
       alert(param);
     })
-    function AddActivityReward() {
-        var data = [];
-        var files = document.getElementById("file-value").files;
-        //var regp = new RegExp(".*,\".*,.*\"$");
-        var regp = new RegExp(".*,\".*,\".*,\".*,\".*,\".*,.*\"$");
-        if (files.length) {
-          var file = files[0];
+    function AddActivityDaoTingLingReward() {
+      var data = [];
+      var files = document.getElementById("file-value").files;
+      //var regp = new RegExp(".*,\".*,.*\"$");
+      var regp = new RegExp(".*,\".*,\".*,\".*,\".*,\".*,\".*,.*\"$");
+      if (files.length) {
+        var file = files[0];
 
-          var reader = new FileReader(); //new一个FileReader实例
-          if (typeof FileReader == 'undefined') {
-            layer.alert("你的浏览器暂不支持该功能", { title: "提示", skin: "layui-layer-molv" });
-            file.setAttribute("disabled", "disabled");
+        var reader = new FileReader(); //new一个FileReader实例
+        if (typeof FileReader == 'undefined') {
+          layer.alert("你的浏览器暂不支持该功能", { title: "提示", skin: "layui-layer-molv" });
+          file.setAttribute("disabled", "disabled");
+          return;
+        }
+        reader.readAsText(file);
+        reader.onload = function (f) {
+          //显示文件  
+          var relArr = this.result.split("\r\n");
+          if (!$.isEmptyObject(relArr) && relArr.length > 1) {
+            for (var key = 5, len = relArr.length; key < len; key++) {
+              var values = relArr[key];
+              //console.log("line:"+values);
+              if (regp.test(values)) {
+                alert("文件内容中有英文逗号，麻烦修改后再上传，含有英文逗号的内容是：" + values);
+                return;
+              }
+              if (!$.isEmptyObject(values)) {
+                var obj = {};
+                var objArr = values.split(",");
+                //console.log("values:"+JSON.stringify(objArr));
+                var col = ["id", "con", "item1", "num1", "item2", "num2", "item3", "num3"];
+                for (var i = 0; i < 8; i++) {
+                  if (objArr[i] != "") {
+                    obj[col[i]] = objArr[i];
+                  }
+                  else {
+                    obj[col[i]] = 0;
+                  }
+                }
+                obj["item4"]=0;
+                obj["num4"]=0;
+                data.push(obj);
+              }
+            }
+
+          }
+          //console.log(data);
+
+          $("#myTableActiveRewardList tr:not(:first)").empty("");
+          var table = document.getElementById("myTableActiveRewardList");
+          for (var i = 0; i < data.length; i++) {
+            var row = table.insertRow(i + 1);
+            var col = 0;
+            var cellid = row.insertCell(col++);
+            var cellcon = row.insertCell(col++);
+            var cellitem1 = row.insertCell(col++);
+            var cellnum1 = row.insertCell(col++);
+            var cellitem2 = row.insertCell(col++);
+            var cellnum2 = row.insertCell(col++);
+            var cellitem3 = row.insertCell(col++);
+            var cellnum3 = row.insertCell(col++);
+
+            cellid.innerHTML = data[i]["id"];
+            cellcon.innerHTML = data[i]["con"];
+            cellitem1.innerHTML = data[i]["item1"];
+            cellnum1.innerHTML = data[i]["num1"];
+            cellitem2.innerHTML = data[i]["item2"];
+            cellnum2.innerHTML = data[i]["num2"];
+            cellitem3.innerHTML = data[i]["item3"];
+            cellnum3.innerHTML = data[i]["num3"];
+          }
+          if (data.length <= 0) {
+            alert("活动奖励内容为空");
             return;
           }
-          reader.readAsText(file);
-          reader.onload = function (f) {
-            //显示文件  
-            var relArr = this.result.split("\r\n");
-            if (!$.isEmptyObject(relArr) && relArr.length > 1) {
-              for (var key = 5, len = relArr.length; key < len; key++) {
-                var values = relArr[key];
-                //console.log("line:"+values);
-                if (regp.test(values)) {
-                  alert("文件内容中有英文逗号，麻烦修改后再上传，含有英文逗号的内容是：" + values);
-                  return;
-                }
-                if (!$.isEmptyObject(values)) {
-                  var obj = {};
-                  var objArr = values.split(",");
-                  //console.log("values:"+JSON.stringify(objArr));
-                  var col = ["id", "item1", "num1", "item2", "num2", "item3", "num3"];
-                  for (var i = 0; i < 7; i++) {
-                    if (objArr[i] != "") {
-                      obj[col[i]] = objArr[i];
-                    }
-                    else {
-                      obj[col[i]] = 0;
-                    }
-                  }
-                  data.push(obj);
-                }
-              }
-
-            }
-            //console.log(data);
-
-            $("#myTableActiveRewardList tr:not(:first)").empty("");
-            var table = document.getElementById("myTableActiveRewardList");
-            for (var i = 0; i < data.length; i++) {
-              var row = table.insertRow(i + 1);
-              var col = 0;
-              var cellid = row.insertCell(col++);
-              var cellitem1 = row.insertCell(col++);
-              var cellnum1 = row.insertCell(col++);
-              var cellitem2 = row.insertCell(col++);
-              var cellnum2 = row.insertCell(col++);
-              var cellitem3 = row.insertCell(col++);
-              var cellnum3 = row.insertCell(col++);
-              
-              cellid.innerHTML = data[i]["id"];
-              cellitem1.innerHTML =data[i]["item1"];
-              cellnum1.innerHTML =data[i]["num1"];
-              cellitem2.innerHTML = data[i]["item2"];
-              cellnum2.innerHTML = data[i]["num2"];
-              cellitem3.innerHTML = data[i]["item3"];
-              cellnum3.innerHTML = data[i]["num3"];
-            }
-            if(data.length <=0){
-              alert("活动奖励内容为空");
-              return;
-            }
-            var x = document.getElementById("serverbox10").selectedIndex;
-            var host = $my("serverbox10").value;
-            var port = $my("serverbox10")[x].getAttribute("port");
-            var zoneid = $my("serverbox10")[x].getAttribute("area");
-            var param = {};
-            param.activityId = parseInt($my("ActivePropBox").value);
-            param.zoneid = zoneid;
-            var loginuser = getCookieArray('loginuser');
-            if (loginuser == null) {
-              alert("登录超时请重新登录!");
-              //return;
-            }
-            param.loginuser = loginuser;
-    
-            param.data = data;
-            socket.emit('AddActivityReward', host, port, param);
+          var x = document.getElementById("serverbox10").selectedIndex;
+          var host = $my("serverbox10").value;
+          var port = $my("serverbox10")[x].getAttribute("port");
+          var zoneid = $my("serverbox10")[x].getAttribute("area");
+          var param = {};
+          param.activityId = parseInt($my("ActivePropBox").value);
+          param.zoneid = zoneid;
+          var loginuser = getCookieArray('loginuser');
+          if (loginuser == null) {
+            alert("登录超时请重新登录!");
+            //return;
           }
+          param.loginuser = loginuser;
+
+          param.data = data;
+          socket.emit('AddActivityReward', host, port, param);
         }
       }
+    }
 
-      socket.on('AddActivityRewardRsp',function(param){
+    function AddActivityLeiJiReward() {
+      var data = [];
+      var files = document.getElementById("file-value").files;
+      //var regp = new RegExp(".*,\".*,.*\"$");
+      var regp = new RegExp(".*,\".*,\".*,\".*,\".*,\".*,\".*,\".*,\".*,.*\"$");
+      if (files.length) {
+        var file = files[0];
+
+        var reader = new FileReader(); //new一个FileReader实例
+        if (typeof FileReader == 'undefined') {
+          layer.alert("你的浏览器暂不支持该功能", { title: "提示", skin: "layui-layer-molv" });
+          file.setAttribute("disabled", "disabled");
+          return;
+        }
+        reader.readAsText(file);
+        reader.onload = function (f) {
+          //显示文件  
+          var relArr = this.result.split("\r\n");
+          if (!$.isEmptyObject(relArr) && relArr.length > 1) {
+            for (var key = 5, len = relArr.length; key < len; key++) {
+              var values = relArr[key];
+              //console.log("line:"+values);
+              if (regp.test(values)) {
+                alert("文件内容中有英文逗号，麻烦修改后再上传，含有英文逗号的内容是：" + values);
+                return;
+              }
+              if (!$.isEmptyObject(values)) {
+                var obj = {};
+                var objArr = values.split(",");
+                //console.log("values:"+JSON.stringify(objArr));
+                var col = ["id", "con", "item1", "num1", "item2", "num2", "item3", "num3","item4", "num4"];
+                for (var i = 0; i < 10; i++) {
+                  if (objArr[i] != "") {
+                    obj[col[i]] = objArr[i];
+                  }
+                  else {
+                    obj[col[i]] = 0;
+                  }
+                }
+                data.push(obj);
+              }
+            }
+
+          }
+          //console.log(data);
+
+          $("#myTableActiveRewardList tr:not(:first)").empty("");
+          var table = document.getElementById("myTableActiveRewardList");
+          for (var i = 0; i < data.length; i++) {
+            var row = table.insertRow(i + 1);
+            var col = 0;
+            var cellid = row.insertCell(col++);
+            var cellcon = row.insertCell(col++);
+            var cellitem1 = row.insertCell(col++);
+            var cellnum1 = row.insertCell(col++);
+            var cellitem2 = row.insertCell(col++);
+            var cellnum2 = row.insertCell(col++);
+            var cellitem3 = row.insertCell(col++);
+            var cellnum3 = row.insertCell(col++);
+            var cellitem4 = row.insertCell(col++);
+            var cellnum4 = row.insertCell(col++);
+
+            cellid.innerHTML = data[i]["id"];
+            cellcon.innerHTML = data[i]["con"];
+            cellitem1.innerHTML = data[i]["item1"];
+            cellnum1.innerHTML = data[i]["num1"];
+            cellitem2.innerHTML = data[i]["item2"];
+            cellnum2.innerHTML = data[i]["num2"];
+            cellitem3.innerHTML = data[i]["item3"];
+            cellnum3.innerHTML = data[i]["num3"];
+            cellitem4.innerHTML = data[i]["item4"];
+            cellnum4.innerHTML = data[i]["num4"];
+          }
+          if (data.length <= 0) {
+            alert("活动奖励内容为空");
+            return;
+          }
+          var x = document.getElementById("serverbox10").selectedIndex;
+          var host = $my("serverbox10").value;
+          var port = $my("serverbox10")[x].getAttribute("port");
+          var zoneid = $my("serverbox10")[x].getAttribute("area");
+          var param = {};
+          param.activityId = parseInt($my("ActivePropBox").value);
+          param.zoneid = zoneid;
+          var loginuser = getCookieArray('loginuser');
+          if (loginuser == null) {
+            alert("登录超时请重新登录!");
+            //return;
+          }
+          param.loginuser = loginuser;
+
+          param.data = data;
+          socket.emit('AddActivityReward', host, port, param);
+        }
+      }
+    }
+    function AddActivityReward() {
+      var activityId = parseInt($my("ActivePropBox").value);
+      if (activityId == 12) {
+        AddActivityDaoTingLingReward();
+      }
+      else if (activityId == 10) {
+        AddActivityLeiJiReward();
+      }
+
+    }
+    socket.on('AddActivityRewardRsp', function (param) {
       alert(param);
+    })
+    function Pay(){
+      var x = document.getElementById("serverbox14").selectedIndex;
+      var host = $my("serverbox14").value;
+      var port = $my("serverbox14")[x].getAttribute("port");
+      var zoneid = $my("serverbox14")[x].getAttribute("area");
+      var param = {};
+      param.uid = document.getElementById("PayActorid").value;
+      param.productid = parseInt($my("Payparam1").value);;
+      var loginuser = getCookieArray('loginuser');
+      if (loginuser == null) {
+        alert("登录超时请重新登录!");
+        return;
+      }
+      param.loginuser = loginuser;
+      socket.emit('Pay', host, port, param);
+    }
+    socket.on("PayRsp",function(data){
+      alert(data);
     })
   </script>
 </body>

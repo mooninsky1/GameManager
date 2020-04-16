@@ -358,5 +358,11 @@ io.sockets.on('connection', function (socket){
         oss.AddActivityReward(socket, host, port, param);
         write_log(loginuser, '活动奖励', JSON.stringify(param));
     })
+    socket.on('Pay', function (host, port, param) {
+        loginuser = param.loginuser;
+        delete param.loginuser;
+        oss.Pay(socket, host, port, param);
+        write_log(loginuser, '充值补单', JSON.stringify(param));
+    })
 });
 console.log("localhost:"+conf.GM_SERVER_PORT.app_port)
