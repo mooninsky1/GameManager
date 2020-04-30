@@ -548,6 +548,9 @@
             <option value="10">累计充值</option>
             <option value="12">道庭令</option>
             <option value="13">卦象</option>
+            <option value="14">寻仙好礼</option>
+            <option value="15">结伴修仙</option>
+            <option value="16">五一活动</option>
           </select>
           <input type="text" class="layui-input" placeholder="开始日期" id="activity_date_begin">
           <input type="text" class="layui-input" placeholder="结束日期" id="activity_date_end">
@@ -612,6 +615,9 @@
               <option value="10">累计充值</option>
               <option value="12">道庭令</option>
               <option value="13">卦象</option>
+              <option value="14">寻仙好礼</option>
+              <option value="15">结伴修仙</option>
+              <option value="16">五一活动</option>                     
             </select>
             <button type="button" class="btn btn-default" id="GetActiveRewardListBtn"
               onclick="GetActiveRewardList()">拉取活动奖励列表</button>
@@ -733,6 +739,15 @@
       </ul>
     </div>
 
+    <div title="账号找回" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
+      <ul class="nav navbar-nav">
+        <div class="form-group" style="padding: 10px 10px 0px; display:inline;">
+          <input type="text" class="form-control" id="FindAccountActorid" placeholder="角色ID" style="display:inline;" />
+          <input type="text" class="form-control" readonly id="FindAccountID" value="角色登录账号：" />
+          <button type="button" class="btn btn-default" id="FindAccountBtn" onclick="FindAccount()">查找</button>
+        </div>
+      </ul>
+    </div>
 
     <div title="其他" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;">
       <ul class="nav navbar-nav">
@@ -2004,6 +2019,13 @@
     }
     socket.on("PayRsp",function(data){
       alert(data);
+    })
+    function FindAccount(){
+      var uid = document.getElementById("FindAccountActorid").value;
+      socket.emit('FindAccount', uid);
+    }
+    socket.on("FindAccountRsp",function(data){
+      $my('FindAccountID').value = data;
     })
   </script>
 </body>

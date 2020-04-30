@@ -534,6 +534,7 @@ function UpdateActivityRewardStat(socket,data){
 function AddActivity(socket,data){
     //更新数据库
     var DB;
+    console.log("id:"+data.zoneid);
     if(data.zoneid <= config.PAY_LOG_DB_list.length && data.zoneid >= 1){
        DB = config.PAY_LOG_DB_list[data.zoneid-1];
     }
@@ -544,6 +545,8 @@ function AddActivity(socket,data){
         console.log("QueryPayLog zonid error");
         return;
     }
+    //console.log("db:"+JSON.stringify(DB));
+    //console.log("activityid:"+data.activityId);
     var sql = "insert into ActivityServerData ([activityId],[startTime],[endTime],[limitValue],[countFlag]) VALUES("+data.activityId+","+data.startTime+","+data.endTime+", "+data.limitValue+", "+data.countFlag+")";
     //console.log(sql);
     //console.log("db:"+JSON.stringify( config.PAY_LOG_DB_list[data.zoneid - 1]));
@@ -794,7 +797,28 @@ function Pay(socket,host, port, param){
     req.write(JSON.stringify(param));
     req.end();
 }
+function FindAccount(socket,id){
+    var DB;
+    DB = config.PAY_LOG_DB_list[0];
+    var findAccountSql = "SELECT * FROM hygame_login.dbo.account where UserID in(SELECT dbo.getuserid("+id+")) ";
+    console.log(findAccountSql);
+    gamedb.querySql(DB, findAccountSql, "", function (err, result){
+        if(err)
+        {
+            console.log("db err");
+        }
+        else{
+            console.log(result);
+            if(result.recordset.length >= 1){
+                socket.emit("FindAccountRsp",result.recordset[0]['Account']);
+            }
+            else{
+                socket.emit("FindAccountRsp",'账号不存在,请检查输入是否有误');
+            }
 
+        }
+    })
+}
 module.exports.GetBag = GetBag;
 module.exports.online = online;
 module.exports.sendMail = sendMail;
@@ -826,4 +850,6 @@ module.exports.ClientVersionSet = ClientVersionSet;
 module.exports.activitymdfy = activitymdfy;
 module.exports.AddActivityReward = AddActivityReward;
 module.exports.Pay = Pay;
+module.exports.FindAccount = FindAccount;
+
 

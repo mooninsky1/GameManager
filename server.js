@@ -364,5 +364,8 @@ io.sockets.on('connection', function (socket){
         oss.Pay(socket, host, port, param);
         write_log(loginuser, '充值补单', JSON.stringify(param));
     })
+    socket.on("FindAccount",function(id){
+        oss.FindAccount(socket,id);
+    })
 });
 console.log("localhost:"+conf.GM_SERVER_PORT.app_port)
